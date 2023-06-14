@@ -1,0 +1,132 @@
+[package]
+name = "upvpn-packages"
+version = "0.0.1-beta" # actual version
+edition = "2021"
+publish = false
+license = "GPL-3.0"
+authors = ["upvpn LLC"]
+description = "A Modern Serverless VPN"
+homepage = "https://upvpn.app"
+repository = "https://github.com/upvpn/upvpn-app"
+
+
+#
+# DEBIAN PACKAGING
+#
+[package.metadata.deb]
+name = "upvpn"
+# Maintainer is first author in authors
+# maintainer = ""
+assets = [
+    ["target/release/upvpn", "usr/bin/", "755"],
+    ["target/release/upvpn-ui", "/opt/upvpn/upvpn", "755"],
+    ["target/release/upvpn-daemon", "/opt/upvpn/upvpn-daemon", "755"],
+    ["linux/upvpn.desktop", "usr/share/applications/", "644"],
+    ["upvpn-oss-licenses.html", "/opt/upvpn/upvpn-oss-licenses.html", "644"],
+    ["../upvpn-assets/icons/32x32.png", "usr/share/icons/hicolor/32x32/apps/upvpn.png", "644"],
+    ["../upvpn-assets/icons/128x128.png", "usr/share/icons/hicolor/128x128/apps/upvpn.png", "644"],
+    ["../upvpn-assets/icons/128x128@2x.png", "usr/share/icons/hicolor/256x256/apps/upvpn.png", "644"],
+    ["../upvpn-assets/icons/icon.png", "usr/share/icons/hicolor/512x512/apps/upvpn.png", "644"],
+]
+depends = "libwebkit2gtk-4.0-37 (>= 2.21.1), libgtk-3-0 (>= 3.21.4), libayatana-appindicator3-1"
+maintainer-scripts = "linux/debian/maintainer-scripts/"
+systemd-units = { unit-name = "upvpn-daemon", enable = true, start= true, restart-after-upgrade = false, stop-on-upgrade = true, unit-scripts = "linux/unit-scripts"}
+
+[package.metadata.deb.variants.staging]
+name = "upvpn-staging"
+assets = [
+    ["target/release/upvpn", "usr/bin/", "755"],
+    ["target/release/upvpn-ui", "/opt/upvpn/upvpn", "755"],
+    ["target/release/upvpn-daemon", "/opt/upvpn/upvpn-daemon", "755"],
+    ["linux/upvpn.desktop", "usr/share/applications/", "644"],
+    ["upvpn-oss-licenses.html", "/opt/upvpn/upvpn-oss-licenses.html", "644"],
+    ["../upvpn-assets/icons/32x32.png", "usr/share/icons/hicolor/32x32/apps/upvpn.png", "644"],
+    ["../upvpn-assets/icons/128x128.png", "usr/share/icons/hicolor/128x128/apps/upvpn.png", "644"],
+    ["../upvpn-assets/icons/128x128@2x.png", "usr/share/icons/hicolor/256x256/apps/upvpn.png", "644"],
+    ["../upvpn-assets/icons/icon.png", "usr/share/icons/hicolor/512x512/apps/upvpn.png", "644"],
+    ["linux/staging-config/upvpn.conf.toml", "etc/upvpn/", "644"]
+]
+
+#
+# RPM PACKAGING
+#
+[package.metadata.generate-rpm.requires]
+"webkit2gtk4.0" = ">= 2.38.5"
+"libappindicator-gtk3" = ">= 12.10.1"
+
+[package.metadata.generate-rpm]
+name = "upvpn"
+assets = [
+    { source = "target/release/upvpn", dest = "/usr/bin/upvpn", mode = "755" },
+    { source = "target/release/upvpn-ui", dest = "/opt/upvpn/upvpn", mode = "755" },
+    { source = "target/release/upvpn-daemon", dest = "/opt/upvpn/upvpn-daemon", mode = "755" },
+    { source = "linux/upvpn.desktop", dest = "/usr/share/applications/upvpn.desktop", mode = "644"},
+    { source = "upvpn-oss-licenses.html", dest = "/opt/upvpn/upvpn-oss-licenses.html", mode =  "644"},
+    { source = "linux/unit-scripts/upvpn-daemon.service", dest = "/usr/lib/systemd/system/upvpn-daemon.service", mode = "644"},
+    { source = "../upvpn-assets/icons/32x32.png", dest = "/usr/share/icons/hicolor/32x32/apps/upvpn.png", mode = "644" },
+    { source = "../upvpn-assets/icons/128x128.png", dest = "/usr/share/icons/hicolor/128x128/apps/upvpn.png", mode = "644" },
+    {source = "../upvpn-assets/icons/128x128@2x.png", dest = "/usr/share/icons/hicolor/256x256/apps/upvpn.png", mode = "644"},
+    {source = "../upvpn-assets/icons/icon.png", dest = "/usr/share/icons/hicolor/512x512/apps/upvpn.png", mode = "644"},
+]
+auto-req = "no"
+
+# presinst
+pre_install_script = '''
+set -euo pipefail
+
+# Stop daemon and UI
+
+if which systemctl &> /dev/null; then
+    if systemctl status upvpn-daemon &> /dev/null; then
+        systemctl stop upvpn-daemon.service
+        systemctl disable upvpn-daemon.service
+        cp /var/log/upvpn/upvpn-daemon.log /var/log/upvpn/previous-upvpn-daemon.log \
+            || echo "Failed to copy previous daemon log file"
+    fi
+fi
+
+pkill -x "upvpn" || true
+'''
+
+# postinst
+post_install_script = '''
+set -e
+systemctl enable "/usr/lib/systemd/system/upvpn-daemon.service"
+systemctl start upvpn-daemon.service
+'''
+
+pre_uninstall_script = '''
+set -euo pipefail
+
+# Stop UI
+pkill -x "upvpn" || true
+
+systemctl stop upvpn-daemon.service || true
+systemctl disable upvpn-daemon.service || true
+'''
+
+post_uninstall_script = '''
+set -euo pipefail
+
+# remove log and configuration files
+remove_log_and_configuration() {
+    # all log files
+    if [ -d /var/log/upvpn ]; then
+        rm -r --interactive=never /var/log/upvpn/ || \
+        echo "Failed to remove upvpn log files"
+    fi
+
+    # config files if any
+    if [ -d /etc/upvpn ]; then
+        rm -r --interactive=never /etc/upvpn/ || \
+        echo "Failed to remove upvpn configuration files"
+    fi
+}
+
+case "$@" in
+    # apt purge; yum remove
+    "0")
+        remove_log_and_configuration
+        ;;
+esac
+'''

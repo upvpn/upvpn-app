@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<installer-gui-script minSpecVersion="2">
+    <title>upvpn</title>
+    <welcome file="welcome.html" mime-type="text/html"/>
+    <conclusion file="conclusion.html" mime-type="text/html"/>
+    <options customize="never" require-scripts="false" hostArchitectures="x86_64"/>
+    <pkg-ref id="app.upvpn.macos">
+        <bundle-version>
+            <bundle CFBundleShortVersionString="0.1.0" CFBundleVersion="0.1.0" id="app.upvpn.macos" path="upvpn.app"/>
+        </bundle-version>
+    </pkg-ref>
+    <product id="app.upvpn.macos" version="0.1.0"/>
+    <volume-check>
+        <allowed-os-versions>
+            <os-version min="10.11.0"/>
+        </allowed-os-versions>
+    </volume-check>
+    <choices-outline>
+        <line choice="default">
+            <line choice="app.upvpn.macos"/>
+        </line>
+    </choices-outline>
+    <choice id="default" title="upvpn" versStr="0.1.0"/>
+    <choice id="app.upvpn.macos" title="upvpn" visible="false">
+        <pkg-ref id="app.upvpn.macos"/>
+    </choice>
+    <pkg-ref id="app.upvpn.macos" version="0.1.0" onConclusion="none" >#app.upvpn.macos.pkg</pkg-ref>
+    <domains enable_anywhere="false" enable_currentUserHome="false" enable_localSystem="true"/>
+</installer-gui-script>

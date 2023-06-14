@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2023 upvpn LLC, GPL-3.0
+# Copyright (C) 2022 Mullvad VPN AB, GPL-3.0
+
+set -euo pipefail
+
+INSTALL_DIR="/Applications"
+LOG_DIR="/var/log/upvpn"
+UPVPN_DAEMON_PLIST_PATH="/Library/LaunchDaemons/app.upvpn.daemon.plist"
+
+mkdir -p $LOG_DIR
+chmod 755 $LOG_DIR
+
+exec 2>&1 > "${LOG_DIR}/preinstall.log"
+
+stop_daemon_and_ui() {
+    if [[ -f "${UPVPN_DAEMON_PLIST_PATH}" ]]; then
+        # Stop Daemon and UI and copy old log file
+        launchctl unload -w "${UPVPN_DAEMON_PLIST_PATH}" || true
+        pkill -x "upvpn-ui" || echo "Failed to stop upvpn-ui" || true
+        cp "${LOG_DIR}/upvpn-daemon.log" "$LOG_DIR/previous-upvpn-daemon.log" \
+            || echo "Failed to copy old upvpn-daemon log"
+
+    else
+        echo "No previous installation found"
+    fi
+}
+
+create_exclusion_group() {
+    # Create a group for upvpn-exclusion
+    UPVPN_EXCLUSION_GROUP="upvpn-exclusion"
+    if ! dscl . -list /Groups | grep $UPVPN_EXCLUSION_GROUP; then
+    dscl . -create /Groups/$UPVPN_EXCLUSION_GROUP \
+        || echo "FAILED TO CREATE $UPVPN_EXCLUSION_GROUP GROUP"
+    fi
+    if ! dscl . -read /Groups/$UPVPN_EXCLUSION_GROUP | grep PrimaryGroupID; then
+    UPVPN_EXCLUSION_GID=$(( RANDOM ))
+    dscl . -append /Groups/$UPVPN_EXCLUSION_GROUP PrimaryGroupID $UPVPN_EXCLUSION_GID \
+        && echo "Created upvpn-exclusion group with gid $UPVPN_EXCLUSION_GID" \
+        || echo "FAILED TO CREATE 'upvpn-exclusion' group"
+    fi
+}
+
+main() {
+    create_exclusion_group
+    stop_daemon_and_ui
+}
+
+main "$@"

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=upvpn
+Comment=A Modern Serverless VPN
+Exec=/opt/upvpn/upvpn
+Terminal=false
+Type=Application
+Categories=Network;Security;
+Icon=upvpn
+SingleMainWindow=true

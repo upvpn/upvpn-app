@@ -1,0 +1,8 @@
+# Development configuration
+
+socket_path="../../data/upvpn.sock"
+grpc_api_host_port="grpc://upvpn.dev:44444"
+rest_api_host_port="https://upvpn.dev:4444"
+log_dir="../../data/log"
+config_dir="../../data"
+license_file_path="../../upvpn-oss-licenses.html"

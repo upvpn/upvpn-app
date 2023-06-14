@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Stop daemon and UI
+
+if which systemctl &> /dev/null; then
+    if systemctl status upvpn-daemon &> /dev/null; then
+        systemctl stop upvpn-daemon.service
+        systemctl disable upvpn-daemon.service
+        cp /var/log/upvpn/upvpn-daemon.log /var/log/upvpn/previous-upvpn-daemon.log \
+            || echo "Failed to copy previous daemon log file"
+    fi
+fi
+
+pkill -x "upvpn" || true
+
+#DEBHELPER#

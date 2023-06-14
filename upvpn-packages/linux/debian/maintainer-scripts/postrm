@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#DEBHELPER#
+
+# remove log and configuration files
+remove_log_and_configuration() {
+    # all log files
+    if [ -d /var/log/upvpn ]; then
+        rm -r --interactive=never /var/log/upvpn/ || \
+        echo "Failed to remove upvpn log files"
+    fi
+
+    # config files if any
+    if [ -d /etc/upvpn ]; then
+        rm -r --interactive=never /etc/upvpn/ || \
+        echo "Failed to remove upvpn configuration files"
+    fi
+}
+
+case "$@" in
+    # apt purge; yum remove
+    "purge"|"0")
+        remove_log_and_configuration
+        ;;
+esac

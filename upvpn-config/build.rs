@@ -1,0 +1,24 @@
+use std::error::Error;
+
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+struct Package {
+    version: String,
+}
+
+#[derive(Deserialize)]
+struct CargoToml {
+    package: Package,
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let path = "../upvpn-packages/Cargo.toml";
+    let cargo_toml: CargoToml = toml::from_str(&std::fs::read_to_string(path)?)?;
+    println!(
+        "cargo:rustc-env=UPVPN_VERSION={}",
+        cargo_toml.package.version
+    );
+
+    Ok(())
+}

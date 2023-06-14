@@ -1,0 +1,289 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+PWD = {script = ["pwd"]}
+REPO_ROOT = "${PWD}"
+BUILDER_TAG = {script = ["cat upvpn-packages/tag.txt"] }
+UPSTREAM_REPO = "git@github.com:upvpn/mullvadvpn-app.git"
+UPSTREAM_REV = "2023.3.upvpn"
+UPSTREAM_REPO_PATH = "${PWD}/.upvpn/mullvadvpn-app"
+RUSTUP_HOST = { script = ["rustup show | rg host | awk '{print $3}'"] }
+APP_VERSION = { script = ["grep version upvpn-packages/Cargo.toml | cut -d '\"' -f2"]}
+TARGET = { script = ["echo ${RUSTUP_HOST}"], condition = { env_not_set = ["TARGET"] } }
+STRIP = {script = ["([ ${TARGET} = \"aarch64-unknown-linux-gnu\" ] && echo \"--no-strip\") || echo \"--strip\""]}
+
+
+[tasks.release-build]
+workspace = false
+command = "cargo"
+args = ["build", "--release", "--target", "${TARGET}"]
+
+[tasks.deb]
+workspace = false
+command = "cargo"
+args = ["deb", "-p", "upvpn-packages", "--target", "${TARGET}", "${STRIP}", "${@}"]
+dependencies = ["oss", "ui", "wglib"]
+
+[tasks.rpm]
+workspace = false
+command = "cargo"
+args = ["generate-rpm", "-p", "upvpn-packages", "--target", "${TARGET}", "${@}"]
+dependencies = ["oss", "ui", "wglib", "release-build", "strip"]
+
+[tasks.rpm-no-build]
+workspace = false
+command = "cargo"
+args = ["generate-rpm", "-p", "upvpn-packages", "--target", "${TARGET}", "${@}"]
+dependencies = ["ui", "wglib", "strip"]
+
+[tasks.strip]
+workspace = false
+script = '''
+CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-target}
+
+if [ "${STRIP:-}" = "--strip" ]; then
+    for file in upvpn upvpn-ui upvpn-daemon
+    do
+        output="${CARGO_TARGET_DIR}/${TARGET}/release/${file}"
+        if [ -f "${output}" ]; then
+            strip "${output}"
+        fi
+    done
+fi
+'''
+
+[tasks.pkg]
+workspace = false
+script = '''
+tempdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
+cp -R upvpn-packages/macos ${tempdir}
+cp upvpn-assets/icons/icon.icns ${tempdir}/macos/pkg/root/Applications/upvpn.app/Contents/Resources
+cp upvpn-packages/upvpn-oss-licenses.html ${tempdir}/macos/pkg/root/Applications/upvpn.app/Contents/Resources
+cp target/${TARGET}/release/upvpn ${tempdir}/macos/pkg/root/Applications/upvpn.app/Contents/Resources
+cp target/${TARGET}/release/upvpn-daemon ${tempdir}/macos/pkg/root/Applications/upvpn.app/Contents/Resources
+cp target/${TARGET}/release/upvpn-ui ${tempdir}/macos/pkg/root/Applications/upvpn.app/Contents/MacOS
+rm ${tempdir}/macos/pkg/root/Applications/upvpn.app/Contents/MacOS/.gitkeep
+pushd ${tempdir}/macos
+./build.sh "${APP_VERSION}"
+popd
+mkdir -p target/pkg
+AARCH=$(uname -m)
+cp ${tempdir}/macos/upvpn-${APP_VERSION}.pkg target/pkg/upvpn-${APP_VERSION}-${AARCH}.pkg
+rm -r ${tempdir}
+'''
+dependencies = ["oss", "ui", "wglib", "release-build"]
+
+[tasks.setupupstream]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+mkdir -p ${UPSTREAM_REPO_PATH}
+
+if [ ! -d ${UPSTREAM_REPO_PATH}/.git ]; then
+    git clone ${UPSTREAM_REPO} ${UPSTREAM_REPO_PATH}
+    cd ${UPSTREAM_REPO_PATH} && git submodule update --init && cd -
+fi
+
+cd ${UPSTREAM_REPO_PATH}
+git fetch --all --tags
+git checkout ${UPSTREAM_REV}
+'''
+
+[tasks.wglib]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+cd ${UPSTREAM_REPO_PATH}
+./wireguard/build-wireguard-go.sh "${TARGET}"
+cp -r ${UPSTREAM_REPO_PATH}/build ${REPO_ROOT}
+'''
+dependencies = ["cargo-config", "setupupstream"]
+
+[tasks.windows]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+output_dir=${REPO_ROOT}/windows/${TARGET}
+mkdir -p ${output_dir}
+cd ${UPSTREAM_REPO_PATH}
+IS_RELEASE=true CPP_BUILD_MODES=Release ./build-windows-modules.sh
+cp -r ${UPSTREAM_REPO_PATH}/windows/winfw/bin/x64-Release/ ${output_dir}
+'''
+dependencies = ["oss", "cargo-config", "setupupstream", "wglib", "ui", "release-build"]
+
+[tasks.only-msi]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+cd upvpn-packages/windows
+candle -ext WixUtilExtension -dAppVersion=${APP_VERSION} -out upvpn.wixobj -arch x64 upvpn.wsx
+light -ext WixUtilExtension -dAppVersion=${APP_VERSION} -out upvpn-x64-${APP_VERSION}.msi upvpn.wixobj
+'''
+
+[tasks.msi]
+workspace = false
+dependencies = ["windows", "only-msi"]
+
+[tasks.cargo-config]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+root_dir=$(pwd)
+mkdir -p ${root_dir}/.cargo
+cp ${root_dir}/upvpn-packages/cargo-config.toml ${root_dir}/.cargo/config
+sd __REPO_ROOT__ "${root_dir}" ${root_dir}/.cargo/config
+'''
+
+[tasks.ui]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+cd upvpn-ui
+npm install
+npm run build
+'''
+
+[tasks.volumes-for-build]
+workspace = false
+script = '''
+docker volume rm upvpn-app-builder || true
+docker volume create upvpn-app-builder-cargo-git
+docker volume create upvpn-app-builder-cargo-registry
+docker volume create upvpn-app-builder-cargo-target
+docker volume create upvpn-app-builder-go
+docker volume create upvpn-app-builder
+'''
+
+[tasks.clear-and-copy-source]
+workspace = false
+script = '''
+
+docker run --rm -v ${PWD}:/source \
+    -v upvpn-app-builder:/build \
+    ghcr.io/upvpn/upvpn-app-builder:${BUILDER_TAG} \
+        cp -r \
+        /source/upvpn-assets \
+        /source/upvpn-cli \
+        /source/upvpn-config \
+        /source/upvpn-controller \
+        /source/upvpn-daemon \
+        /source/upvpn-entity \
+        /source/upvpn-migration \
+        /source/upvpn-packages \
+        /source/upvpn-server \
+        /source/upvpn-types \
+        /source/upvpn-ui \
+        /source/Cargo.toml \
+        /source/Cargo.lock \
+        /source/about.toml \
+        /source/Makefile.toml \
+        /source/.dockerignore \
+        /build/
+
+docker run --rm  \
+    -v upvpn-app-builder:/build \
+    ghcr.io/upvpn/upvpn-app-builder:${BUILDER_TAG} chown -R root:root .
+'''
+
+[tasks.builder-shell]
+workspace = false
+command = "docker"
+args = [
+    "run",
+    "--rm",
+    "-it",
+    "-v", "upvpn-app-builder-cargo-git:/root/.cargo/git",
+    "-v", "upvpn-app-builder-cargo-registry:/root/.cargo/registry",
+    "-v", "upvpn-app-builder-cargo-target:/root/.cargo/target",
+    "-v", "upvpn-app-builder-go:/root/go",
+    "-v", "upvpn-app-builder:/build",
+    # To clone github repo using ssh
+    "-v", "${HOME}/.ssh:/root/.ssh",
+    "-e", "CARGO_NET_GIT_FETCH_WITH_CLI=true",
+    "-e", "TARGET=${TARGET}",
+    # tag created by builder task
+    "ghcr.io/upvpn/upvpn-app-builder:${BUILDER_TAG}",
+    "bash"
+]
+dependencies = ["volumes-for-build", "clear-and-copy-source"]
+
+[tasks.linux-packages]
+workspace = false
+# only need to build once for packaging both
+dependencies = ["deb", "rpm-no-build"]
+
+[tasks.build-in-container]
+workspace = false
+command = "docker"
+args = [
+    "run",
+    "--rm",
+    "-it",
+    "-v", "upvpn-app-builder-cargo-git:/root/.cargo/git",
+    "-v", "upvpn-app-builder-cargo-registry:/root/.cargo/registry",
+    "-v", "upvpn-app-builder-cargo-target:/root/.cargo/target",
+    "-v", "upvpn-app-builder-go:/root/go",
+    "-v", "upvpn-app-builder:/build",
+    # To clone github repo using ssh
+    "-v", "${HOME}/.ssh:/root/.ssh",
+    "-e", "CARGO_NET_GIT_FETCH_WITH_CLI=true",
+    "-e", "TARGET=${TARGET}",
+    # tag created by builder task
+    "ghcr.io/upvpn/upvpn-app-builder:${BUILDER_TAG}",
+    "cargo",
+    "make",
+    "-e", "TARGET=${TARGET}",
+    "linux-packages",
+]
+dependencies = ["volumes-for-build", "clear-and-copy-source"]
+
+[tasks.output-dir]
+workspace = false
+script = '''
+echo "TARGET: ${TARGET}"
+mkdir -p ${PWD}/dist/${TARGET}
+'''
+
+[tasks.linux]
+workspace = false
+command = "docker"
+args = [
+    "run",
+    "--rm",
+    "-it",
+    "-v", "upvpn-app-builder-cargo-target:/root/.cargo/target",
+    "-v", "${PWD}/dist:/dist",
+    # tag created by builder task
+    "ghcr.io/upvpn/upvpn-app-builder:${BUILDER_TAG}",
+    "cp", "-r",
+    "/root/.cargo/target/${TARGET}/debian", "/root/.cargo/target/${TARGET}/generate-rpm",
+    "/dist/${TARGET}",
+]
+dependencies = ["output-dir", "build-in-container"]
+
+[tasks.icon]
+workspace = false
+script = '''
+cd upvpn-ui
+cargo tauri icon -o ../upvpn-assets/icons  ../upvpn-assets/app-icon.png
+'''
+
+[tasks.oss]
+workspace = false
+script = '''
+cargo about generate upvpn-packages/upvpn-oss-licenses-rust.hbs > upvpn-packages/upvpn-oss-licenses-rust.html
+sd "(talpid-[\w-]+|tunnel-obfuscation) (\d+.\d+.\d+)" "$1 $2   Copyright (C) Mullvad VPN AB, GPL-3.0" upvpn-packages/upvpn-oss-licenses-rust.html
+sd "https://crates.io/crates//(talpid-\w+|tunnel-obfuscation)" "https://github.com/mullvad/mullvadvpn-app/tree/main/$1" upvpn-packages/upvpn-oss-licenses-rust.html
+
+npx --yes generate-license-file --overwrite --ci --input upvpn-ui/package.json --output upvpn-packages/third-party-licenses.txt
+
+cat upvpn-packages/upvpn-oss-licenses-header.hbs > upvpn-packages/upvpn-oss-licenses.html
+cat upvpn-packages/upvpn-oss-licenses-rust.html >> upvpn-packages/upvpn-oss-licenses.html
+cat upvpn-packages/third-party-licenses.txt >> upvpn-packages/upvpn-oss-licenses.html
+cat upvpn-packages/upvpn-oss-licenses-footer.hbs >> upvpn-packages/upvpn-oss-licenses.html
+'''
