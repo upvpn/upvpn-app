@@ -100,7 +100,7 @@ cp -r ${UPSTREAM_REPO_PATH}/build ${REPO_ROOT}
 '''
 dependencies = ["cargo-config", "setupupstream"]
 
-[tasks.windows]
+[tasks.winfw]
 workspace = false
 script_runner = "sh"
 script = '''
@@ -111,7 +111,10 @@ cd ${UPSTREAM_REPO_PATH}
 IS_RELEASE=true CPP_BUILD_MODES=Release ./build-windows-modules.sh
 cp -r ${UPSTREAM_REPO_PATH}/windows/winfw/bin/x64-Release/ ${output_dir}
 '''
-dependencies = ["oss", "cargo-config", "setupupstream", "wglib", "ui", "release-build"]
+
+[tasks.windows]
+workspace = false
+dependencies = ["oss", "cargo-config", "setupupstream", "wglib", "ui", "winfw", "release-build"]
 
 [tasks.only-msi]
 workspace = false

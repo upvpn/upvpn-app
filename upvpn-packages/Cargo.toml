@@ -1,6 +1,6 @@
 [package]
 name = "upvpn-packages"
-version = "0.0.1-beta" # actual version
+version = "0.0.1" # actual version
 edition = "2021"
 publish = false
 license = "GPL-3.0"
