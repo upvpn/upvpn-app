@@ -1,7 +1,8 @@
+#[cfg(unix)]
+use std::str::FromStr;
 use std::{
     net::{IpAddr, Ipv4Addr},
     path::{Path, PathBuf},
-    str::FromStr,
 };
 
 use figment::{
@@ -141,7 +142,11 @@ impl Config {
         )
         .unwrap();
         #[cfg(target_os = "windows")]
-        return CONFIG_DIR.get().unwrap().join("upvpn-oss-licenses.html");
+        return PathBuf::from(std::env::var("PROGRAMFILES").unwrap_or(
+            std::env::var("ProgramFiles").expect("missing PROGRAMFILES and ProgramFiles env var"),
+        ))
+        .join("upvpn")
+        .join("upvpn-oss-licenses.html");
     }
 
     pub fn icon_path(&self) -> &'static str {
