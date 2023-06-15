@@ -10,9 +10,9 @@ mod state;
 
 use commands::auth::{is_signed_in, sign_in, sign_out};
 use commands::desktop_notification::send_desktop_notification;
+use commands::file_ops::{open_license, open_log_file};
 use commands::location::{locations, recent_locations};
 use commands::notification::{ack_notification, notifications};
-use commands::open_license::open_license;
 use commands::version::{current_app_version, update_available};
 use commands::vpn_session::{connect, disconnect, get_vpn_status};
 use log::LevelFilter;
@@ -59,6 +59,7 @@ fn main() {
             update_available,
             send_desktop_notification,
             open_license,
+            open_log_file,
         ])
         .plugin(
             tauri_plugin_log::Builder::default()

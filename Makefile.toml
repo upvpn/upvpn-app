@@ -283,6 +283,7 @@ cargo about generate upvpn-packages/upvpn-oss-licenses-rust.hbs > upvpn-packages
 sd "(talpid-[\w-]+|tunnel-obfuscation) (\d+.\d+.\d+)" "$1 $2   Copyright (C) Mullvad VPN AB, GPL-3.0" upvpn-packages/upvpn-oss-licenses-rust.html
 sd "https://crates.io/crates//(talpid-\w+|tunnel-obfuscation)" "https://github.com/mullvad/mullvadvpn-app/tree/main/$1" upvpn-packages/upvpn-oss-licenses-rust.html
 
+cd upvpn-ui && npm i && cd ..
 npx --yes generate-license-file --overwrite --ci --input upvpn-ui/package.json --output upvpn-packages/third-party-licenses.txt
 
 cat upvpn-packages/upvpn-oss-licenses-header.hbs > upvpn-packages/upvpn-oss-licenses.html

@@ -1,3 +1,5 @@
+#[cfg(unix)]
+use std::str::FromStr;
 use std::{
     net::{IpAddr, Ipv4Addr},
     path::{Path, PathBuf},
@@ -116,6 +118,10 @@ impl Config {
         &self.daemon_log_filename
     }
 
+    pub fn daemon_log_file_full_path(&self) -> PathBuf {
+        self.log_dir().join(self.daemon_log_filename())
+    }
+
     pub fn socket_path(&self) -> &Path {
         return &self.socket_path;
     }
@@ -124,27 +130,23 @@ impl Config {
         env!("UPVPN_VERSION")
     }
 
-    pub fn license_file_path(&self) -> String {
+    pub fn license_file_path(&self) -> PathBuf {
         if self.license_file_path.is_some() {
-            return self
-                .license_file_path
-                .clone()
-                .unwrap()
-                .to_str()
-                .unwrap()
-                .into();
+            return self.license_file_path.clone().unwrap();
         }
         #[cfg(target_os = "linux")]
-        return "/opt/upvpn/upvpn-oss-licenses.html".into();
+        return PathBuf::from_str("/opt/upvpn/upvpn-oss-licenses.html").unwrap();
         #[cfg(target_os = "macos")]
-        return "/Applications/upvpn.app/Contents/Resources/upvpn-oss-licenses.html".into();
+        return PathBuf::from_str(
+            "/Applications/upvpn.app/Contents/Resources/upvpn-oss-licenses.html",
+        )
+        .unwrap();
         #[cfg(target_os = "windows")]
-        return CONFIG_DIR
-            .get()
-            .unwrap()
-            .join("upvpn-oss-licenses.html")
-            .to_string_lossy()
-            .into();
+        return PathBuf::from(std::env::var("PROGRAMFILES").unwrap_or(
+            std::env::var("ProgramFiles").expect("missing PROGRAMFILES and ProgramFiles env var"),
+        ))
+        .join("upvpn")
+        .join("upvpn-oss-licenses.html");
     }
 
     pub fn icon_path(&self) -> &'static str {

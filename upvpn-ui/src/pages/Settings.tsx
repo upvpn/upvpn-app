@@ -17,7 +17,7 @@ import { MdOpenInNew } from "react-icons/md";
 
 type Props = {};
 
-function Settings({ }: Props) {
+function Settings({}: Props) {
   const [signingOut, setSigningOut] = useState(false);
   const [appVersion, setAppVersion] = useState("");
   const [updateAvailable, setUpdateAvailable] = useState(false);
@@ -55,7 +55,7 @@ function Settings({ }: Props) {
       try {
         const currentVersion = await invoke<string>("current_app_version");
         setAppVersion(currentVersion);
-      } catch (e) { }
+      } catch (e) {}
     };
 
     fetchVersion();
@@ -81,6 +81,13 @@ function Settings({ }: Props) {
     showLicense();
   };
 
+  const showLogFile = () => {
+    const showLicense = async () => {
+      await invoke("open_log_file");
+    };
+    showLicense();
+  };
+
   return (
     <Layout activeSettings={true}>
       <div className="flex flex-col h-full">
@@ -98,13 +105,21 @@ function Settings({ }: Props) {
                 <MdOpenInNew size="1.5em" />
               </a>
             </li>
-            <li onClick={showOSSLicenses}>
+            <li onClick={showLogFile}>
               <div className="flex flex-row justify-between">
-                <span>Show Open Source Licenses</span>
+                <span>View Logs</span>
 
                 <MdOpenInNew size="1.5em" />
               </div>
             </li>
+            <li onClick={showOSSLicenses}>
+              <div className="flex flex-row justify-between">
+                <span>View Open Source Licenses</span>
+
+                <MdOpenInNew size="1.5em" />
+              </div>
+            </li>
+
             <li className={`${inProgress || signingOut ? "disabled" : ""}`}>
               <div onClick={onClick}>
                 <div>{signingOut ? <Spinner /> : <span>Sign Out</span>}</div>
@@ -115,8 +130,9 @@ function Settings({ }: Props) {
         <div className="flex-1 mb-5">
           <div className="flex flex-col gap-2 h-full justify-end">
             <a
-              className={`self-center btn btn-ghost btn-wide gap-2 ${updateAvailable ? "" : "hidden"
-                }`}
+              className={`self-center btn btn-ghost btn-wide gap-2 ${
+                updateAvailable ? "" : "hidden"
+              }`}
               href={`${import.meta.env.UPVPN_URL}/download`}
               target="_blank"
             >
@@ -124,8 +140,9 @@ function Settings({ }: Props) {
               <MdOpenInNew size="1.5em" />
             </a>
             <div
-              className={`self-center badge badge-lg text-info ${appVersion.length > 0 ? "" : "hidden"
-                }`}
+              className={`self-center badge badge-lg text-info ${
+                appVersion.length > 0 ? "" : "hidden"
+              }`}
             >
               Version: {appVersion}
             </div>
