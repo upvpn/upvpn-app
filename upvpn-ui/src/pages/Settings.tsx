@@ -114,7 +114,7 @@ function Settings({}: Props) {
             </li>
             <li onClick={showOSSLicenses}>
               <div className="flex flex-row justify-between">
-                <span>Show Open Source Licenses</span>
+                <span>View Open Source Licenses</span>
 
                 <MdOpenInNew size="1.5em" />
               </div>
