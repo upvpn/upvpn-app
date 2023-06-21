@@ -68,6 +68,7 @@ popd
 mkdir -p target/pkg
 AARCH=$(uname -m)
 cp ${tempdir}/macos/upvpn-${APP_VERSION}.pkg target/pkg/upvpn-${APP_VERSION}-${AARCH}.pkg
+echo "Output: target/pkg/upvpn-${APP_VERSION}-${AARCH}.pkg"
 rm -r ${tempdir}
 '''
 dependencies = ["oss", "ui", "wglib", "release-build"]

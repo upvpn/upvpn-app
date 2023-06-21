@@ -75,6 +75,15 @@ cargo make rpm
 cargo make pkg
 ```
 
+To codesign for distribution provide following environment variables:
+
+```
+APPLE_TEAM_ID=...
+APPLICATION_SIGNING_IDENTITY=...
+INSTALLER_SIGNING_IDENTITY=...
+cargo make pkg
+```
+
 ## Build installer for Windows
 
 ```
