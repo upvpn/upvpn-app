@@ -6,6 +6,9 @@ VERSION=${1:-latest}
 
 mkdir -p ./packages
 
+sd "APP_VERSION" "${VERSION}" ./pkg/root/Applications/upvpn.app/Contents/Info.plist
+sd "APP_VERSION" "${VERSION}" ./pkg/Distribution
+
 pkgbuild  \
     --install-location /Applications \
     --identifier app.upvpn.macos \
