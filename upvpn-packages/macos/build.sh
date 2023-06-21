@@ -7,16 +7,16 @@ VERSION=${1:-latest}
 mkdir -p ./packages
 
 declare -a BINARIES=(
-    "pkg/root/Applications/upvpn.app/Contents/Resources/upvpn",
-    "pkg/root/Applications/upvpn.app/Contents/Resources/upvpn-daemon",
-    "pkg/root/Applications/upvpn.app/Contents/MacOS/upvpn-ui",
+    "./pkg/root/Applications/upvpn.app/Contents/Resources/upvpn"
+    "./pkg/root/Applications/upvpn.app/Contents/Resources/upvpn-daemon"
+    "./pkg/root/Applications/upvpn.app/Contents/MacOS/upvpn-ui"
 )
 
 sd "APP_VERSION" "${VERSION}" ./pkg/root/Applications/upvpn.app/Contents/Info.plist
 sd "APP_VERSION" "${VERSION}" ./pkg/Distribution
 
 
-if [ ! -z "${APPLICATION_SIGNING_IDENTITY}" && ! -z "${APPLE_TEAM_ID}" ]; then
+if [[ ! -z "${APPLICATION_SIGNING_IDENTITY:-}" ]] && [[ ! -z "${APPLE_TEAM_ID:-}" ]]; then
     sd "APPLE_TEAM_ID" "${APPLE_TEAM_ID}" app.entitlements
     for binary in "${BINARIES[@]}"
     do
@@ -24,7 +24,7 @@ if [ ! -z "${APPLICATION_SIGNING_IDENTITY}" && ! -z "${APPLE_TEAM_ID}" ]; then
         codesign \
             --entitlements app.entitlements \
             --options runtime \
-            --identity "${APPLICATION_SIGNING_IDENTITY}" \
+            --sign "${APPLICATION_SIGNING_IDENTITY}" \
             "${binary}"
     done
 fi
@@ -43,7 +43,7 @@ productbuild \
     --package-path ./packages \
     "upvpn-${VERSION}-unsigned.pkg"
 
-if [ ! -z "${INSTALLER_SIGNING_IDENTITY}" ]; then
+if [ ! -z "${INSTALLER_SIGNING_IDENTITY:-}" ]; then
     echo "Signing pkg"
     productsign \
         --sign "${INSTALLER_SIGNING_IDENTITY}" \
