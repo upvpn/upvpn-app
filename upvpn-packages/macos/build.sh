@@ -22,7 +22,6 @@ if [[ ! -z "${APPLICATION_SIGNING_IDENTITY:-}" ]] && [[ ! -z "${APPLE_TEAM_ID:-}
     do
         echo "Signing: ${binary}"
         codesign \
-            --entitlements app.entitlements \
             --options runtime \
             --sign "${APPLICATION_SIGNING_IDENTITY}" \
             "${binary}"
