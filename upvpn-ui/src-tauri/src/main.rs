@@ -37,7 +37,13 @@ fn main() {
         use tauri::Submenu;
         let menu = Menu::new().add_submenu(Submenu::new(
             "upvpn",
-            Menu::new().add_native_item(MenuItem::CloseWindow),
+            Menu::new()
+                .add_native_item(MenuItem::Copy)
+                .add_native_item(MenuItem::Paste)
+                .add_native_item(MenuItem::SelectAll)
+                .add_native_item(MenuItem::Cut)
+                .add_native_item(MenuItem::Separator)
+                .add_native_item(MenuItem::CloseWindow),
         ));
         builder = builder.menu(menu);
     }
