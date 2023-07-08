@@ -97,6 +97,9 @@ const Locations = (props: Props) => {
             </button>
             <input
               type="text"
+              autoCorrect="off"
+              autoCapitalize="none"
+              autoFocus={true}
               placeholder="Search location"
               className="input input-bordered focus:ring-1 focus:outline-none hover:ring-1 w-full font-semibold"
               onChange={(e) => setSearch(e.target.value)}

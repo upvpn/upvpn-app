@@ -64,27 +64,37 @@ const SignIn = () => {
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} >
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="email" className="label">
                   <span className="label-text">Email</span>
                 </label>
 
                 <input
+                  name="email"
                   type="email"
+                  autoCorrect="off"
+                  autoCapitalize="none"
+                  autoComplete="email"
                   onChange={(e) => setEmail(e.target.value)}
                   className="input input-bordered focus:ring-1 focus:outline-none hover:ring-1"
+                  disabled={checking}
                   required
+                  autoFocus={true}
                 />
               </div>
               <div className="form-control">
-                <label className="label">
+                <label htmlFor="password" className="label">
                   <span className="label-text">Password</span>
                 </label>
                 <input
+                  name="password"
                   type="password"
+                  id="current-password"
+                  autoComplete="current-password"
                   onChange={(e) => setPassword(e.target.value)}
                   className="input input-bordered focus:ring-1 focus:outline-none hover:ring-1"
+                  disabled={checking}
                   required
                 />
                 <label className="label">
@@ -98,7 +108,7 @@ const SignIn = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">
+                <button className="btn btn-primary" disabled={checking} >
                   {checking ? <Spinner className="w-12 h-12" /> : <>Sign In</>}
                 </button>
               </div>
