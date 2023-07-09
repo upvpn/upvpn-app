@@ -77,11 +77,12 @@ impl DeviceStorage {
         Ok(device_details)
     }
 
-    pub async fn uninitialize(&self, reason: &str) -> Result<(), DbErr> {
-        tracing::info!("uninitializing device: {reason}");
+    pub async fn reinitialize(&self, reason: &str) -> Result<(), DbErr> {
+        tracing::info!("reinitializing device: {reason}");
         let _ = upvpn_entity::device::Entity::delete_many()
             .exec(&self.db)
             .await?;
+        let _ = self.init().await;
         Ok(())
     }
 

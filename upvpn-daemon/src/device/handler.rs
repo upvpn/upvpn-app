@@ -208,8 +208,8 @@ impl DeviceService {
 
         server_api.sign_out().await?;
 
-        // uninitialize device
-        self.device_storage.uninitialize("sign out").await?;
+        // reinitialize device
+        self.device_storage.reinitialize("sign out").await?;
         // remove from DB and memory
         self.token_storage.remove_all().await?;
         self.token = None;
