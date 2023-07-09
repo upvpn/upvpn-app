@@ -17,7 +17,6 @@ sd "APP_VERSION" "${VERSION}" ./pkg/Distribution
 
 
 if [[ ! -z "${APPLICATION_SIGNING_IDENTITY:-}" ]] && [[ ! -z "${APPLE_TEAM_ID:-}" ]]; then
-    sd "APPLE_TEAM_ID" "${APPLE_TEAM_ID}" app.entitlements
     for binary in "${BINARIES[@]}"
     do
         echo "Signing: ${binary}"
