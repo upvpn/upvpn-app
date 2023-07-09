@@ -50,21 +50,41 @@ impl Reclaimer {
     }
 
     async fn reclaim(&mut self) {
-        let device_unique_id = self.device_storage.get_device_unique_id().await.unwrap();
+        // Delay to avoid race when the session was successfully ended just now.
+        time::sleep(Duration::from_millis(300)).await;
         if let Ok(sessions) = self.session_storage.to_reclaim().await {
-            // Delay to avoid race when the session was successfully ended just now.
-            time::sleep(Duration::from_millis(300)).await;
-            for session in sessions {
-                let end_session = EndSession {
-                    request_id: session.request_id,
-                    device_unique_id,
-                    vpn_session_uuid: session.vpn_session_id,
-                    reason: "reclaimed".into(),
-                };
+            if let Ok(Some(device_details)) = self.device_storage.get_device().await {
+                for session in sessions {
+                    let end_session = EndSession {
+                        request_id: session.request_id,
+                        device_unique_id: device_details.unique_id,
+                        vpn_session_uuid: session.vpn_session_id,
+                        reason: "reclaimed".into(),
+                    };
 
-                if let Ok(_) = self.vpn_session_handler.end_session(end_session).await {
-                    tracing::info!("Reclaimed: {session}");
-                    let _ = self.session_storage.delete(session.request_id).await;
+                    match self.vpn_session_handler.end_session(end_session).await {
+                        Ok(_) => {
+                            tracing::info!("Reclaimed: {session}");
+                            let _ = self.session_storage.delete(session.request_id).await;
+                        }
+                        Err(e) => {
+                            match e {
+                            crate::vpn_session::handler::VpnSessionError::VpnSessionServiceDown
+                            | crate::vpn_session::handler::VpnSessionError::Connection(_) => {
+                                // no-op reclaimer would re-run again
+                            }
+                            crate::vpn_session::handler::VpnSessionError::Server(status) => {
+                                // did the best we can, delete it from local storage
+                                // this could happen when device is signed out in middle of reclaiming
+                                // signing out ends all sessions on server so its good to delete locally.
+                                tracing::info!(
+                                    "Did best to reclaim session: {session}; server status: {status}"
+                                );
+                                let _ = self.session_storage.delete(session.request_id).await;
+                            }
+                        }
+                        }
+                    }
                 }
             }
         };

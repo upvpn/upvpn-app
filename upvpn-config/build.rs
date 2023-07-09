@@ -14,6 +14,7 @@ struct CargoToml {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let path = "../upvpn-packages/Cargo.toml";
+    println!("cargo:rerun-if-changed={path}");
     let cargo_toml: CargoToml = toml::from_str(&std::fs::read_to_string(path)?)?;
     println!(
         "cargo:rustc-env=UPVPN_VERSION={}",
