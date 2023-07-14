@@ -4,11 +4,12 @@
     </a>
     <h3 align="center">upvpn</h3>
     <h4 align="center">A Modern Serverless VPN</h4>
+    <img src="upvpn-assets/cli.gif" />
 </div>
 
 # upvpn
 
-upvpn (pronounced Up VPN) lets you connect to the internet from a location of your choice.
+upvpn (pronounced Up VPN) app is WireGuard VPN client for Linux, macOS, and Windows.
 For more information please visit https://upvpn.app
 
 upvpn app is made up of UI, CLI and background Daemon.
