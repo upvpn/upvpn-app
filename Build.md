@@ -90,6 +90,12 @@ cargo make pkg
 cargo make msi
 ```
 
+To codesign for distribution:
+
+```
+SIGN=true cargo make msi
+```
+
 ## Building for Production for Linux
 
 ### Build the Builder

@@ -117,6 +117,20 @@ cp -r ${UPSTREAM_REPO_PATH}/windows/winfw/bin/x64-Release/ ${output_dir}
 workspace = false
 dependencies = ["oss", "cargo-config", "setupupstream", "wglib", "ui", "winfw", "release-build"]
 
+[tasks.windows-sign]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+set -eu
+./upvpn-packages/windows/sign.sh \
+    target/${TARGET}/release/upvpn.exe \
+    target/${TARGET}/release/upvpn-ui.exe \
+    target/${TARGET}/release/upvpn-daemon.exe \
+    build/lib/${TARGET}/libwg.dll \
+    windows/${TARGET}/X64-Release/winfw.dll
+'''
+
 [tasks.only-msi]
 workspace = false
 script_runner = "sh"
@@ -127,9 +141,18 @@ candle -ext WixUtilExtension -dAppVersion=${APP_VERSION} -out upvpn.wixobj -arch
 light -ext WixUtilExtension -dAppVersion=${APP_VERSION} -out upvpn-x64-${APP_VERSION}.msi upvpn.wixobj
 '''
 
+[tasks.sign-msi]
+workspace = false
+script_runner = "sh"
+script = '''
+#!/usr/bin/env bash
+set -eu
+./upvpn-packages/windows/sign.sh upvpn-packages/windows/upvpn-x64-${APP_VERSION}.msi
+'''
+
 [tasks.msi]
 workspace = false
-dependencies = ["windows", "only-msi"]
+dependencies = ["windows", "windows-sign", "only-msi", "sign-msi"]
 
 [tasks.cargo-config]
 workspace = false
@@ -279,7 +302,10 @@ cargo tauri icon -o ../upvpn-assets/icons  ../upvpn-assets/app-icon.png
 
 [tasks.oss]
 workspace = false
+script_runner = "sh"
 script = '''
+#!/usr/bin/env bash
+set -eu
 cargo about generate upvpn-packages/upvpn-oss-licenses-rust.hbs > upvpn-packages/upvpn-oss-licenses-rust.html
 sd "(talpid-[\w-]+|tunnel-obfuscation) (\d+.\d+.\d+)" '$1 $2   Copyright (C) Mullvad VPN AB, GPL-3.0' upvpn-packages/upvpn-oss-licenses-rust.html
 sd "https://crates.io/crates//(talpid-\w+|tunnel-obfuscation)" 'https://github.com/mullvad/mullvadvpn-app/tree/main/$1' upvpn-packages/upvpn-oss-licenses-rust.html
