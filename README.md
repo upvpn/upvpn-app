@@ -9,10 +9,10 @@
 
 # upvpn
 
-upvpn (pronounced Up VPN) app is WireGuard VPN client for Linux, macOS, and Windows.
+upvpn (pronounced Up VPN) app is WireGuard VPN client for Linux, macOS, Windows, and Android (coming soon).
 For more information please visit https://upvpn.app
 
-upvpn app is made up of UI, CLI and background Daemon.
+upvpn desktop app is made up of UI, CLI and background Daemon.
 
 # Serverless
 
@@ -47,9 +47,13 @@ Installer for Linux, macOS, and Windows is available for download on [Github Rel
 
 For networking code, please see [NetworkDependency.md](./NetworkDependency.md)
 
-## Building
+## Building Desktop Apps
 
 Please see [Build.md](./Build.md)
+
+## Building Android App
+
+Coming soon.
 
 # License
 
