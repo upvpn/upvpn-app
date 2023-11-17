@@ -318,3 +318,14 @@ cat upvpn-packages/upvpn-oss-licenses-rust.html >> upvpn-packages/upvpn-oss-lice
 cat upvpn-packages/third-party-licenses.txt >> upvpn-packages/upvpn-oss-licenses.html
 cat upvpn-packages/upvpn-oss-licenses-footer.hbs >> upvpn-packages/upvpn-oss-licenses.html
 '''
+
+
+
+[tasks.android-init]
+workspace = false
+script = '''
+git clone git@github.com:WireGuard/wireguard-tools.git upvpn-android/app/tunnel/wireguard-tools
+cd upvpn-android/app/tunnel/wireguard-tools && git checkout b4f6b4f229d291daf7c35c6f1e7f4841cc6d69bc && cd -
+git clone git@github.com:termux/termux-elf-cleaner.git upvpn-android/app/tunnel/elf-cleaner
+cd upvpn-android/app/tunnel/elf-cleaner && git checkout 7efc05090675ec6161b7def862728086a26c3b1f && cd -
+'''
