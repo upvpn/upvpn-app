@@ -66,7 +66,7 @@ android {
         debug {
             isMinifyEnabled = false
             versionNameSuffix = ".debug"
-            val baseUrl = gradleLocalProperties(rootDir).getProperty("baseUrl")
+            val baseUrl = gradleLocalProperties(rootDir).getProperty("baseUrl", "https://upvpn.dev")
             buildConfigField(
                 "String",
                 "UPVPN_BASE_URL",
