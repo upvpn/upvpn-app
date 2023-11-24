@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::{fmt::Display, time::Duration};
 
 use talpid_core::tunnel_state_machine::{TunnelCommand, TunnelStateMachineHandle};
 use talpid_types::tunnel::TunnelStateTransition;
@@ -310,15 +310,6 @@ impl Daemon {
             .await
             .expect("failed to process tunnel state transition");
 
-        if let Some(reason) = processed.end_session {
-            tracing::info!("ending session after tunnel transition {reason}");
-            if let Err(err) = self.end_session(reason).await {
-                tracing::error!(
-                    "failed to end session on state transition: {transition:?}: {err:?}"
-                );
-            };
-        }
-
         if let Some(session_info) = processed.client_connected {
             tracing::info!("client connected {}", session_info.request_id);
             self.client_connected(session_info).await;
@@ -332,6 +323,15 @@ impl Daemon {
         if let Some(notification) = processed.notification {
             tracing::info!("sending notification after tunnel state transition {notification:?}");
             self.add_notification(notification).await;
+        }
+
+        if let Some(reason) = processed.end_session {
+            tracing::info!("ending session after tunnel transition {reason}");
+            if let Err(err) = self.end_session(reason).await {
+                tracing::error!(
+                    "failed to end session on state transition: {transition:?}: {err:?}"
+                );
+            };
         }
 
         // update vpn status and send device event
@@ -520,6 +520,12 @@ impl Daemon {
     }
 
     async fn end_session(&mut self, end_reason: String) -> Result<(), DaemonError> {
+        // this gets called in two scenarios
+        // 1. When user requests disconnect
+        // 2. Tunnel transitioned to error - which is then asked to disconnect - which then leads to end_session here.
+        // In both cases wait for tunnel to disconnect so that end session API call can succeed
+        tokio::time::sleep(Duration::from_millis(100)).await;
+
         // Get session info and mark for deletion in DB
         let session_info = self.vpn_session_storage.end_session().await?;
 
