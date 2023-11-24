@@ -62,9 +62,7 @@ function LocationSelector({ enabled, waitingToConnect }: Props) {
       onClick={() => {
         navigate("/locations");
       }}
-      className={`btn btn-ghost btn-wide gap-1 ${
-        waitingToConnect ? "loading" : ""
-      }`}
+      className="btn btn-ghost btn-wide gap-1"
     >
       <ReactCountryFlag
         className="rounded"
@@ -75,10 +73,7 @@ function LocationSelector({ enabled, waitingToConnect }: Props) {
         }}
       />
       <div className="ml-2">{displayLocation}</div>
-      <MdKeyboardArrowRight
-        size="1.5em"
-        className={waitingToConnect ? "hidden" : "block"}
-      />
+      <MdKeyboardArrowRight size="1.5em" />
     </button>
   );
 }
