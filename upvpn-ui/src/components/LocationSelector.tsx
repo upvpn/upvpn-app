@@ -59,7 +59,6 @@ function LocationSelector({ enabled, waitingToConnect }: Props) {
 
   return (
     <button
-      disabled={enabled ? false : true}
       onClick={() => {
         navigate("/locations");
       }}
