@@ -7585,7 +7585,7 @@ dependencies = [
 
 [[package]]
 name = "upvpn-packages"
-version = "0.0.2"
+version = "0.4.0"
 
 [[package]]
 name = "upvpn-server"
