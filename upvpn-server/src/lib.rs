@@ -58,7 +58,7 @@ async fn channel_with_auth<P: TokenProvider>(
 
 fn backoff() -> backoff::ExponentialBackoff {
     backoff::ExponentialBackoffBuilder::new()
-        .with_max_elapsed_time(Some(Duration::from_secs(10)))
+        .with_max_elapsed_time(Some(Duration::from_secs(9)))
         .build()
 }
 
