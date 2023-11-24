@@ -132,7 +132,7 @@ function Home({}: Props) {
         return {
           displayShield: <BsShieldSlash size="4em" />,
           vpnStatusMessage: (
-            <div className="badge badge-outline badge-lg">{vpnStatus.type}</div>
+            <div className="badge badge-outline badge-lg">Accepted</div>
           ),
           progressBar: (
             <div className="h-8 pt-2">
@@ -152,7 +152,7 @@ function Home({}: Props) {
         return {
           displayShield: <BsShieldSlash size="4em" />,
           vpnStatusMessage: (
-            <div className="badge badge-outline badge-lg">{vpnStatus.type}</div>
+            <div className="badge badge-outline badge-lg">Connecting</div>
           ),
           progressBar: (
             <div className="h-8 pt-2">
@@ -172,7 +172,7 @@ function Home({}: Props) {
         return {
           displayShield: <BsShieldSlash size="4em" />,
           vpnStatusMessage: (
-            <div className="badge badge-outline badge-lg">{vpnStatus.type}</div>
+            <div className="badge badge-outline badge-lg">Server Ready</div>
           ),
           progressBar: (
             <div className="h-8 pt-2">
@@ -192,7 +192,7 @@ function Home({}: Props) {
         return {
           displayShield: <BsShieldSlash size="4em" />,
           vpnStatusMessage: (
-            <div className="badge badge-outline badge-lg">{vpnStatus.type}</div>
+            <div className="badge badge-outline badge-lg">Server Created</div>
           ),
           progressBar: (
             <div className="h-8 pt-2">
@@ -212,7 +212,7 @@ function Home({}: Props) {
         return {
           displayShield: <BsShieldSlash size="4em" />,
           vpnStatusMessage: (
-            <div className="badge badge-outline badge-lg">{vpnStatus.type}</div>
+            <div className="badge badge-outline badge-lg">Server Running</div>
           ),
           progressBar: (
             <div className="h-8 pt-2">
@@ -253,7 +253,7 @@ function Home({}: Props) {
         return {
           displayShield: <BsShieldSlash size="4em" />,
           vpnStatusMessage: (
-            <div className="badge badge-outline badge-lg">{vpnStatus.type}</div>
+            <div className="badge badge-outline badge-lg">Disconnecting</div>
           ),
           progressBar: (
             <div className="h-8 pt-2">
