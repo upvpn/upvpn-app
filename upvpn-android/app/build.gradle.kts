@@ -21,6 +21,8 @@ android {
     namespace = "app.upvpn.upvpn"
     compileSdk = 34
 
+    ndkVersion = "26.1.10909125"
+
     defaultConfig {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
