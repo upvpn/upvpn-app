@@ -8,7 +8,7 @@ import { invoke } from "@tauri-apps/api";
 import VpnStatusContext, {
   VpnStatusContextInterface,
 } from "../context/VpnStatusContext";
-import { handleError, isVpnInProgress } from "../lib/util";
+import { handleEnterKey, handleError, isVpnInProgress } from "../lib/util";
 import { UiError } from "../lib/types";
 import { toast } from "react-hot-toast";
 import Navbar from "../components/Navbar";
@@ -99,6 +99,7 @@ function Settings({}: Props) {
                 href={`${import.meta.env.UPVPN_URL}/dashboard`}
                 target="_blank"
                 className="flex flex-row justify-between"
+                tabIndex={0}
               >
                 <span>Dashboard</span>
 
@@ -106,14 +107,22 @@ function Settings({}: Props) {
               </a>
             </li>
             <li onClick={showLogFile}>
-              <div className="flex flex-row justify-between">
+              <div
+                className="flex flex-row justify-between"
+                tabIndex={0}
+                onKeyDown={handleEnterKey(showLogFile)}
+              >
                 <span>View Logs</span>
 
                 <MdOpenInNew size="1.5em" />
               </div>
             </li>
             <li onClick={showOSSLicenses}>
-              <div className="flex flex-row justify-between">
+              <div
+                className="flex flex-row justify-between"
+                tabIndex={0}
+                onKeyDown={handleEnterKey(showOSSLicenses)}
+              >
                 <span>View Open Source Licenses</span>
 
                 <MdOpenInNew size="1.5em" />
@@ -121,13 +130,17 @@ function Settings({}: Props) {
             </li>
 
             <li className={`${inProgress || signingOut ? "disabled" : ""}`}>
-              <div onClick={onClick}>
+              <div
+                onClick={onClick}
+                tabIndex={0}
+                onKeyDown={handleEnterKey(onClick)}
+              >
                 <div>{signingOut ? <Spinner /> : <span>Sign Out</span>}</div>
               </div>
             </li>
           </ul>
         </div>
-        <div className="flex-1 mb-5">
+        <div className="flex-1 mb-5 ">
           <div className="flex flex-col gap-2 h-full justify-end">
             <a
               className={`self-center btn btn-ghost btn-wide gap-2 ${
@@ -143,6 +156,7 @@ function Settings({}: Props) {
               className={`self-center badge badge-lg text-info ${
                 appVersion.length > 0 ? "" : "hidden"
               }`}
+              tabIndex={0}
             >
               Version: {appVersion}
             </div>

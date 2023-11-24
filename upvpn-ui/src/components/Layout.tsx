@@ -29,7 +29,7 @@ function Layout(props: Props) {
       <div className="h-[calc(100vh-64px)] overflow-y-auto scroll-smooth">
         {props.children}
       </div>
-      <div className="btm-nav">
+      <div className="btm-nav bg-base-200">
         <button
           className={`text-info ${props.activeLocation ? "active" : ""}`}
           onClick={() => navigate("/locations")}

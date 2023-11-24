@@ -13,6 +13,7 @@ import VpnStatusContext, {
 import {
   defaultLocation,
   getLocationFromVpnStatus,
+  handleEnterKey,
   isVpnInProgress,
 } from "../lib/util";
 import NotificationList from "../components/NotificationList";
@@ -22,6 +23,7 @@ import NotificationContext, {
 } from "../context/NotificationContext";
 import Timer from "../components/Timer";
 import { DateTime } from "luxon";
+import { KeyboardEvent } from "react";
 
 type Props = {};
 
@@ -318,6 +320,7 @@ function Home({}: Props) {
                     className="toggle toggle-accent"
                     checked={!homeUIState.switchOff}
                     onChange={homeUIState.switchOnChange}
+                    onKeyDown={handleEnterKey(homeUIState.switchOnChange)}
                     disabled={!homeUIState.switchEnabled}
                   />
                 </div>
@@ -335,13 +338,7 @@ function Home({}: Props) {
           >
             {<NotificationList notifications={notifications} />}
           </div>
-          <div
-            className={
-              notifications.length == 0 && filteredRecentLocations.length > 0
-                ? "block"
-                : "hidden"
-            }
-          >
+          <div className={notifications.length == 0 ? "block" : "hidden"}>
             <RecentLocations
               locations={filteredRecentLocations}
               disabled={recentLocationsDisabled}

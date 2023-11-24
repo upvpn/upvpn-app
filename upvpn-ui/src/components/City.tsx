@@ -5,6 +5,7 @@ import LocationContext, {
   LocationContextInterface,
 } from "../context/LocationContext";
 import { toast } from "react-hot-toast";
+import { handleEnterKey } from "../lib/util";
 
 type Props = {
   location: Location;
@@ -25,7 +26,12 @@ function City({ location, enabled }: Props) {
   };
 
   return (
-    <div className="flex justify-between" onClick={onClick}>
+    <div
+      className="flex justify-between"
+      onClick={onClick}
+      onKeyDown={handleEnterKey(onClick)}
+      tabIndex={0}
+    >
       <div className="flex gap-2 items-center">
         <ReactCountryFlag
           className="rounded"

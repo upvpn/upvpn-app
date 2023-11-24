@@ -79,7 +79,10 @@ const Locations = (props: Props) => {
 
         <div className="flex flex-col mx-2 items-center">
           <div className="input-group px-1">
-            <button className="btn btn-square no-animation hover:cursor-auto">
+            <button
+              className="btn btn-square no-animation hover:cursor-auto"
+              tabIndex={-1}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
