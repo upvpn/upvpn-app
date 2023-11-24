@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, time::Duration};
 
 use tokio::sync::{mpsc, oneshot};
 use upvpn_server::{auth::TokenProvider, ServerApi};
@@ -198,8 +198,31 @@ impl<P: TokenProvider + 'static> VpnSessionService<P> {
         token_provider: impl TokenProvider + 'static,
         end_session: EndSession,
     ) -> Result<Ended, VpnSessionError> {
-        let mut upvpn_service = ServerApi::new(token_provider).await?;
-        Ok(upvpn_service.end_session(end_session).await?)
+        let bf = backoff::ExponentialBackoffBuilder::new()
+            .with_max_elapsed_time(Some(Duration::from_secs(15)))
+            .build();
+
+        backoff::future::retry(bf, || async {
+            let mut upvpn_service = ServerApi::new(token_provider.clone())
+                .await
+                .map_err(VpnSessionError::Connection)
+                .map_err(|e| backoff::Error::Transient {
+                    err: e,
+                    retry_after: None,
+                })?;
+
+            let ended = upvpn_service
+                .end_session(end_session.clone())
+                .await
+                .map_err(VpnSessionError::Server)
+                .map_err(|e| backoff::Error::Transient {
+                    err: e,
+                    retry_after: None,
+                })?;
+
+            Ok(ended)
+        })
+        .await
     }
 
     async fn start_watcher(&mut self, vpn_session_status_request: VpnSessionStatusRequest) {

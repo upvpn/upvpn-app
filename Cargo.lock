@@ -7534,6 +7534,7 @@ name = "upvpn-daemon"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "backoff",
  "chrono",
  "clap 4.2.7",
  "futures",
