@@ -31,12 +31,10 @@ interface HomeUIState {
   displayShield: ReactNode;
   progressBar: ReactNode;
   vpnStatusMessage: ReactNode;
-  locationSelectorEnabled: boolean;
   switchOff: boolean;
   switchEnabled: boolean;
   switchOnChange: () => void;
   toolTip: string;
-  waitingToConnect: boolean;
 }
 
 function Home({}: Props) {
@@ -111,7 +109,6 @@ function Home({}: Props) {
         <div className="divider"></div>
       </div>
     ),
-    locationSelectorEnabled: true,
     switchEnabled: true && locations.length > 0,
     switchOff: true,
     switchOnChange: () => {
@@ -121,7 +118,6 @@ function Home({}: Props) {
       }
     },
     toolTip: "Turn on VPN",
-    waitingToConnect: false,
   };
 
   const homeUIState = ((): HomeUIState => {
@@ -147,12 +143,10 @@ function Home({}: Props) {
               ></progress>
             </div>
           ),
-          locationSelectorEnabled: false,
           switchEnabled: false,
           switchOff: false,
           switchOnChange: () => {},
           toolTip: "Turn off VPN",
-          waitingToConnect: true,
         };
       case "Connecting":
         return {
@@ -169,12 +163,10 @@ function Home({}: Props) {
               ></progress>
             </div>
           ),
-          locationSelectorEnabled: false,
           switchEnabled: false,
           switchOff: false,
           switchOnChange: () => {},
           toolTip: "Turn off VPN",
-          waitingToConnect: true,
         };
       case "ServerReady":
         return {
@@ -191,12 +183,10 @@ function Home({}: Props) {
               ></progress>
             </div>
           ),
-          locationSelectorEnabled: false,
           switchEnabled: false,
           switchOff: false,
           switchOnChange: () => {},
           toolTip: "Turn off VPN",
-          waitingToConnect: true,
         };
       case "ServerCreated":
         return {
@@ -213,12 +203,10 @@ function Home({}: Props) {
               ></progress>
             </div>
           ),
-          locationSelectorEnabled: false,
           switchEnabled: false,
           switchOff: false,
           switchOnChange: () => {},
           toolTip: "Turn off VPN",
-          waitingToConnect: true,
         };
       case "ServerRunning":
         return {
@@ -235,12 +223,10 @@ function Home({}: Props) {
               ></progress>
             </div>
           ),
-          locationSelectorEnabled: false,
           switchEnabled: false,
           switchOff: false,
           switchOnChange: () => {},
           toolTip: "Turn off VPN",
-          waitingToConnect: true,
         };
       case "Connected":
         return {
@@ -255,7 +241,6 @@ function Home({}: Props) {
               </div>
             </div>
           ),
-          locationSelectorEnabled: false,
           switchEnabled: true,
           switchOff: false,
           switchOnChange: () => {
@@ -263,7 +248,6 @@ function Home({}: Props) {
             disconnect(location);
           },
           toolTip: "Turn off VPN",
-          waitingToConnect: false,
         };
       case "Disconnecting":
         return {
@@ -276,12 +260,10 @@ function Home({}: Props) {
               <div className="divider"></div>
             </div>
           ),
-          locationSelectorEnabled: false,
           switchEnabled: false,
           switchOff: true,
           switchOnChange: () => {},
           toolTip: "Turn on VPN",
-          waitingToConnect: false,
         };
 
       default:
@@ -306,10 +288,7 @@ function Home({}: Props) {
                   <div className="w-64 h-8 mb-2">{homeUIState.progressBar}</div>
                 </div>
               </h2>
-              <LocationSelector
-                enabled={homeUIState.locationSelectorEnabled}
-                waitingToConnect={homeUIState.waitingToConnect}
-              />
+              <LocationSelector />
               <div className="card-actions justify-center mt-2">
                 <div
                   className="tooltip tooltip-bottom"

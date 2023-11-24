@@ -9,12 +9,9 @@ import LocationContext, {
 import Spinner from "./Spinner";
 import { defaultLocation } from "../lib/util";
 
-type Props = {
-  enabled: boolean;
-  waitingToConnect: boolean;
-};
+type Props = {};
 
-function LocationSelector({ enabled, waitingToConnect }: Props) {
+function LocationSelector({}: Props) {
   const navigate = useNavigate();
   const { loadingLocations, selected, locations, getLocations } = useContext(
     LocationContext
