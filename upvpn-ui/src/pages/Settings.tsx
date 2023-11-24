@@ -135,7 +135,15 @@ function Settings({}: Props) {
                 tabIndex={0}
                 onKeyDown={handleEnterKey(onClick)}
               >
-                <div>{signingOut ? <Spinner /> : <span>Sign Out</span>}</div>
+                <div className="flex flex-row items-center gap-2">
+                  <Spinner
+                    className={`h-6 aspect-square ${
+                      signingOut ? "block" : "hidden"
+                    }`}
+                  />
+
+                  <span>{signingOut ? "Signing Out" : "Sign Out"}</span>
+                </div>
               </div>
             </li>
           </ul>
