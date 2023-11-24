@@ -23,7 +23,7 @@ const RecentLocations = ({ locations, disabled }: Props) => {
 
   const cities = locations.map((location) => {
     return (
-      <li key={location.code} className={disabled ? "disabled" : ""}>
+      <li key={location.code}>
         <City location={location} key={location.code} enabled={!disabled} />
       </li>
     );
