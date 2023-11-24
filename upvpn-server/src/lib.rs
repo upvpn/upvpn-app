@@ -37,6 +37,7 @@ async fn create_channel() -> Result<tonic::transport::Channel, tonic::transport:
         .http2_keep_alive_interval(Duration::from_secs(15))
         .tcp_keepalive(Some(Duration::from_secs(15)))
         .timeout(REQUEST_TIMEOUT_SECS)
+        .connect_timeout(Duration::from_millis(2500))
         .connect()
         .await?;
 
@@ -57,7 +58,7 @@ async fn channel_with_auth<P: TokenProvider>(
 
 fn backoff() -> backoff::ExponentialBackoff {
     backoff::ExponentialBackoffBuilder::new()
-        .with_max_elapsed_time(Some(Duration::from_secs(5)))
+        .with_max_elapsed_time(Some(Duration::from_secs(10)))
         .build()
 }
 
@@ -65,11 +66,15 @@ pub async fn new_upvpn_service_client<P: TokenProvider + 'static>(
     token_provider: P,
 ) -> Result<UpvpnServiceClient<P>, tonic::transport::Error> {
     let channel = backoff::future::retry(backoff(), || async {
-        let channel = channel_with_auth(token_provider.clone()).await?;
+        let channel = channel_with_auth(token_provider.clone())
+            .await
+            .map_err(|e| backoff::Error::Transient {
+                err: e,
+                retry_after: None,
+            })?;
         Ok(channel)
     })
-    .await
-    .map_err(|e| e.into())?;
+    .await?;
 
     Ok(proto::upvpn_service_client::UpvpnServiceClient::new(
         channel,
@@ -79,11 +84,15 @@ pub async fn new_upvpn_service_client<P: TokenProvider + 'static>(
 pub async fn new_upvpn_service_no_auth_client(
 ) -> Result<UpvpnServiceNoAuthClient, tonic::transport::Error> {
     let channel = backoff::future::retry(backoff(), || async {
-        let channel = create_channel().await?;
+        let channel = create_channel()
+            .await
+            .map_err(|e| backoff::Error::Transient {
+                err: e,
+                retry_after: None,
+            })?;
         Ok(channel)
     })
-    .await
-    .map_err(|e| e.into())?;
+    .await?;
 
     Ok(proto::upvpn_service_client::UpvpnServiceClient::new(
         channel,
