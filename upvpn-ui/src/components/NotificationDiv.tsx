@@ -15,7 +15,7 @@ const NotificationDiv = ({ notification }: Props) => {
   ) as NotificationContextInterface;
 
   return (
-    <div className="card shadow-xl bg-base-300 max-h-40">
+    <div className="card shadow-xl bg-base-300 h-40">
       <div className="card-body px-6 py-5">
         <h2 className="card-title">
           <p className="text-info">Oh No</p>

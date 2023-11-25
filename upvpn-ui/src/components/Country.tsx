@@ -18,7 +18,7 @@ function Country({ country_code, locations, enabled }: Props) {
 
       {locations.map((loc) => {
         return (
-          <li key={loc.code} className={enabled ? "" : "disabled"}>
+          <li key={loc.code}>
             <City location={loc} enabled={enabled} />
           </li>
         );

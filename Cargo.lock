@@ -7534,6 +7534,7 @@ name = "upvpn-daemon"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "backoff",
  "chrono",
  "clap 4.2.7",
  "futures",
@@ -7585,7 +7586,7 @@ dependencies = [
 
 [[package]]
 name = "upvpn-packages"
-version = "0.0.2"
+version = "0.4.0"
 
 [[package]]
 name = "upvpn-server"

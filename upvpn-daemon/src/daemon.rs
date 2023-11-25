@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::{fmt::Display, time::Duration};
 
 use talpid_core::tunnel_state_machine::{TunnelCommand, TunnelStateMachineHandle};
 use talpid_types::tunnel::TunnelStateTransition;
@@ -310,15 +310,6 @@ impl Daemon {
             .await
             .expect("failed to process tunnel state transition");
 
-        if let Some(reason) = processed.end_session {
-            tracing::info!("ending session after tunnel transition {reason}");
-            if let Err(err) = self.end_session(reason).await {
-                tracing::error!(
-                    "failed to end session on state transition: {transition:?}: {err:?}"
-                );
-            };
-        }
-
         if let Some(session_info) = processed.client_connected {
             tracing::info!("client connected {}", session_info.request_id);
             self.client_connected(session_info).await;
@@ -332,6 +323,15 @@ impl Daemon {
         if let Some(notification) = processed.notification {
             tracing::info!("sending notification after tunnel state transition {notification:?}");
             self.add_notification(notification).await;
+        }
+
+        if let Some(reason) = processed.end_session {
+            tracing::info!("ending session after tunnel transition {reason}");
+            if let Err(err) = self.end_session(reason).await {
+                tracing::error!(
+                    "failed to end session on state transition: {transition:?}: {err:?}"
+                );
+            };
         }
 
         // update vpn status and send device event
@@ -523,40 +523,49 @@ impl Daemon {
         // Get session info and mark for deletion in DB
         let session_info = self.vpn_session_storage.end_session().await?;
 
-        match session_info {
-            Some(session_info) => {
-                let device_unique_id = self.device_storage.get_device_unique_id().await?;
+        let device_storage = self.device_storage.clone();
+        let vpn_session_storage = self.vpn_session_storage.clone();
+        let vpn_session_handler = self.vpn_session_handler.clone();
 
-                let end_session = EndSession {
-                    request_id: session_info.request_id,
-                    device_unique_id,
-                    vpn_session_uuid: session_info.vpn_session_id,
-                    reason: end_reason,
-                };
+        // For better user experience end session in separate task
+        tokio::spawn(async move {
+            // this function gets called in two scenarios
+            // 1. When user requests disconnect
+            // 2. Tunnel transitioned to error - which is then asked to disconnect - which then leads to end_session here.
+            // In both cases wait for tunnel to disconnect so that end session API call can succeed
+            tokio::time::sleep(Duration::from_millis(100)).await;
 
-                // make api call to server to end session,
-                // ignore errors as reclaimer should eventually cleanup
-                match self
-                    .vpn_session_handler
-                    .end_session(end_session.clone())
-                    .await
-                {
-                    Ok(ended) => {
-                        tracing::info!("vpn session successfully ended on server: {ended}");
-                        // on success delete record from DB
-                        self.vpn_session_storage
-                            .delete(session_info.request_id)
-                            .await?;
+            match session_info {
+                Some(session_info) => {
+                    if let Ok(device_unique_id) = device_storage.get_device_unique_id().await {
+                        let end_session = EndSession {
+                            request_id: session_info.request_id,
+                            device_unique_id,
+                            vpn_session_uuid: session_info.vpn_session_id,
+                            reason: end_reason,
+                        };
+
+                        // make api call to server to end session,
+                        // ignore errors as reclaimer should eventually cleanup
+                        match vpn_session_handler.end_session(end_session.clone()).await {
+                            Ok(ended) => {
+                                tracing::info!("vpn session successfully ended on server: {ended}");
+                                // on success delete record from DB
+                                let _ = vpn_session_storage.delete(session_info.request_id).await;
+                            }
+                            Err(err) => {
+                                tracing::error!(
+                                    "couldn't end session on server {end_session}: {err}"
+                                );
+                            }
+                        };
                     }
-                    Err(err) => {
-                        tracing::error!("couldn't end session on server {end_session}: {err}");
-                    }
-                };
+                }
+                None => {
+                    tracing::warn!("No existing vpn session found in DB in end_session");
+                }
             }
-            None => {
-                tracing::warn!("No existing vpn session found in DB in end_session");
-            }
-        }
+        });
 
         Ok(())
     }

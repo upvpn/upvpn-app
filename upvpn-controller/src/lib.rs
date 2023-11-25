@@ -50,9 +50,7 @@ pub async fn new_grpc_client() -> Result<ControllerServiceClient, ControllerErro
 
     // URI is unused
     let channel = TonicEndpoint::from_static("http://[::]:50051")
-        .connect_with_connector(service_fn(move |_: Uri| {
-            IpcEndpoint::connect(ipc_path.clone())
-        }))
+        .connect_with_connector(service_fn(move |_: Uri| IpcEndpoint::connect(ipc_path)))
         .await
         .map_err(ControllerError::TonicTransportError)?;
 

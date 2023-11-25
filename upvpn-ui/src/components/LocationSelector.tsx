@@ -9,12 +9,9 @@ import LocationContext, {
 import Spinner from "./Spinner";
 import { defaultLocation } from "../lib/util";
 
-type Props = {
-  enabled: boolean;
-  waitingToConnect: boolean;
-};
+type Props = {};
 
-function LocationSelector({ enabled, waitingToConnect }: Props) {
+function LocationSelector({}: Props) {
   const navigate = useNavigate();
   const { loadingLocations, selected, locations, getLocations } = useContext(
     LocationContext
@@ -59,13 +56,10 @@ function LocationSelector({ enabled, waitingToConnect }: Props) {
 
   return (
     <button
-      disabled={enabled ? false : true}
       onClick={() => {
         navigate("/locations");
       }}
-      className={`btn btn-ghost btn-wide gap-1 ${
-        waitingToConnect ? "loading" : ""
-      }`}
+      className="btn btn-ghost btn-wide gap-1"
     >
       <ReactCountryFlag
         className="rounded"
@@ -76,10 +70,7 @@ function LocationSelector({ enabled, waitingToConnect }: Props) {
         }}
       />
       <div className="ml-2">{displayLocation}</div>
-      <MdKeyboardArrowRight
-        size="1.5em"
-        className={waitingToConnect ? "hidden" : "block"}
-      />
+      <MdKeyboardArrowRight size="1.5em" />
     </button>
   );
 }

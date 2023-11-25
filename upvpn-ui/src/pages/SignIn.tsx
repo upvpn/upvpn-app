@@ -59,12 +59,12 @@ const SignIn = () => {
       <div className="hero-content flex-col lg:flex-row-reverse">
         <Logo className="w-12 h-12" />
         <div className="text-center lg:text-left">
-          <h2 className="text-5xl">upvpn</h2>
+          <h2 className="text-5xl">UpVPN</h2>
           <p className="py-4 font-bold">A Modern Serverless VPN</p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
-            <form onSubmit={onSubmit} >
+            <form onSubmit={onSubmit}>
               <div className="form-control">
                 <label htmlFor="email" className="label">
                   <span className="label-text">Email</span>
@@ -108,7 +108,7 @@ const SignIn = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary" disabled={checking} >
+                <button className="btn btn-primary" disabled={checking}>
                   {checking ? <Spinner className="w-12 h-12" /> : <>Sign In</>}
                 </button>
               </div>

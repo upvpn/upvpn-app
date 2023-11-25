@@ -1,6 +1,8 @@
 import React from "react";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { KeyboardEvent } from "react";
+import { handleEnterKey } from "../lib/util";
 
 type Props = {
   header: string;
@@ -12,7 +14,14 @@ const Navbar = ({ header }: Props) => {
   return (
     <div className="navbar">
       <div className="navbar-start">
-        <div className="btn btn-square btn-ghost" onClick={() => navigate(-1)}>
+        <div
+          tabIndex={0}
+          className="btn btn-square btn-ghost"
+          onClick={() => navigate(-1)}
+          onKeyDown={handleEnterKey(() => {
+            navigate(-1);
+          })}
+        >
           <MdKeyboardArrowLeft size="2em" />
         </div>
       </div>

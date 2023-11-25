@@ -5,6 +5,7 @@ import { error as logError, info } from "tauri-plugin-log-api";
 import { type } from '@tauri-apps/api/os';
 import { invoke } from "@tauri-apps/api";
 import { isPermissionGranted, requestPermission } from "@tauri-apps/api/notification";
+import { KeyboardEvent } from "react";
 
 export function getLocationFromVpnStatus(status: VpnStatus): Location | undefined {
     switch (status.type) {
@@ -114,4 +115,14 @@ export const defaultLocation = (locations: Location[]): undefined | Location => 
     return locations.find((value) => {
         return value.city.includes("Ashburn") || value.city.includes("Hillsboro");
     })
+}
+
+export const handleEnterKey = (func: () => void) => {
+    const handleEnterKeyInternal = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key == "Enter") {
+            func()
+        }
+    }
+
+    return handleEnterKeyInternal
 }
