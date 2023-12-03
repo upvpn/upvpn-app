@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use tauri::AppHandle;
-use upvpn_types::location::Location;
+use upvpn_types::{location::Location, vpn_session::VpnStatus};
 
 use crate::event_forwarder::EventForwarderHandler;
 
@@ -11,15 +11,17 @@ pub type AppState = Arc<tokio::sync::Mutex<UiState>>;
 pub struct UiState {
     pub event_fwd_handler: Option<EventForwarderHandler>,
     pub locations: Vec<Location>,
+    pub vpn_status: Option<VpnStatus>,
     pub window_visible: bool,
 }
 
 impl Default for UiState {
     fn default() -> Self {
         Self {
-            window_visible: true,
-            locations: Default::default(),
             event_fwd_handler: Default::default(),
+            locations: Default::default(),
+            vpn_status: None,
+            window_visible: true,
         }
     }
 }

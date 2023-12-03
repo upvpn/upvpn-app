@@ -3,7 +3,7 @@ use tauri::{
     SystemTrayMenuItem,
 };
 
-use crate::state::AppState;
+use crate::{commands, state::AppState};
 
 pub fn create_system_tray() -> SystemTray {
     let vpn_status = CustomMenuItem::new("vpn_status", "Loading...").disabled();
@@ -52,6 +52,13 @@ pub fn handle_system_tray_event(app: &AppHandle, event: SystemTrayEvent) {
         SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
             "hide_or_show" => {
                 toggle_window_visibility(app.app_handle());
+            }
+            "disconnect" => {
+                let _ = tauri::async_runtime::block_on(commands::vpn_session::disconnect());
+            }
+            "quit" => {
+                let _ = tauri::async_runtime::block_on(commands::vpn_session::disconnect());
+                app.exit(0)
             }
             _ => {}
         },
