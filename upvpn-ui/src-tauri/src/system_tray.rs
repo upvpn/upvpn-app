@@ -20,39 +20,41 @@ pub fn create_system_tray() -> SystemTray {
     SystemTray::new().with_id("upvpn").with_menu(tray_menu)
 }
 
+pub fn toggle_window_visibility(app_handle: AppHandle) {
+    let window = app_handle.get_window("main").unwrap();
+    let item_handle = app_handle.tray_handle().try_get_item("hide_or_show");
+    let state: tauri::State<'_, AppState> = app_handle.state();
+
+    tauri::async_runtime::block_on(async move {
+        let mut state = state.lock().await;
+        let new_window_visible = !state.window_visible;
+        state.window_visible = new_window_visible;
+
+        let new_title = match new_window_visible {
+            true => {
+                window.show().unwrap();
+                "Hide"
+            }
+            false => {
+                window.hide().unwrap();
+                "Show"
+            }
+        };
+
+        if let Some(item_handle) = item_handle {
+            item_handle.set_title(new_title).unwrap();
+        }
+    })
+}
+
 pub fn handle_system_tray_event(app: &AppHandle, event: SystemTrayEvent) {
     match event {
-        SystemTrayEvent::MenuItemClick { id, .. } => {
-            let item_handle = app.tray_handle().get_item(&id);
-            match id.as_str() {
-                "hide_or_show" => {
-                    let window = app.get_window("main").unwrap();
-                    let handle = app.app_handle();
-                    let state: tauri::State<'_, AppState> = handle.state();
-
-                    tauri::async_runtime::block_on(async move {
-                        let mut state = state.lock().await;
-                        let new_window_visible = !state.window_visible;
-                        state.window_visible = new_window_visible;
-
-                        let new_title = match new_window_visible {
-                            true => {
-                                window.show().unwrap();
-                                "Hide"
-                            }
-                            false => {
-                                window.hide().unwrap();
-                                "Show"
-                            }
-                        };
-
-                        item_handle.set_title(new_title).unwrap();
-                    })
-                }
-                _ => {}
+        SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+            "hide_or_show" => {
+                toggle_window_visibility(app.app_handle());
             }
-        }
-
+            _ => {}
+        },
         _ => {}
     }
 }

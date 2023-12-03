@@ -18,7 +18,8 @@ use commands::version::{current_app_version, update_available};
 use commands::vpn_session::{connect, disconnect, get_vpn_status};
 use log::LevelFilter;
 use state::AppState;
-use system_tray::{create_system_tray, handle_system_tray_event};
+use system_tray::{create_system_tray, handle_system_tray_event, toggle_window_visibility};
+use tauri::Manager;
 use tauri_plugin_log::LogTarget;
 use upvpn_config::config;
 
@@ -80,6 +81,17 @@ fn main() {
         .plugin(tauri_plugin_single_instance::init(|_, _, _| {}))
         .system_tray(create_system_tray())
         .on_system_tray_event(handle_system_tray_event)
+        .on_window_event(|event| {
+            match event.event() {
+                // Run frontend in the background
+                tauri::WindowEvent::CloseRequested { api, .. } => {
+                    api.prevent_close();
+                    let app_handle = event.window().app_handle();
+                    toggle_window_visibility(app_handle);
+                }
+                _ => {}
+            }
+        })
         .setup(|_app| Ok(()))
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
