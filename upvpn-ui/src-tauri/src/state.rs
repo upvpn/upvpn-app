@@ -7,10 +7,21 @@ use crate::event_forwarder::EventForwarderHandler;
 
 pub type AppState = Arc<tokio::sync::Mutex<UiState>>;
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct UiState {
     pub event_fwd_handler: Option<EventForwarderHandler>,
     pub locations: Vec<Location>,
+    pub window_visible: bool,
+}
+
+impl Default for UiState {
+    fn default() -> Self {
+        Self {
+            window_visible: true,
+            locations: Default::default(),
+            event_fwd_handler: Default::default(),
+        }
+    }
 }
 
 impl UiState {

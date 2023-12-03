@@ -7,6 +7,7 @@ mod commands;
 mod error;
 mod event_forwarder;
 mod state;
+mod system_tray;
 
 use commands::auth::{is_signed_in, sign_in, sign_out};
 use commands::desktop_notification::send_desktop_notification;
@@ -17,6 +18,7 @@ use commands::version::{current_app_version, update_available};
 use commands::vpn_session::{connect, disconnect, get_vpn_status};
 use log::LevelFilter;
 use state::AppState;
+use system_tray::{create_system_tray, handle_system_tray_event};
 use tauri_plugin_log::LogTarget;
 use upvpn_config::config;
 
@@ -76,6 +78,8 @@ fn main() {
                 .build(),
         )
         .plugin(tauri_plugin_single_instance::init(|_, _, _| {}))
+        .system_tray(create_system_tray())
+        .on_system_tray_event(handle_system_tray_event)
         .setup(|_app| Ok(()))
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
