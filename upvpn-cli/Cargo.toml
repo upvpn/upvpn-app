@@ -17,7 +17,7 @@ path = "src/main.rs"
 async-trait = "0.1.74"
 clap = { version = "4.4", features = ["derive"] }
 tokio = { version = "1.34", features = ["rt-multi-thread", "macros", "signal"] }
-validator = { version = "0.16.0", features = ["derive"] }
+validator = { version = "0.16.1", features = ["derive"] }
 upvpn-controller = {path = "../upvpn-controller"}
 upvpn-types = {path = "../upvpn-types"}
 thiserror = "1.0"

@@ -10,7 +10,7 @@ repository = "https://github.com/upvpn/upvpn-app"
 
 [dependencies]
 figment = { version = "0.10.12", features = ["env", "toml"] }
-once_cell = "1.17.1"
+once_cell = "1.18.0"
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "1.0"
 tokio = { version = "1.34", features = ["fs"] }
