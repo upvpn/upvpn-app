@@ -7,15 +7,10 @@ use upvpn_types::vpn_session::VpnStatus;
 use crate::{commands, state::AppState};
 
 fn create_default_system_tray_menu(window_visible: bool) -> SystemTrayMenu {
-    let vpn_status = CustomMenuItem::new("vpn_status", "Loading...").disabled();
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
     let hide_or_show_title = if window_visible { "Hide" } else { "Show" };
     let hide_or_show = CustomMenuItem::new("hide_or_show".to_string(), hide_or_show_title);
-    SystemTrayMenu::new()
-        .add_item(vpn_status)
-        .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(hide_or_show)
-        .add_item(quit)
+    SystemTrayMenu::new().add_item(hide_or_show).add_item(quit)
 }
 
 pub fn create_default_system_tray() -> SystemTray {

@@ -63,7 +63,7 @@ const SignIn = () => {
           <p className="py-4 font-bold">A Modern Serverless VPN</p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <div className="card-body">
+          <div className="p-4">
             <form onSubmit={onSubmit}>
               <div className="form-control">
                 <label htmlFor="email" className="label">

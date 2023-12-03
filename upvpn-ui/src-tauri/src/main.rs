@@ -45,8 +45,7 @@ fn main() {
                 .add_native_item(MenuItem::Paste)
                 .add_native_item(MenuItem::SelectAll)
                 .add_native_item(MenuItem::Cut)
-                .add_native_item(MenuItem::Separator)
-                .add_native_item(MenuItem::CloseWindow),
+                .add_native_item(MenuItem::Separator),
         ));
         builder = builder.menu(menu);
     }
