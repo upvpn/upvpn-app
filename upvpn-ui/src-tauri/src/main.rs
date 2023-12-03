@@ -35,17 +35,22 @@ fn main() {
 
     #[cfg(target_os = "macos")]
     {
+        use tauri::CustomMenuItem;
         use tauri::Menu;
         use tauri::MenuItem;
         use tauri::Submenu;
+
+        let quit_item = CustomMenuItem::new("macos_quit", "Quit").accelerator("Cmd+Q");
         let menu = Menu::new().add_submenu(Submenu::new(
-            "upvpn",
+            "UpVPN",
             Menu::new()
                 .add_native_item(MenuItem::Copy)
                 .add_native_item(MenuItem::Paste)
                 .add_native_item(MenuItem::SelectAll)
                 .add_native_item(MenuItem::Cut)
-                .add_native_item(MenuItem::Separator),
+                .add_native_item(MenuItem::Separator)
+                .add_native_item(MenuItem::CloseWindow)
+                .add_item(quit_item),
         ));
         builder = builder.menu(menu);
     }
@@ -90,6 +95,13 @@ fn main() {
                 }
                 _ => {}
             }
+        })
+        .on_menu_event(|event| match event.menu_item_id() {
+            "macos_quit" => {
+                let _ = tauri::async_runtime::block_on(commands::vpn_session::disconnect());
+                event.window().app_handle().exit(0);
+            }
+            _ => {}
         })
         .setup(|_app| Ok(()))
         .run(tauri::generate_context!())
