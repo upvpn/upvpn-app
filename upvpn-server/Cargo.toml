@@ -9,11 +9,11 @@ homepage = "https://upvpn.app"
 repository = "https://github.com/upvpn/upvpn-app"
 
 [dependencies]
-futures = "0.3.28"
-hyper = "0.14.26"
+futures = "0.3.29"
+hyper = "0.14.27"
 prost = "0.11.9"
-serde = { version = "1.0.160", features = ["derive"] }
-thiserror = "1.0.40"
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "1.0"
 # todo: handle certs: remove dependency on tls-roots
 tonic = { version = "0.9.2", features = ["tls", "tls-roots"] }
 tower = "0.4.13"
@@ -22,7 +22,7 @@ upvpn-types = {path = "../upvpn-types"}
 talpid-types = {git = "ssh://git@github.com/upvpn/mullvadvpn-app.git", rev = "2023.3.upvpn"}
 uuid = { version = "1.3.1", features = ["serde", "v4"] }
 # todo: use rustls? instead of OS TLS
-reqwest = { version = "0.11.16", features = ["json"] }
+reqwest = { version = "0.11.22", features = ["json"] }
 ipnetwork = "0.20.0"
 backoff = { version = "0.4.0", features = ["tokio"] }
 
@@ -30,4 +30,4 @@ backoff = { version = "0.4.0", features = ["tokio"] }
 tonic-build = "0.9.2"
 
 [dev-dependencies]
-tokio = "1.27.0"
+tokio = "1.34"

@@ -7,7 +7,7 @@ pub enum CliError {
     #[error("{}", .0.message())]
     Grpc(#[from] Status),
     #[error("{0}")]
-    Io(#[from] std::io::Error),
+    Io(#[from] dialoguer::Error),
     #[error("{0}")]
     InvalidArgument(String),
 }

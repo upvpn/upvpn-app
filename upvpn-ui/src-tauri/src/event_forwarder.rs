@@ -6,6 +6,8 @@ use tokio::sync::oneshot;
 use tokio_stream::StreamExt;
 use upvpn_types::notification::Notification;
 
+use crate::state::update_app_state;
+
 #[derive(Debug)]
 pub struct EventForwarderHandler {
     _shutdown_tx: oneshot::Sender<()>,
@@ -49,6 +51,7 @@ impl EventForwarder {
                                         match event {
                                             upvpn_controller::proto::daemon_event::Event::VpnStatus(vpn_status) => {
                                                 let vpn_status: upvpn_types::vpn_session::VpnStatus = vpn_status.into();
+                                                update_app_state(app_handle.clone(), vpn_status.clone()).await;
                                                 let _ = app_handle.emit_all("vpn_status", vpn_status);
                                             },
                                             upvpn_controller::proto::daemon_event::Event::Notification(notification) => {
