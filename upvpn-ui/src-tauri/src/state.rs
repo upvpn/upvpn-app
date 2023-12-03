@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 use upvpn_types::{location::Location, vpn_session::VpnStatus};
 
-use crate::event_forwarder::EventForwarderHandler;
+use crate::{event_forwarder::EventForwarderHandler, system_tray::update_system_tray};
 
 pub type AppState = Arc<tokio::sync::Mutex<UiState>>;
 
@@ -41,4 +41,17 @@ impl UiState {
             drop(event_fwd_handler);
         }
     }
+}
+
+pub async fn update_app_state(app_handle: AppHandle, vpn_status: VpnStatus) {
+    {
+        // block so that guard is dropped, and lock can be taken again
+        let state: tauri::State<'_, AppState> = app_handle.state();
+        let new_vpn_status = vpn_status.clone();
+
+        let mut state = state.lock().await;
+        state.vpn_status = Some(new_vpn_status);
+    }
+
+    update_system_tray(app_handle.clone()).await;
 }
