@@ -6,20 +6,32 @@ import { type } from '@tauri-apps/api/os';
 import { invoke } from "@tauri-apps/api";
 import { isPermissionGranted, requestPermission } from "@tauri-apps/api/notification";
 import { KeyboardEvent } from "react";
+import { IconType } from "react-icons";
 
-export function getLocationFromVpnStatus(status: VpnStatus): Location | undefined {
-    switch (status.type) {
-        case "Accepted":
-        case "Connecting":
-        case "Disconnecting":
-        case "ServerRunning":
-        case "ServerReady":
-            return status.payload
-        case "Connected":
-            return status.payload[0]
-        default:
-            return undefined;
+export function getLocationFromVpnStatus(status: VpnStatus, locations: Location[]): Location | undefined {
+
+    const locationInner = () => {
+        switch (status.type) {
+            case "Accepted":
+            case "Connecting":
+            case "Disconnecting":
+            case "ServerRunning":
+            case "ServerReady":
+                return status.payload
+            case "Connected":
+                return status.payload[0]
+            default:
+                return undefined;
+        }
     }
+
+    var location = locationInner();
+    const found = locations?.find((l) => l.code == location?.code)
+    if (found !== undefined && location !== undefined) {
+        location.estimate = found.estimate;
+    }
+
+    return location
 }
 
 export const isVpnInProgress = (vpnStatus: VpnStatus | undefined) => {

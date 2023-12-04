@@ -1,13 +1,18 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import {
+  MdAcUnit,
+  MdKeyboardArrowRight,
+  MdOutlineWbSunny,
+} from "react-icons/md";
 import { IoReload } from "react-icons/io5";
 import LocationContext, {
   LocationContextInterface,
 } from "../context/LocationContext";
 import Spinner from "./Spinner";
 import { defaultLocation } from "../lib/util";
+import LocationWarmColdIcon from "./LocationWarmColdIcon";
 
 type Props = {};
 
@@ -70,7 +75,7 @@ function LocationSelector({}: Props) {
         }}
       />
       <div className="ml-2">{displayLocation}</div>
-      <MdKeyboardArrowRight size="1.5em" />
+      <LocationWarmColdIcon location={location} arrow={true} />
     </button>
   );
 }

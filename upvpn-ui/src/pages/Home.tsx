@@ -77,7 +77,7 @@ function Home({}: Props) {
 
   useEffect(() => {
     if (vpnStatus !== undefined) {
-      const locationFromStatus = getLocationFromVpnStatus(vpnStatus);
+      const locationFromStatus = getLocationFromVpnStatus(vpnStatus, locations);
       if (locationFromStatus != undefined) {
         setLocation(locationFromStatus);
       }
