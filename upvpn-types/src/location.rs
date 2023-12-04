@@ -15,6 +15,8 @@ pub struct Location {
     pub state: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub state_code: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub estimate: Option<u32>,
 }
 
 impl Display for Location {

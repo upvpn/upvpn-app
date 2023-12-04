@@ -8,6 +8,7 @@ impl From<upvpn_types::location::Location> for crate::proto::Location {
             city_code: value.city_code,
             state: value.state,
             state_code: value.state_code,
+            estimate: value.estimate,
         }
     }
 }
@@ -22,6 +23,7 @@ impl From<crate::proto::Location> for upvpn_types::location::Location {
             city_code: value.city_code,
             state: value.state,
             state_code: value.state_code,
+            estimate: value.estimate,
         }
     }
 }
