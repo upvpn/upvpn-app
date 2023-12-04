@@ -1,9 +1,5 @@
 import React, { useContext } from "react";
-import {
-  MdKeyboardArrowRight,
-  MdOutlineWbSunny,
-  MdOutlineAcUnit,
-} from "react-icons/md";
+import { MdKeyboardArrowRight, MdCircle } from "react-icons/md";
 import { Location } from "../lib/types";
 import VpnStatusContext, {
   VpnStatusContextInterface,
@@ -36,19 +32,9 @@ const LocationWarmColdIcon = ({ location, arrow }: Props) => {
     }
   } else {
     if (location.estimate <= 10) {
-      return (
-        <MdOutlineWbSunny
-          size="1.2em"
-          className="mx-1 dark:text-success text-green-600"
-        />
-      );
+      return <MdCircle size="1.2em" className="mx-1 text-green-600 " />;
     } else {
-      return (
-        <MdOutlineAcUnit
-          size="1.2em"
-          className="mx-1 dark:text-info text-sky-400"
-        />
-      );
+      return <MdCircle size="1.2em" className="mx-1 text-sky-400 " />;
     }
   }
 };
