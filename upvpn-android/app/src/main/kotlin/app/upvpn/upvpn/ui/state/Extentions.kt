@@ -39,19 +39,6 @@ fun VpnUiState.vpnDisplayText(): String {
 
 fun VpnUiState.isVpnSessionActivityInProgress(): Boolean = (this is VpnUiState.Disconnected).not()
 
-fun VpnUiState.locationSelectorEnabled(): Boolean {
-    return when (this) {
-        is VpnUiState.Disconnected -> true
-        else -> false
-    }
-}
-
-fun LocationState.locationSelectorEnabled(): Boolean {
-    return when (this) {
-        is LocationState.Loading -> false
-        else -> true
-    }
-}
 
 fun VpnUiState.switchEnabled(): Boolean {
     return when (this) {

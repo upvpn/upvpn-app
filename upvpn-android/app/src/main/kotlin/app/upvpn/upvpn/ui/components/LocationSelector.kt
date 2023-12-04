@@ -24,9 +24,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.displayText
+import app.upvpn.upvpn.model.locationSelectorIcon
 import app.upvpn.upvpn.ui.state.LocationState
 import app.upvpn.upvpn.ui.state.VpnUiState
-import app.upvpn.upvpn.ui.state.locationSelectorEnabled
+import app.upvpn.upvpn.ui.state.isVpnSessionActivityInProgress
 
 @Composable
 fun LocationSelector(
@@ -54,11 +55,15 @@ fun LocationSelector(
                     val found =
                         locationState.locations.firstOrNull { it.city.contains("ashburn") }
                     if (found != null) {
-                        Triple(found.displayText(), Icons.Rounded.ChevronRight, openLocationScreen)
+                        Triple(
+                            found.displayText(),
+                            found.locationSelectorIcon(),
+                            openLocationScreen
+                        )
                     } else {
                         Triple(
                             locationState.locations.first().displayText(),
-                            Icons.Rounded.ChevronRight,
+                            locationState.locations.first().locationSelectorIcon(),
                             openLocationScreen
                         )
                     }
@@ -66,7 +71,7 @@ fun LocationSelector(
             } else {
                 Triple(
                     selectedLocation.displayText(),
-                    Icons.Rounded.ChevronRight,
+                    selectedLocation.locationSelectorIcon(),
                     openLocationScreen
                 )
             }
@@ -83,7 +88,6 @@ fun LocationSelector(
             disabledContainerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
-        enabled = vpnUiState.locationSelectorEnabled() && locationState.locationSelectorEnabled(),
         modifier = modifier
             .fillMaxWidth(0.8f)
             .height(50.dp)
@@ -104,10 +108,17 @@ fun LocationSelector(
             }
             Text(text = displayText, overflow = TextOverflow.Visible)
             if (isLoading.not()) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = "Arrow"
-                )
+                if (vpnUiState.isVpnSessionActivityInProgress().not()) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = "Warm or Cold",
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Rounded.ChevronRight,
+                        contentDescription = "Arrow"
+                    )
+                }
             }
         }
     }

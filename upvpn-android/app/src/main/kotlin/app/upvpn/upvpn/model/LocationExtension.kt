@@ -1,5 +1,11 @@
 package app.upvpn.upvpn.model
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AcUnit
+import androidx.compose.material.icons.outlined.WbSunny
+import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.ui.graphics.vector.ImageVector
+
 fun List<Location>.toCountries(): List<Country> =
     this.sortedWith(compareByDescending<Location> { it.country }.thenBy { it.city })
         .groupBy { it.country }
@@ -46,8 +52,21 @@ fun Location.displayText(): String {
                 else -> "${city.uppercase()}, ${stateCode.uppercase()}"
             }
         }
+
         else -> {
             city.uppercase()
+        }
+    }
+}
+
+fun Location.locationSelectorIcon(): ImageVector {
+    return when (this.estimate) {
+        null -> Icons.Rounded.ChevronRight
+        else -> {
+            when (this.estimate <= 10) {
+                true -> Icons.Outlined.WbSunny
+                else -> Icons.Outlined.AcUnit
+            }
         }
     }
 }

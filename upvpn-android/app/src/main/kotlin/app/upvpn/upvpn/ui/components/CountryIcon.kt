@@ -1,5 +1,6 @@
 package app.upvpn.upvpn.ui.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable

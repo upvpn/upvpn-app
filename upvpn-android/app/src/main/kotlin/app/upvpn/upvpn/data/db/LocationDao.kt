@@ -15,6 +15,9 @@ interface LocationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(locations: List<Location>)
 
+    @Query("DELETE FROM location WHERE code NOT IN (:notInLocationCodes)")
+    suspend fun deleteNotIn(notInLocationCodes: List<String>);
+
     @Query("UPDATE location SET lastAccess = :lastAccess WHERE code = :code")
     suspend fun updateLastAccess(code: String, lastAccess: Long)
 

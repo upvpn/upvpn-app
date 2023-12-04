@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AcUnit
+import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -44,6 +48,14 @@ fun LocationComponent(
         CountryIcon(countryCode = location.countryCode, Modifier.padding(12.dp, 0.dp, 0.dp, 0.dp))
 
         Text(text = location.city, modifier = Modifier.weight(1f))
+
+        location?.estimate?.let {
+            if (it <= 10) {
+                Icon(imageVector = Icons.Outlined.WbSunny, contentDescription = "Warm")
+            } else {
+                Icon(imageVector = Icons.Outlined.AcUnit, contentDescription = "Cold")
+            }
+        }
 
         RadioButton(
             enabled = isVpnSessionActivityInProgress.not(),
