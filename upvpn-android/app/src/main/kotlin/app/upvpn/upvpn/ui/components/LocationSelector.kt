@@ -103,7 +103,9 @@ fun LocationSelector(
                         .aspectRatio(1f)
                 )
             }
-            if (displayText.contains("No Locations").not()) {
+            if (displayText.contains("No Locations").not() && displayText.contains("Loading")
+                    .not()
+            ) {
                 CountryIcon(countryCode = selectedLocation?.countryCode ?: "US")
             }
             Text(text = displayText, overflow = TextOverflow.Visible)
