@@ -12,7 +12,7 @@ interface LocationDao {
     @Query("SELECT * FROM location")
     suspend fun getLocations(): List<Location>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(locations: List<Location>)
 
     @Query("DELETE FROM location WHERE code NOT IN (:notInLocationCodes)")
