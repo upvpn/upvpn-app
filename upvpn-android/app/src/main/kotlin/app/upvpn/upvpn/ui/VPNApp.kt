@@ -88,13 +88,21 @@ fun VPNApp(
     val vpnNotifications = homeVM.vpnNotificationState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = vpnNotifications.value) {
+        var unauthorized = false;
         for (notification in vpnNotifications.value) {
             showSnackBar(notification.msg)
             homeVM.ackVpnNotification(notification)
+            if (notification.msg == "unauthorized") {
+                unauthorized = true;
+            }
+        }
+
+        if (unauthorized) {
+            (vm::onSignOutClick)()
         }
     }
 
-    if(BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG) {
         Log.d("VPNApp", "CURRENT SCREEN: $currentVPNScreen")
     }
 

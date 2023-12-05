@@ -95,19 +95,32 @@ class DefaultVPNRepository(
         return addDeviceResponse.map { it.token }
     }
 
+    private suspend fun postSignOutCleanup() {
+        vpnDatabase.withTransaction {
+            val device = vpnDatabase.deviceDao().getDevice()
+            val user = vpnDatabase.userDao().getUser()
+            device?.let { vpnDatabase.deviceDao().delete(it) }
+            user?.let { vpnDatabase.userDao().delete(it) }
+        }
+    }
+
     override suspend fun signOut(): Result<Unit, String> {
         val signedOut = vpnApiService.signOut().toResult().mapError { e -> e.message }
 
-        signedOut.onSuccess {
-            vpnDatabase.withTransaction {
-                val device = vpnDatabase.deviceDao().getDevice()
-                val user = vpnDatabase.userDao().getUser()
-                device?.let { vpnDatabase.deviceDao().delete(it) }
-                user?.let { vpnDatabase.userDao().delete(it) }
+        return signedOut.fold(
+            success = {
+                postSignOutCleanup()
+                Ok(Unit)
+            },
+            failure = {
+                if (it == "unauthorized") {
+                    postSignOutCleanup()
+                    Ok(Unit)
+                } else {
+                    Err(it)
+                }
             }
-        }
-
-        return signedOut
+        )
     }
 
     override suspend fun getLocations(): Result<List<Location>, String> {
