@@ -10,10 +10,12 @@ import app.upvpn.upvpn.ui.state.LocationUiState
 import com.github.michaelbull.result.fold
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,8 +30,25 @@ class LocationViewModel(
     private val _uiState = MutableStateFlow(LocationUiState())
     val uiState: StateFlow<LocationUiState> = _uiState.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val recentLocations = vpnRepository.getRecentLocations(5)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf())
+        .mapLatest { list ->
+            // map to get estimates from location
+            when (_uiState.value.locationState) {
+                is LocationState.Locations -> {
+                    val locations =
+                        (_uiState.value.locationState as LocationState.Locations).locations;
+
+                    list.map { location ->
+                        val estimate = locations.find { it.code == location.code }
+                        location.copy(estimate = estimate?.estimate)
+                    }
+                }
+
+                else -> list
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf<Location>())
 
     private suspend fun getLocations() {
         _uiState.update { value -> value.copy(locationState = LocationState.Loading) }

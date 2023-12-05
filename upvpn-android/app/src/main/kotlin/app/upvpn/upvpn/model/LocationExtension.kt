@@ -1,10 +1,6 @@
 package app.upvpn.upvpn.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AcUnit
-import androidx.compose.material.icons.outlined.WbSunny
-import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 
 fun List<Location>.toCountries(): List<Country> =
     this.sortedWith(compareByDescending<Location> { it.country }.thenBy { it.city })
@@ -59,13 +55,28 @@ fun Location.displayText(): String {
     }
 }
 
-fun Location.locationSelectorIcon(): ImageVector {
+val LOCATION_WARM_COLOR = Color(22, 163, 74, 255)
+val LOCATION_COLD_COLOR = Color(56, 189, 248, 255)
+
+fun Location.warmOrColdColor(): Color {
     return when (this.estimate) {
-        null -> Icons.Rounded.ChevronRight
+        null -> Color.Unspecified
         else -> {
             when (this.estimate <= 10) {
-                true -> Icons.Outlined.WbSunny
-                else -> Icons.Outlined.AcUnit
+                true -> LOCATION_WARM_COLOR
+                else -> LOCATION_COLD_COLOR
+            }
+        }
+    }
+}
+
+fun Location.warmOrColdDescription(): String {
+    return when (this.estimate) {
+        null -> ""
+        else -> {
+            when (this.estimate <= 10) {
+                true -> "Warm"
+                else -> "Cold"
             }
         }
     }

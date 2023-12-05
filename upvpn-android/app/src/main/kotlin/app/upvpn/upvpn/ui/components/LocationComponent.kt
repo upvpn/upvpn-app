@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AcUnit
-import androidx.compose.material.icons.outlined.WbSunny
+import androidx.compose.material.icons.rounded.Circle
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import app.upvpn.upvpn.model.LOCATION_COLD_COLOR
+import app.upvpn.upvpn.model.LOCATION_WARM_COLOR
 import app.upvpn.upvpn.model.Location
 
 
@@ -51,9 +53,18 @@ fun LocationComponent(
 
         location?.estimate?.let {
             if (it <= 10) {
-                Icon(imageVector = Icons.Outlined.WbSunny, contentDescription = "Warm")
+                Icon(
+                    imageVector = Icons.Rounded.Circle,
+                    contentDescription = "Warm",
+                    modifier = Modifier.size(15.dp),
+                    tint = LOCATION_WARM_COLOR
+                )
             } else {
-                Icon(imageVector = Icons.Outlined.AcUnit, contentDescription = "Cold")
+                Icon(
+                    imageVector = Icons.Rounded.Circle, contentDescription = "Cold",
+                    modifier = Modifier.size(15.dp),
+                    tint = LOCATION_COLD_COLOR
+                )
             }
         }
 

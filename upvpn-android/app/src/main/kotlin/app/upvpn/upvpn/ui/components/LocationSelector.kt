@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.Circle
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,7 +26,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.displayText
-import app.upvpn.upvpn.model.locationSelectorIcon
+import app.upvpn.upvpn.model.warmOrColdColor
+import app.upvpn.upvpn.model.warmOrColdDescription
 import app.upvpn.upvpn.ui.state.LocationState
 import app.upvpn.upvpn.ui.state.VpnUiState
 import app.upvpn.upvpn.ui.state.isVpnSessionActivityInProgress
@@ -57,13 +60,13 @@ fun LocationSelector(
                     if (found != null) {
                         Triple(
                             found.displayText(),
-                            found.locationSelectorIcon(),
+                            Icons.Rounded.Circle,
                             openLocationScreen
                         )
                     } else {
                         Triple(
                             locationState.locations.first().displayText(),
-                            locationState.locations.first().locationSelectorIcon(),
+                            Icons.Rounded.Circle,
                             openLocationScreen
                         )
                     }
@@ -71,7 +74,7 @@ fun LocationSelector(
             } else {
                 Triple(
                     selectedLocation.displayText(),
-                    selectedLocation.locationSelectorIcon(),
+                    Icons.Rounded.Circle,
                     openLocationScreen
                 )
             }
@@ -102,24 +105,27 @@ fun LocationSelector(
                         .fillMaxHeight(0.6f)
                         .aspectRatio(1f)
                 )
-            }
-            if (displayText.contains("No Locations").not() && displayText.contains("Loading")
-                    .not()
-            ) {
-                CountryIcon(countryCode = selectedLocation?.countryCode ?: "US")
-            }
-            Text(text = displayText, overflow = TextOverflow.Visible)
-            if (isLoading.not()) {
-                if (vpnUiState.isVpnSessionActivityInProgress().not()) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = "Warm or Cold",
-                    )
+            } else {
+                if (displayText.contains("No Locations")) {
+                    Text(text = displayText, overflow = TextOverflow.Visible)
+                    Icon(imageVector = icon, contentDescription = "Reload")
                 } else {
-                    Icon(
-                        imageVector = Icons.Rounded.ChevronRight,
-                        contentDescription = "Arrow"
-                    )
+                    CountryIcon(countryCode = selectedLocation?.countryCode ?: "US")
+                    Text(text = displayText, overflow = TextOverflow.Visible)
+                    if (vpnUiState.isVpnSessionActivityInProgress().not()) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = selectedLocation?.warmOrColdDescription()
+                                ?: "Warm or Cold",
+                            modifier = Modifier.size(15.dp),
+                            tint = selectedLocation?.warmOrColdColor() ?: Color.Transparent
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Rounded.ChevronRight,
+                            contentDescription = "Arrow"
+                        )
+                    }
                 }
             }
         }
