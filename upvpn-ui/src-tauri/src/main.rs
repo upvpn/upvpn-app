@@ -10,6 +10,7 @@ mod state;
 mod system_tray;
 
 use commands::auth::{is_signed_in, sign_in, sign_out};
+use commands::daemon_online::is_daemon_online;
 use commands::desktop_notification::send_desktop_notification;
 use commands::file_ops::{open_license, open_log_file};
 use commands::location::{locations, recent_locations};
@@ -58,6 +59,7 @@ fn main() {
     builder
         .manage(AppState::default())
         .invoke_handler(tauri::generate_handler![
+            is_daemon_online,
             is_signed_in,
             sign_in,
             sign_out,

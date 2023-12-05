@@ -202,12 +202,7 @@ impl DeviceService {
         );
     }
 
-    async fn handle_sign_out_inner(&mut self) -> Result<(), DeviceError> {
-        // make API call to invalidate token
-        let mut server_api = ServerApi::new(self.token_storage.clone()).await?;
-
-        server_api.sign_out().await?;
-
+    async fn post_sign_out(&mut self) -> Result<(), DeviceError> {
         // reinitialize device
         self.device_storage.reinitialize("sign out").await?;
         // remove from DB and memory
@@ -215,6 +210,22 @@ impl DeviceService {
         self.token = None;
 
         Ok(())
+    }
+
+    async fn handle_sign_out_inner(&mut self) -> Result<(), DeviceError> {
+        // make API call to invalidate token
+        let mut server_api = ServerApi::new(self.token_storage.clone()).await?;
+
+        let status = server_api.sign_out().await;
+
+        // Handle any error other than unauthenticated
+        if let Err(status) = status {
+            if status.code() != tonic::Code::Unauthenticated {
+                return Err(DeviceError::Server(status));
+            }
+        }
+
+        self.post_sign_out().await
     }
 
     async fn handle_sign_out(&mut self, tx: ResponseTx<(), DeviceError>) {
@@ -228,12 +239,33 @@ impl DeviceService {
         });
     }
 
-    async fn handle_is_authenticated(&self, tx: ResponseTx<bool, DeviceError>) {
-        let token = self.token.clone();
-        tokio::spawn(async move {
-            // todo: validate token from backend; if invalid purge from DB and memory
-            Self::oneshot_send(tx, Ok(token.is_some()), "handle_is_authenticated")
-        });
+    async fn handle_is_authenticated_inner(&mut self) -> Result<bool, DeviceError> {
+        let mut server_api = ServerApi::new(self.token_storage.clone()).await?;
+        // make any light weight API call to check token
+        let version = server_api.latest_app_version().await;
+
+        // Handle unauthenticated
+        if let Err(status) = version {
+            if status.code() == tonic::Code::Unauthenticated {
+                // sign out device locally only if token is not None already
+                if self.token.is_some() {
+                    self.post_sign_out().await?;
+                }
+            }
+            // UI handles unauthenticated error (instead of returning false)
+            // todo: Should not return bool in first place
+            return Err(DeviceError::Server(status));
+        }
+
+        Ok(true)
+    }
+
+    async fn handle_is_authenticated(&mut self, tx: ResponseTx<bool, DeviceError>) {
+        Self::oneshot_send(
+            tx,
+            self.handle_is_authenticated_inner().await,
+            "handle_is_authenticated",
+        )
     }
 
     fn oneshot_send<T>(tx: oneshot::Sender<T>, t: T, msg: &'static str) {
