@@ -32,9 +32,9 @@ const LocationWarmColdIcon = ({ location, arrow }: Props) => {
     }
   } else {
     if (location.estimate <= 10) {
-      return <MdCircle size="1.2em" className="mx-1 text-green-600 " />;
+      return <MdCircle size="1em" className="mx-1 text-green-600 " />;
     } else {
-      return <MdCircle size="1.2em" className="mx-1 text-sky-400 " />;
+      return <MdCircle size="1em" className="mx-1 text-sky-400 " />;
     }
   }
 };
