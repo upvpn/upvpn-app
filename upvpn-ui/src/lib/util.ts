@@ -70,14 +70,14 @@ export const isUnauthenticated = (error: UiError): boolean => {
 }
 
 
-export const handleError = (error: UiError, navigate: NavigateFunction, isSignPage: boolean = false) => {
+export const handleError = (error: UiError, navigate: NavigateFunction, isSignInPage: boolean = false) => {
     switch (error.type) {
         case "DaemonIsOffline":
             navigate("/daemon-offline");
             break;
         case "Grpc":
             logError(`code: ${error.code}, type: ${error.type},  message: ${error.message}`);
-            if (isSignPage) {
+            if (isSignInPage) {
                 toast.error(error.message)
             } else {
                 // any other page if it receives unauthenticated then we should sign out and
