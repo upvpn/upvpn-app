@@ -7,19 +7,30 @@ import { invoke } from "@tauri-apps/api";
 import { isPermissionGranted, requestPermission } from "@tauri-apps/api/notification";
 import { KeyboardEvent } from "react";
 
-export function getLocationFromVpnStatus(status: VpnStatus): Location | undefined {
-    switch (status.type) {
-        case "Accepted":
-        case "Connecting":
-        case "Disconnecting":
-        case "ServerRunning":
-        case "ServerReady":
-            return status.payload
-        case "Connected":
-            return status.payload[0]
-        default:
-            return undefined;
+export function getLocationFromVpnStatus(status: VpnStatus, locations: Location[]): Location | undefined {
+
+    const locationInner = () => {
+        switch (status.type) {
+            case "Accepted":
+            case "Connecting":
+            case "Disconnecting":
+            case "ServerRunning":
+            case "ServerReady":
+                return status.payload
+            case "Connected":
+                return status.payload[0]
+            default:
+                return undefined;
+        }
     }
+
+    var location = locationInner();
+    const found = locations?.find((l) => l.code == location?.code)
+    if (found !== undefined && location !== undefined) {
+        location.estimate = found.estimate;
+    }
+
+    return location
 }
 
 export const isVpnInProgress = (vpnStatus: VpnStatus | undefined) => {
@@ -59,21 +70,35 @@ export const isUnauthenticated = (error: UiError): boolean => {
 }
 
 
-export const handleError = (error: UiError, navigate: NavigateFunction, toastWhenUnauthenticated: boolean = false) => {
+export const handleError = (error: UiError, navigate: NavigateFunction, isSignInPage: boolean = false) => {
     switch (error.type) {
         case "DaemonIsOffline":
             navigate("/daemon-offline");
             break;
         case "Grpc":
-            logError(error.message);
-            if (error.code === Code.Unauthenticated) {
-                if (toastWhenUnauthenticated) {
-                    toast.error(error.message);
-                }
-                navigate("/sign-in");
+            logError(`code: ${error.code}, type: ${error.type},  message: ${error.message}`);
+            if (isSignInPage) {
+                toast.error(error.message)
             } else {
-                logError(`${error.code} ${error.message}`);
-                toast.error(error.message);
+                // any other page if it receives unauthenticated then we should sign out and
+                // redirect to sign page but if sign out itself errors then we just toast.error
+                if (error.code == Code.Unauthenticated) {
+                    // sign out
+                    try {
+                        const signOut = async () => {
+                            await invoke("sign_out");
+                        }
+
+                        signOut();
+                        navigate("/sign-in");
+                    } catch (e) {
+                        // nothing much to do, toast original error message
+                        logError(`error ${e} occurred when handling sign out after unauthenticated`);
+                        toast.error(error.message)
+                    }
+                } else {
+                    toast.error(error.message)
+                }
             }
     }
 }

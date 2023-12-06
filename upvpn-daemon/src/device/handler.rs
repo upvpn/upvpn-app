@@ -206,7 +206,14 @@ impl DeviceService {
         // make API call to invalidate token
         let mut server_api = ServerApi::new(self.token_storage.clone()).await?;
 
-        server_api.sign_out().await?;
+        let status = server_api.sign_out().await;
+
+        // Handle any error other than unauthenticated
+        if let Err(status) = status {
+            if status.code() != tonic::Code::Unauthenticated {
+                return Err(DeviceError::Server(status));
+            }
+        }
 
         // reinitialize device
         self.device_storage.reinitialize("sign out").await?;
@@ -231,7 +238,7 @@ impl DeviceService {
     async fn handle_is_authenticated(&self, tx: ResponseTx<bool, DeviceError>) {
         let token = self.token.clone();
         tokio::spawn(async move {
-            // todo: validate token from backend; if invalid purge from DB and memory
+            // If token is expired UI will get unauthenticated and it will drive the sign out and sign in again.
             Self::oneshot_send(tx, Ok(token.is_some()), "handle_is_authenticated")
         });
     }

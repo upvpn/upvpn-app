@@ -23,7 +23,6 @@ import NotificationContext, {
 } from "../context/NotificationContext";
 import Timer from "../components/Timer";
 import { DateTime } from "luxon";
-import { KeyboardEvent } from "react";
 
 type Props = {};
 
@@ -77,7 +76,7 @@ function Home({}: Props) {
 
   useEffect(() => {
     if (vpnStatus !== undefined) {
-      const locationFromStatus = getLocationFromVpnStatus(vpnStatus);
+      const locationFromStatus = getLocationFromVpnStatus(vpnStatus, locations);
       if (locationFromStatus != undefined) {
         setLocation(locationFromStatus);
       }

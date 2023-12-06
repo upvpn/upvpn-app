@@ -10,6 +10,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@tauri-apps/api": "^1.2.0",
     "daisyui": "^2.51.5",
     "luxon": "^3.3.0",

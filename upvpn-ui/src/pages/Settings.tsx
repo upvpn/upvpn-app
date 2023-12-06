@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { info } from "tauri-plugin-log-api";
-import { open } from "@tauri-apps/api/shell";
 import { useNavigate } from "react-router";
 import Spinner from "../components/Spinner";
 import { invoke } from "@tauri-apps/api";
@@ -12,7 +10,6 @@ import { handleEnterKey, handleError, isVpnInProgress } from "../lib/util";
 import { UiError } from "../lib/types";
 import { toast } from "react-hot-toast";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
 import { MdOpenInNew } from "react-icons/md";
 
 type Props = {};

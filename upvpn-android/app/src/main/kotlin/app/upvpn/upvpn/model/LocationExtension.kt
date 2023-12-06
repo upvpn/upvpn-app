@@ -1,5 +1,7 @@
 package app.upvpn.upvpn.model
 
+import androidx.compose.ui.graphics.Color
+
 fun List<Location>.toCountries(): List<Country> =
     this.sortedWith(compareByDescending<Location> { it.country }.thenBy { it.city })
         .groupBy { it.country }
@@ -46,8 +48,36 @@ fun Location.displayText(): String {
                 else -> "${city.uppercase()}, ${stateCode.uppercase()}"
             }
         }
+
         else -> {
             city.uppercase()
+        }
+    }
+}
+
+val LOCATION_WARM_COLOR = Color(22, 163, 74, 255)
+val LOCATION_COLD_COLOR = Color(56, 189, 248, 255)
+
+fun Location.warmOrColdColor(): Color {
+    return when (this.estimate) {
+        null -> Color.Unspecified
+        else -> {
+            when (this.estimate <= 10) {
+                true -> LOCATION_WARM_COLOR
+                else -> LOCATION_COLD_COLOR
+            }
+        }
+    }
+}
+
+fun Location.warmOrColdDescription(): String {
+    return when (this.estimate) {
+        null -> ""
+        else -> {
+            when (this.estimate <= 10) {
+                true -> "Warm"
+                else -> "Cold"
+            }
         }
     }
 }

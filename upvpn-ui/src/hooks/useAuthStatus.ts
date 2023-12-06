@@ -12,13 +12,12 @@ function useAuthStatus() {
     const [daemonOffline, setDaemonOffline] = useState(false)
     const [signedIn, setSignedIn] = useState(false)
 
-    // periodically check for auth status as well as offline status
+    // periodically check for daemon offline
     useEffect(() => {
         const id = setInterval(() => {
             async function check() {
                 try {
-                    const isSignedIn = await invoke('is_signed_in') as boolean
-                    setSignedIn(isSignedIn);
+                    const _isOnline = await invoke('is_daemon_online');
                     setDaemonOffline(false);
                 } catch (e) {
                     if (isOffline(e as UiError)) {

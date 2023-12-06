@@ -66,7 +66,8 @@ data class Location(
     val city: String,
     val cityCode: String,
     val state: String? = null,
-    val stateCode: String? = null
+    val stateCode: String? = null,
+    val estimate: Short? = null
 ) : Parcelable
 
 @Serializable

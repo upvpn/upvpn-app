@@ -7,6 +7,7 @@ export interface Location {
     city_code: string;
     state?: string;
     state_code?: string;
+    estimate?: number;
 }
 
 export type VpnStatus =

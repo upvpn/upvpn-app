@@ -43,8 +43,6 @@ class DefaultVPNRepository(
 
     private val tag = "DefaultVPNRepository"
 
-    private var locations: List<Location> = listOf()
-
     private fun createDevice(): Device {
         val keyPair = KeyPair()
         val device = Device(
@@ -97,46 +95,52 @@ class DefaultVPNRepository(
         return addDeviceResponse.map { it.token }
     }
 
+    private suspend fun postSignOutCleanup() {
+        vpnDatabase.withTransaction {
+            val device = vpnDatabase.deviceDao().getDevice()
+            val user = vpnDatabase.userDao().getUser()
+            device?.let { vpnDatabase.deviceDao().delete(it) }
+            user?.let { vpnDatabase.userDao().delete(it) }
+        }
+    }
+
     override suspend fun signOut(): Result<Unit, String> {
         val signedOut = vpnApiService.signOut().toResult().mapError { e -> e.message }
 
-        signedOut.onSuccess {
-            vpnDatabase.withTransaction {
-                val device = vpnDatabase.deviceDao().getDevice()
-                val user = vpnDatabase.userDao().getUser()
-                device?.let { vpnDatabase.deviceDao().delete(it) }
-                user?.let { vpnDatabase.userDao().delete(it) }
+        return signedOut.fold(
+            success = {
+                postSignOutCleanup()
+                Ok(Unit)
+            },
+            failure = {
+                if (it == "unauthorized") {
+                    postSignOutCleanup()
+                    Ok(Unit)
+                } else {
+                    Err(it)
+                }
             }
-        }
-
-        return signedOut
+        )
     }
 
     override suspend fun getLocations(): Result<List<Location>, String> {
-        var result = if (locations.isEmpty()) {
-            val fromDatabase = vpnDatabase.locationDao().getLocations()
-            if (fromDatabase.isEmpty()) {
-                val apiResult = vpnApiService.getLocations().toResult().mapError { e -> e.message }
 
-                apiResult.fold(
-                    success = { newLocations ->
-                        Log.i(tag, "received ${newLocations.size} locations from API")
-                        locations = newLocations
-                        val dbLocations = locations.map { it.toDbLocation() }
-                        vpnDatabase.locationDao().insert(dbLocations)
-                        Ok(locations)
-                    },
-                    failure = { error ->
-                        Log.i(tag, "failed to get locations from API $error")
-                        Err(error)
-                    }
-                )
-            } else {
-                Ok(fromDatabase.map { it.toModelLocation() })
+        val apiResult = vpnApiService.getLocations().toResult().mapError { e -> e.message }
+
+        var result = apiResult.fold(
+            success = { newLocations ->
+                Log.i(tag, "received ${newLocations.size} locations from API")
+                val newLocationCodes = newLocations.map { it.code }
+                vpnDatabase.locationDao().deleteNotIn(newLocationCodes);
+                val dbLocations = newLocations.map { it.toDbLocation() }
+                vpnDatabase.locationDao().insert(dbLocations)
+                Ok(newLocations)
+            },
+            failure = { error ->
+                Log.i(tag, "failed to get locations from API $error")
+                Err(error)
             }
-        } else {
-            Ok(locations)
-        }
+        )
 
         return result
     }

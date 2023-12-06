@@ -19,6 +19,7 @@ message Location {
     string city_code = 5;
     optional string state = 6;
     optional string state_code = 7;
+    optional uint32 estimate = 8;
 }
 
 /// VPN Sessions
