@@ -23,7 +23,6 @@ import NotificationContext, {
 } from "../context/NotificationContext";
 import Timer from "../components/Timer";
 import { DateTime } from "luxon";
-import { KeyboardEvent } from "react";
 
 type Props = {};
 

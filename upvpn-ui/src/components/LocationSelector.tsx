@@ -1,11 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
-import {
-  MdAcUnit,
-  MdKeyboardArrowRight,
-  MdOutlineWbSunny,
-} from "react-icons/md";
 import { IoReload } from "react-icons/io5";
 import LocationContext, {
   LocationContextInterface,

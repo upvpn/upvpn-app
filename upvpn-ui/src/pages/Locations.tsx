@@ -1,8 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { Location } from "../lib/types";
-import { invoke } from "@tauri-apps/api";
-import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
 import LocationList from "../components/LocationList";
 import LocationContext, {
@@ -11,7 +8,6 @@ import LocationContext, {
 import VpnStatusContext, {
   VpnStatusContextInterface,
 } from "../context/VpnStatusContext";
-import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 

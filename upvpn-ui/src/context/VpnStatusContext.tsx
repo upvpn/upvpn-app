@@ -16,17 +16,7 @@ import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { info } from "tauri-plugin-log-api";
 import { useNavigate } from "react-router-dom";
-import { handleError, send_desktop_notification } from "../lib/util";
-import { appWindow } from "@tauri-apps/api/window";
-import { TauriEvent } from "@tauri-apps/api/event";
-import { toast } from "react-hot-toast";
-import { DateTime } from "luxon";
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-import { type } from "@tauri-apps/api/os";
+import { handleError } from "../lib/util";
 
 export interface ElapsedTime {
   days: string;

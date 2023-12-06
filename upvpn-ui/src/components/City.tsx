@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Location } from "../lib/types";
 import ReactCountryFlag from "react-country-flag";
 import LocationContext, {

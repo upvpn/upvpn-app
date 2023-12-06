@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { IoMdLogIn } from "react-icons/io";
-import { GiPineTree } from "react-icons/gi";
 import { invoke } from "@tauri-apps/api";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
 import { info } from "tauri-plugin-log-api";
 import { handleError } from "../lib/util";

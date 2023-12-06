@@ -1,7 +1,6 @@
 import React from "react";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { KeyboardEvent } from "react";
 import { handleEnterKey } from "../lib/util";
 
 type Props = {
