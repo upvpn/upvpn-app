@@ -1,4 +1,4 @@
-Serverless VPN enables you to connect unlimited devices to VPN. With pay as you go, yearly or lifetime plan.
+Serverless VPN enables you to connect unlimited devices to VPN. With pay as you go or yearly plan.
 
 <b>WireGuard® Protocol</b>
 
@@ -8,9 +8,9 @@ We never log or track your network data.
 <b>What’s Included?</b>
 
 - Works on Linux, macOS, Windows, Android, iOS, Raspberry Pi OS, ChromeOS
-- 20 locations around the world
+- 31 locations around the world
 - Unlimited devices
-- Unlimited data for yearly or lifetime plan
+- Unlimited data for yearly plan
 - Your prepaid balance never expires in pay as you go plan
 - 30 day money back guarantee
 - Use any WireGuard compatible client app with Web Devices
@@ -34,7 +34,9 @@ When you tap connect - a VPN server is provisioned on-demand. When you tap to di
 <b>Social</b>
 
 X Platform: @upvpnapp
-Reddit: /upvpn
+
+Learn more: https://upvpn.app
+All locations: https://upvpn.app/locations
 
 
 WireGuard is a registered trademark of Jason A. Donenfeld.
