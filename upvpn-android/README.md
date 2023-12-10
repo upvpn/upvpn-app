@@ -8,7 +8,7 @@ UpVPN Android app is built using modern Android framework based on Jetpack Compo
 
 Download UpVPN Android app using one of the following options:
 - [Play Store](https://play.google.com/store/apps/details?id=app.upvpn.upvpn)
-- [F-Droid (coming soon)]()
+- [F-Droid](https://f-droid.org/en/packages/app.upvpn.upvpn/)
 - APK from [Github Releases](https://github.com/upvpn/upvpn-app/releases)
 
 ### Dev Setup
