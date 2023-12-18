@@ -23,6 +23,7 @@ All of it happens with a single click or tap on the UI, or a single command on t
 # Install
 App for Linux, macOS, Windows, and Android is available for download on [Github Releases](https://github.com/upvpn/upvpn-app/releases) or on website at https://upvpn.app/download
 
+Android APKs are also available on [F-Droid](https://f-droid.org/packages/app.upvpn.upvpn/) or [Google Play](https://play.google.com/store/apps/details?id=app.upvpn.upvpn).
 
 # Code
 
