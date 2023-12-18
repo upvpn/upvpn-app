@@ -285,22 +285,34 @@ fun SignInCard(
             }
 
             item {
-                Text(
-                    text = "Need an account?",
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            val uri = "${BuildConfig.UPVPN_BASE_URL}/sign-up"
-                            try {
-                                uriHandler.openUri(uri)
-                            } catch (e: ActivityNotFoundException) {
-                                showSnackBar("Please visit $uri")
+                if (BuildConfig.IS_AMAZON) {
+                    // Amazon: Remove Sign-Up or implement IAP
+                    Text(
+                        text = "upvpn.app",
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                } else {
+                    Text(
+                        text = "Need an account?",
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                val uri = "${BuildConfig.UPVPN_BASE_URL}/sign-up"
+                                try {
+                                    uriHandler.openUri(uri)
+                                } catch (e: ActivityNotFoundException) {
+                                    showSnackBar("Please visit $uri")
+                                }
                             }
-                        }
-                )
+                    )
+                }
             }
 
         }

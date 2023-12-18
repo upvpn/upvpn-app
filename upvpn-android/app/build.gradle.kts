@@ -27,7 +27,7 @@ android {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
         targetSdk = 34
-        versionCode = 5
+        versionCode = 6
         versionName = "u2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -98,6 +98,23 @@ android {
             }
         }
     }
+
+    flavorDimensions += listOf("upvpn")
+
+    productFlavors {
+        create("production") {
+            dimension = "upvpn"
+            isDefault = true
+            buildConfigField("Boolean", "IS_AMAZON", "false")
+        }
+
+        create("amazon") {
+            dimension = "upvpn"
+            buildConfigField("Boolean", "IS_AMAZON", "true")
+            versionNameSuffix = ".amzn"
+        }
+    }
+
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
