@@ -27,7 +27,7 @@ android {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
         targetSdk = 34
-        versionCode = 5
+        versionCode = 6
         versionName = "u2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
