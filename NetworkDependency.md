@@ -1,5 +1,7 @@
 # Network Dependency
 
+**Only applicable to desktop apps**
+
 upvpn takes its design inspiration from [mullvadvpn-app](https://github.com/mullvad/mullvadvpn-app).
 For example Actor pattern is foundational in daemon.
 

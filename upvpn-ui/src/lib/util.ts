@@ -12,10 +12,11 @@ export function getLocationFromVpnStatus(status: VpnStatus, locations: Location[
     const locationInner = () => {
         switch (status.type) {
             case "Accepted":
-            case "Connecting":
-            case "Disconnecting":
+            case "ServerCreated":
             case "ServerRunning":
             case "ServerReady":
+            case "Connecting":
+            case "Disconnecting":
                 return status.payload
             case "Connected":
                 return status.payload[0]
