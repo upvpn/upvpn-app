@@ -116,6 +116,7 @@ fun AccountCard(
     isVpnSessionActivityInProgress: Boolean,
     signedInEmail: String, signOutState: SignOutState, onSignOutClick: () -> Unit
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,10 +131,26 @@ fun AccountCard(
             Text(text = "ACCOUNT", fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
             Text(text = signedInEmail)
             Divider()
-            SignOut(
-                isVpnSessionActivityInProgress,
-                signOutState = signOutState, onSignOutClick
-            )
+            Row(horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(BuildConfig.UPVPN_BASE_URL + "/dashboard")
+                        )
+                        context.startActivity(intent)
+                    }) {
+                Text(text = "Dashboard")
+                Icon(imageVector = Icons.Default.OpenInNew, contentDescription = "Open externally")
+            }
+            Divider()
+            Column(modifier = Modifier.padding(top = 20.dp)) {
+                SignOut(
+                    isVpnSessionActivityInProgress,
+                    signOutState = signOutState, onSignOutClick
+                )
+            }
         }
     }
 }
