@@ -1,1 +1,1 @@
-A Modern VPN based on WireGuard
+Serverless VPN based on WireGuard

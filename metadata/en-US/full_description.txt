@@ -1,4 +1,4 @@
-Serverless VPN enables you to connect unlimited devices to VPN. With pay as you go or yearly plan.
+Serverless VPN based on WireGuard.
 
 <b>WireGuard® Protocol</b>
 
@@ -7,8 +7,8 @@ We never log or track your network data.
 
 <b>What’s Included?</b>
 
-- Works on Linux, macOS, Windows, Android, iOS, Raspberry Pi OS, ChromeOS
-- 31 locations around the world
+- Works on Linux, macOS, Windows, Android, iOS, Raspberry Pi OS, Chrome OS
+- 40+ locations around the world
 - Unlimited devices
 - Unlimited data for yearly plan
 - Your prepaid balance never expires in pay as you go plan
@@ -22,6 +22,8 @@ https://github.com/upvpn/upvpn-app
 
 <b>Web Devices</b>
 
+Web Devices - Fully managed WireGuard-as-a-Service.
+
 You can use UpVPN on many Operating Systems without using UpVPN app but via WireGuard compatible client app.
 
 You manage VPN session of such devices on our web dashboard - we call such devices Web Devices.
@@ -33,10 +35,10 @@ When you tap connect - a VPN server is provisioned on-demand. When you tap to di
 
 <b>Social</b>
 
-X Platform: @upvpnapp
+X Platform: @UpVPNapp
 
-Learn more: https://upvpn.app
-All locations: https://upvpn.app/locations
+Learn more: https://UpVPN.app
+All locations: https://UpVPN.app/locations
 
 
 WireGuard is a registered trademark of Jason A. Donenfeld.
