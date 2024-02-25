@@ -10,7 +10,6 @@ Download UpVPN Android app using one of the following options:
 - [Play Store](https://play.google.com/store/apps/details?id=app.upvpn.upvpn)
 - [Amazon Appstore](https://www.amazon.com/dp/B0CQ3PNX54)
 - [Samsung Galaxy Store](https://galaxy.store/upvpn)
-- [F-Droid](https://f-droid.org/en/packages/app.upvpn.upvpn/)
 - APK from [Github Releases](https://github.com/upvpn/upvpn-app/releases)
 
 ### Dev Setup
