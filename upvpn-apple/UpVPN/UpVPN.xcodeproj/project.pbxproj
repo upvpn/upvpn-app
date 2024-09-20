@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A3212C1E2C8D69C5005E7D3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3212C1D2C8D69C5005E7D3D /* Assets.xcassets */; };
+		A3212C212C8D69C5005E7D3D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3212C202C8D69C5005E7D3D /* Preview Assets.xcassets */; };
 		A323FAE52C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */; };
 		A323FAE62C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */; };
 		A323FAE82C580F0D00CF9D84 /* HomeCardDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE72C580F0D00CF9D84 /* HomeCardDivider.swift */; };
@@ -49,6 +51,19 @@
 		A33336D82C47B937004D8C8E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
 		A33336D92C47B937004D8C8E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
 		A33336DA2C47B937004D8C8E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
+		A33E30632C968EE0001C0E89 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E30622C968EDA001C0E89 /* LocationView.swift */; };
+		A33E30652C969BB7001C0E89 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E30642C969BB7001C0E89 /* HomeView.swift */; };
+		A33E30672C96B210001C0E89 /* HomeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E30662C96B201001C0E89 /* HomeCard.swift */; };
+		A33E30692C96B8AA001C0E89 /* VPNSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E30682C96B8A4001C0E89 /* VPNSwitch.swift */; };
+		A33E306B2C96C660001C0E89 /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E306A2C96C65D001C0E89 /* StatsCard.swift */; };
+		A33E306D2C971BE8001C0E89 /* PriceCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E306C2C971BE3001C0E89 /* PriceCapsule.swift */; };
+		A33E30712C972E11001C0E89 /* PrepaidPlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF8E2C6B2507004753D1 /* PrepaidPlansView.swift */; };
+		A33E30732C973C8A001C0E89 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E30722C973C88001C0E89 /* HelpView.swift */; };
+		A33E30752C973FED001C0E89 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E30742C973FE9001C0E89 /* LocationsView.swift */; };
+		A33E30772C97D52A001C0E89 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E30762C97D528001C0E89 /* LoginView.swift */; };
+		A33E307B2C97E4A7001C0E89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A33E307A2C97E4A7001C0E89 /* LaunchScreen.storyboard */; };
+		A33E307C2C992171001C0E89 /* CardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF62C5963CD00CF9D84 /* CardContainer.swift */; };
+		A33E307D2C9925A4001C0E89 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */; };
 		A3422DBC2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */; };
 		A3422DBD2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */; };
 		A3422DC82C3562B700A3D867 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
@@ -109,6 +124,69 @@
 		A350DF1F2C251E2A00BA1BA6 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A350DF0C2C251E0B00BA1BA6 /* NetworkExtension.framework */; };
 		A350DF272C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A350DF2C2C251F6100BA1BA6 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DF0F2C251E0C00BA1BA6 /* PacketTunnelProvider.swift */; };
+		A361CA302C94BAA000EB2CA3 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A350DF0C2C251E0B00BA1BA6 /* NetworkExtension.framework */; };
+		A361CA382C94BAA000EB2CA3 /* UpVPNNetworkExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A361CA2F2C94BAA000EB2CA3 /* UpVPNNetworkExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A361CA422C94D04A00EB2CA3 /* VPNState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD82C387A8100A3D867 /* VPNState.swift */; };
+		A361CA432C94D04A00EB2CA3 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336B52C463394004D8C8E /* FileManager+Extension.swift */; };
+		A361CA442C94D04A00EB2CA3 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BD2C475E2C004D8C8E /* Keychain.swift */; };
+		A361CA452C94D04A00EB2CA3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
+		A361CA462C94D04A00EB2CA3 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
+		A361CA472C94D04A00EB2CA3 /* DeviceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C32C479C0E004D8C8E /* DeviceStore.swift */; };
+		A361CA482C94D04A00EB2CA3 /* StoreKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336CD2C47A158004D8C8E /* StoreKeys.swift */; };
+		A361CA492C94D04A00EB2CA3 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
+		A361CA4A2C94D04A00EB2CA3 /* StoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D98E2C4939F90008D23F /* StoreError.swift */; };
+		A361CA4B2C94D04A00EB2CA3 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763722C521EF80088D5F5 /* LocationStore.swift */; };
+		A361CA4C2C94D04A00EB2CA3 /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9A62C4979080008D23F /* DataRepository.swift */; };
+		A361CA4D2C94D04A00EB2CA3 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DCD2C3879FD00A3D867 /* Request.swift */; };
+		A361CA4E2C94D04A00EB2CA3 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD22C387A0600A3D867 /* Response.swift */; };
+		A361CA4F2C94D04A00EB2CA3 /* AppMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */; };
+		A361CA502C94D04A00EB2CA3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
+		A361CA512C94D04A00EB2CA3 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C82C479D9F004D8C8E /* Device.swift */; };
+		A361CA522C94D04A00EB2CA3 /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9932C493A820008D23F /* UserCredentials.swift */; };
+		A361CA532C94D04A00EB2CA3 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99E2C4968130008D23F /* Types.swift */; };
+		A361CA542C94D04A00EB2CA3 /* InterfaceConfiguration+Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */; };
+		A361CA552C94D04A00EB2CA3 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF52C3F7F2100A3D867 /* Client.swift */; };
+		A361CA562C94D04A00EB2CA3 /* VPNApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DFF2C3F802300A3D867 /* VPNApiService.swift */; };
+		A361CA572C94D04A00EB2CA3 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DF0F2C251E0C00BA1BA6 /* PacketTunnelProvider.swift */; };
+		A361CA582C94D04A00EB2CA3 /* VPNSessionWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422E0A2C3F8ADF00A3D867 /* VPNSessionWatcher.swift */; };
+		A361CA592C94D04A00EB2CA3 /* VPNSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763602C50122C0088D5F5 /* VPNSessionRepository.swift */; };
+		A361CA5A2C94D04A00EB2CA3 /* VPNSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7636C2C51877B0088D5F5 /* VPNSessionStore.swift */; };
+		A361CA5B2C94D04A00EB2CA3 /* VPNSessionReclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7636F2C5196750088D5F5 /* VPNSessionReclaimer.swift */; };
+		A361CA5C2C94D04A00EB2CA3 /* OrcestratorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DEE2C3E8D7B00A3D867 /* OrcestratorCommand.swift */; };
+		A361CA5D2C94D04A00EB2CA3 /* VPNOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DEB2C3E8D4700A3D867 /* VPNOrchestrator.swift */; };
+		A361CA5E2C94D04A00EB2CA3 /* VPNOrchestratorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763632C501B210088D5F5 /* VPNOrchestratorState.swift */; };
+		A361CA5F2C94D04A00EB2CA3 /* ErrorNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BA2C464079004D8C8E /* ErrorNotifier.swift */; };
+		A361CA602C94D04A00EB2CA3 /* TunnelConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763662C509C0E0088D5F5 /* TunnelConfigurationExtension.swift */; };
+		A361CA612C94D04A00EB2CA3 /* WGAdapterAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF12C3EA41100A3D867 /* WGAdapterAsync.swift */; };
+		A361CA632C94D06200EB2CA3 /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A361CA622C94D06200EB2CA3 /* WireGuardKit */; };
+		A361CA652C94D0BA00EB2CA3 /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A361CA642C94D0BA00EB2CA3 /* WireGuardKit */; };
+		A361CA672C94D68E00EB2CA3 /* UpVPNApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DED82C25141200BA1BA6 /* UpVPNApp.swift */; };
+		A361CA682C94E5E400EB2CA3 /* DeviceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C32C479C0E004D8C8E /* DeviceStore.swift */; };
+		A361CA692C94E5E400EB2CA3 /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9A62C4979080008D23F /* DataRepository.swift */; };
+		A361CA6A2C94E5E400EB2CA3 /* TunnelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */; };
+		A361CA6B2C94E5E400EB2CA3 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99B2C4954A00008D23F /* AuthViewModel.swift */; };
+		A361CA6C2C94E5E400EB2CA3 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7637A2C5225E00088D5F5 /* LocationViewModel.swift */; };
+		A361CA6D2C94E5E400EB2CA3 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF8B2C6B068A004753D1 /* PlanViewModel.swift */; };
+		A361CA6E2C94E62700EB2CA3 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C82C479D9F004D8C8E /* Device.swift */; };
+		A361CA6F2C94E62700EB2CA3 /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9932C493A820008D23F /* UserCredentials.swift */; };
+		A361CA702C94E62700EB2CA3 /* VPNApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DFF2C3F802300A3D867 /* VPNApiService.swift */; };
+		A361CA712C94E62700EB2CA3 /* TunnelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E352D92C2E30B6008D0E30 /* TunnelManager.swift */; };
+		A361CA722C94E62700EB2CA3 /* TunnelObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DE52C3DB4DE00A3D867 /* TunnelObserver.swift */; };
+		A361CA732C94E6A600EB2CA3 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
+		A361CA742C94E6A600EB2CA3 /* StoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D98E2C4939F90008D23F /* StoreError.swift */; };
+		A361CA752C94E6A600EB2CA3 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763722C521EF80088D5F5 /* LocationStore.swift */; };
+		A361CA762C94E6A600EB2CA3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
+		A361CA772C94E6A600EB2CA3 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99E2C4968130008D23F /* Types.swift */; };
+		A361CA782C94E6C200EB2CA3 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BD2C475E2C004D8C8E /* Keychain.swift */; };
+		A361CA792C94E6C200EB2CA3 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF52C3F7F2100A3D867 /* Client.swift */; };
+		A361CA7A2C94E72D00EB2CA3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
+		A361CA7B2C94E75200EB2CA3 /* StoreKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336CD2C47A158004D8C8E /* StoreKeys.swift */; };
+		A361CA7C2C94E78000EB2CA3 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
+		A361CA7D2C94E84C00EB2CA3 /* TunnelManagerSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */; };
+		A361CA7E2C94E85900EB2CA3 /* TunnelStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E352DC2C2E3D9D008D0E30 /* TunnelStatus.swift */; };
+		A361CA7F2C94E8AF00EB2CA3 /* VPNState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD82C387A8100A3D867 /* VPNState.swift */; };
+		A361CA802C94E8E200EB2CA3 /* InterfaceConfiguration+Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */; };
+		A361CA812C94E90300EB2CA3 /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A380AA992C6308CF007E09A1 /* PlanRepository.swift */; };
 		A364B0B72C7EB9C500A82952 /* UserDataConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */; };
 		A364B0B82C7EB9C500A82952 /* UserDataConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */; };
 		A36565F82C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */; };
@@ -140,8 +218,39 @@
 		A365665B2C57072000C2E748 /* FlagKit in Frameworks */ = {isa = PBXBuildFile; productRef = A365665A2C57072000C2E748 /* FlagKit */; };
 		A365665D2C570B8C00C2E748 /* TunnelStatus+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */; };
 		A365665E2C570B8C00C2E748 /* TunnelStatus+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */; };
+		A379AAE32C9509EF00BC55AA /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336B52C463394004D8C8E /* FileManager+Extension.swift */; };
+		A379AAE42C950BFA00BC55AA /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1032C70249700AF1490 /* UIUtils.swift */; };
+		A379AAE92C950D4B00BC55AA /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A379AAE72C950D1A00BC55AA /* MainContentView.swift */; };
+		A379AAEA2C950D7400BC55AA /* RuntimeConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F42C6E934300AF1490 /* RuntimeConfigurationView.swift */; };
+		A379AAEC2C950DB900BC55AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365660D2C55700200C2E748 /* SettingsView.swift */; };
+		A379AAEF2C950E2400BC55AA /* FlagImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAED2C5842A700CF9D84 /* FlagImage.swift */; };
+		A379AAF02C950E4800BC55AA /* LocationsMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A21D8A2C87362E00600C2C /* LocationsMapView.swift */; };
+		A379AAF12C950E6F00BC55AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DEDA2C25141200BA1BA6 /* ContentView.swift */; };
+		A379AAF32C950E7D00BC55AA /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566042C54613A00C2E748 /* WelcomeView.swift */; };
+		A379AAF42C950EAF00BC55AA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FE2C545F8F00C2E748 /* MainView.swift */; };
+		A379AAF72C950EE600BC55AA /* Location+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566532C57031600C2E748 /* Location+Extension.swift */; };
+		A379AAF82C950EEB00BC55AA /* TunnelStatus+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */; };
+		A379AAF92C950EF100BC55AA /* ElapsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */; };
+		A379AAFC2C950F0600BC55AA /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF02C58637A00CF9D84 /* Color+Extension.swift */; };
+		A379AB002C950F2500BC55AA /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F72C6FE58300AF1490 /* AccountView.swift */; };
+		A379AB012C950F2B00BC55AA /* SignOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0FA2C6FE59200AF1490 /* SignOutView.swift */; };
+		A379AB022C950F3000BC55AA /* VersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0FD2C6FEF0100AF1490 /* VersionView.swift */; };
+		A379AB032C950F3400BC55AA /* KeyValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1002C701FA700AF1490 /* KeyValueView.swift */; };
+		A379AB042C950F3B00BC55AA /* UserDataConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */; };
+		A379AB072C950F4800BC55AA /* YearlyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF942C6B3E3B004753D1 /* YearlyPlanView.swift */; };
+		A379AB082C950F4C00BC55AA /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF972C6B4C3B004753D1 /* PurchaseButton.swift */; };
+		A379AB092C950F5000BC55AA /* PlanManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347A8252C6129CC00FEF961 /* PlanManagement.swift */; };
+		A379AB0A2C950F5400BC55AA /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF9B2C6B4F02004753D1 /* PlanView.swift */; };
+		A379AB0B2C950F8900BC55AA /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF32C58699000CF9D84 /* Country.swift */; };
+		A379AB0C2C95104100BC55AA /* String+ArrayConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */; };
+		A379AB122C951CB000BC55AA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DCD2C3879FD00A3D867 /* Request.swift */; };
+		A379AB132C951CBA00BC55AA /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD22C387A0600A3D867 /* Response.swift */; };
+		A379AB142C951CC000BC55AA /* AppMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */; };
+		A379AB152C951CC400BC55AA /* NETunnelProviderSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DE82C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift */; };
+		A379AB162C951CE600BC55AA /* TunnelConfiguration+UapiConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */; };
 		A380AA9A2C6308CF007E09A1 /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A380AA992C6308CF007E09A1 /* PlanRepository.swift */; };
 		A380AA9B2C6308CF007E09A1 /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A380AA992C6308CF007E09A1 /* PlanRepository.swift */; };
+		A38864182C94EBC000E91A1D /* FlagKit in Frameworks */ = {isa = PBXBuildFile; productRef = A38864172C94EBC000E91A1D /* FlagKit */; };
 		A391D98A2C4919FA0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
 		A391D98B2C4919FA0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
 		A391D98F2C4939F90008D23F /* StoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D98E2C4939F90008D23F /* StoreError.swift */; };
@@ -246,6 +355,20 @@
 			remoteGlobalIDString = A350DF1D2C251E2A00BA1BA6;
 			remoteInfo = UpVPNNetworkExtensionmacOS;
 		};
+		A361CA362C94BAA000EB2CA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A350DECD2C25141100BA1BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A361CA2E2C94BAA000EB2CA3;
+			remoteInfo = UpVPNNetworkExtensiontvOS;
+		};
+		A361CA402C94CF4D00EB2CA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A350DECD2C25141100BA1BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3212BEB2C8D6450005E7D3D;
+			remoteInfo = WireGuardGoBridgetvOS;
+		};
 		A3AA4B192C256F69001135FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A350DECD2C25141100BA1BA6 /* Project object */;
@@ -285,9 +408,23 @@
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A361CA3C2C94BAA000EB2CA3 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A361CA382C94BAA000EB2CA3 /* UpVPNNetworkExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A3212C172C8D69C4005E7D3D /* UpVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3212C1D2C8D69C5005E7D3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A3212C202C8D69C5005E7D3D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTimeView.swift; sourceTree = "<group>"; };
 		A323FAE72C580F0D00CF9D84 /* HomeCardDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCardDivider.swift; sourceTree = "<group>"; };
 		A323FAEA2C58100A00CF9D84 /* HomeCardLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCardLocation.swift; sourceTree = "<group>"; };
@@ -305,6 +442,16 @@
 		A33336C82C479D9F004D8C8E /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		A33336CD2C47A158004D8C8E /* StoreKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKeys.swift; sourceTree = "<group>"; };
 		A33336D62C47B937004D8C8E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		A33E30622C968EDA001C0E89 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		A33E30642C969BB7001C0E89 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A33E30662C96B201001C0E89 /* HomeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCard.swift; sourceTree = "<group>"; };
+		A33E30682C96B8A4001C0E89 /* VPNSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNSwitch.swift; sourceTree = "<group>"; };
+		A33E306A2C96C65D001C0E89 /* StatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCard.swift; sourceTree = "<group>"; };
+		A33E306C2C971BE3001C0E89 /* PriceCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCapsule.swift; sourceTree = "<group>"; };
+		A33E30722C973C88001C0E89 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		A33E30742C973FE9001C0E89 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
+		A33E30762C97D528001C0E89 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A33E307A2C97E4A7001C0E89 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelViewModel.swift; sourceTree = "<group>"; };
 		A3422DC72C3562B700A3D867 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		A3422DCD2C3879FD00A3D867 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -338,6 +485,11 @@
 		A350DF122C251E0C00BA1BA6 /* UpVPNNetworkExtension_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UpVPNNetworkExtension_iOS.entitlements; sourceTree = "<group>"; };
 		A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UpVPNNetworkExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A350DF242C251E2A00BA1BA6 /* UpVPNNetworkExtension_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UpVPNNetworkExtension_macOS.entitlements; sourceTree = "<group>"; };
+		A361CA2F2C94BAA000EB2CA3 /* UpVPNNetworkExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UpVPNNetworkExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A361CA3D2C94BF9B00EB2CA3 /* UpVPNNetworkExtension_tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UpVPNNetworkExtension_tvOS.entitlements; sourceTree = "<group>"; };
+		A361CA3E2C94C17400EB2CA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A361CA662C94D35B00EB2CA3 /* UpVPN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UpVPN.entitlements; sourceTree = "<group>"; };
+		A36409E02C9956810077CB46 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataConsent.swift; sourceTree = "<group>"; };
 		A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TunnelConfiguration+UapiConfig.swift"; sourceTree = "<group>"; };
 		A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ArrayConversion.swift"; sourceTree = "<group>"; };
@@ -353,6 +505,7 @@
 		A36566502C56E75600C2E748 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		A36566532C57031600C2E748 /* Location+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extension.swift"; sourceTree = "<group>"; };
 		A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TunnelStatus+Extension.swift"; sourceTree = "<group>"; };
+		A379AAE72C950D1A00BC55AA /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
 		A380AA992C6308CF007E09A1 /* PlanRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanRepository.swift; sourceTree = "<group>"; };
 		A391D9892C4919FA0008D23F /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		A391D98E2C4939F90008D23F /* StoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreError.swift; sourceTree = "<group>"; };
@@ -394,6 +547,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A3212C142C8D69C4005E7D3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A361CA652C94D0BA00EB2CA3 /* WireGuardKit in Frameworks */,
+				A38864182C94EBC000E91A1D /* FlagKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A350DED22C25141100BA1BA6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -430,9 +592,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A361CA2C2C94BAA000EB2CA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A361CA632C94D06200EB2CA3 /* WireGuardKit in Frameworks */,
+				A361CA302C94BAA000EB2CA3 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A3212C182C8D69C4005E7D3D /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				A379AAE62C950CE600BC55AA /* Views */,
+				A361CA3E2C94C17400EB2CA3 /* Info.plist */,
+				A3212C1D2C8D69C5005E7D3D /* Assets.xcassets */,
+				A3212C1F2C8D69C5005E7D3D /* Preview Content */,
+				A361CA662C94D35B00EB2CA3 /* UpVPN.entitlements */,
+				A33E307A2C97E4A7001C0E89 /* LaunchScreen.storyboard */,
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+		A3212C1F2C8D69C5005E7D3D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A3212C202C8D69C5005E7D3D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		A33336C22C479BEF004D8C8E /* Store */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,6 +635,14 @@
 				A3A763722C521EF80088D5F5 /* LocationStore.swift */,
 			);
 			path = Store;
+			sourceTree = "<group>";
+		};
+		A33E306E2C971BF8001C0E89 /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				A33E306C2C971BE3001C0E89 /* PriceCapsule.swift */,
+			);
+			path = Plan;
 			sourceTree = "<group>";
 		};
 		A3422DB82C2E3FE600A3D867 /* Model */ = {
@@ -508,6 +708,7 @@
 				A3AA4B222C257C75001135FD /* App */,
 				A350DED72C25141200BA1BA6 /* macOS */,
 				A350DEEC2C25147C00BA1BA6 /* iOS */,
+				A3212C182C8D69C4005E7D3D /* tvOS */,
 				A350DF0E2C251E0C00BA1BA6 /* UpVPNNetworkExtension */,
 				A350DF0B2C251E0B00BA1BA6 /* Frameworks */,
 				A350DED62C25141200BA1BA6 /* Products */,
@@ -521,6 +722,8 @@
 				A350DEEB2C25147C00BA1BA6 /* UpVPN.app */,
 				A350DF0A2C251E0B00BA1BA6 /* UpVPNNetworkExtension.appex */,
 				A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */,
+				A3212C172C8D69C4005E7D3D /* UpVPN.app */,
+				A361CA2F2C94BAA000EB2CA3 /* UpVPNNetworkExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -577,15 +780,25 @@
 		A350DF0E2C251E0C00BA1BA6 /* UpVPNNetworkExtension */ = {
 			isa = PBXGroup;
 			children = (
+				A36409E12C99570C0077CB46 /* tvOS */,
 				A350DF0F2C251E0C00BA1BA6 /* PacketTunnelProvider.swift */,
 				A350DF112C251E0C00BA1BA6 /* Info.plist */,
 				A350DF242C251E2A00BA1BA6 /* UpVPNNetworkExtension_macOS.entitlements */,
 				A350DF122C251E0C00BA1BA6 /* UpVPNNetworkExtension_iOS.entitlements */,
+				A361CA3D2C94BF9B00EB2CA3 /* UpVPNNetworkExtension_tvOS.entitlements */,
 				A3A7636A2C5146C90088D5F5 /* Data */,
 				A3A763692C51460B0088D5F5 /* Orchestrator */,
 				A3A7636B2C5146E40088D5F5 /* Tunnel */,
 			);
 			path = UpVPNNetworkExtension;
+			sourceTree = "<group>";
+		};
+		A36409E12C99570C0077CB46 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				A36409E02C9956810077CB46 /* Info.plist */,
+			);
+			path = tvOS;
 			sourceTree = "<group>";
 		};
 		A36565FD2C545F5200C2E748 /* Views */ = {
@@ -619,6 +832,23 @@
 				A3A9F1002C701FA700AF1490 /* KeyValueView.swift */,
 				A3A9F1032C70249700AF1490 /* UIUtils.swift */,
 				A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A379AAE62C950CE600BC55AA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A33E30762C97D528001C0E89 /* LoginView.swift */,
+				A33E30742C973FE9001C0E89 /* LocationsView.swift */,
+				A33E30722C973C88001C0E89 /* HelpView.swift */,
+				A33E306E2C971BF8001C0E89 /* Plan */,
+				A33E306A2C96C65D001C0E89 /* StatsCard.swift */,
+				A33E30682C96B8A4001C0E89 /* VPNSwitch.swift */,
+				A33E30662C96B201001C0E89 /* HomeCard.swift */,
+				A33E30622C968EDA001C0E89 /* LocationView.swift */,
+				A379AAE72C950D1A00BC55AA /* MainContentView.swift */,
+				A33E30642C969BB7001C0E89 /* HomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -721,6 +951,20 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
+		A3212BEB2C8D6450005E7D3D /* WireGuardGoBridgetvOS */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = A3212BEE2C8D6450005E7D3D /* Build configuration list for PBXLegacyTarget "WireGuardGoBridgetvOS" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "$(SOURCE_PACKAGES_DIR)/checkouts/wireguard-apple/Sources/WireGuardKitGo";
+			dependencies = (
+			);
+			name = WireGuardGoBridgetvOS;
+			passBuildSettingsInEnvironment = 1;
+			productName = WireGuardGoBridegtvOS;
+		};
 		A3AA4B112C256EC2001135FD /* WireGuardGoBridgeiOS */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "$(ACTION)";
@@ -798,6 +1042,29 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		A3212C162C8D69C4005E7D3D /* UpVPNtvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A3212C222C8D69C5005E7D3D /* Build configuration list for PBXNativeTarget "UpVPNtvOS" */;
+			buildPhases = (
+				A3212C132C8D69C4005E7D3D /* Sources */,
+				A3212C142C8D69C4005E7D3D /* Frameworks */,
+				A3212C152C8D69C4005E7D3D /* Resources */,
+				A361CA3C2C94BAA000EB2CA3 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A361CA372C94BAA000EB2CA3 /* PBXTargetDependency */,
+			);
+			name = UpVPNtvOS;
+			packageProductDependencies = (
+				A361CA642C94D0BA00EB2CA3 /* WireGuardKit */,
+				A38864172C94EBC000E91A1D /* FlagKit */,
+			);
+			productName = UpVPNtvOS;
+			productReference = A3212C172C8D69C4005E7D3D /* UpVPN.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A350DED42C25141100BA1BA6 /* UpVPNmacOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A350DEE42C25141300BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNmacOS" */;
@@ -886,6 +1153,27 @@
 			productReference = A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		A361CA2E2C94BAA000EB2CA3 /* UpVPNNetworkExtensiontvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A361CA392C94BAA000EB2CA3 /* Build configuration list for PBXNativeTarget "UpVPNNetworkExtensiontvOS" */;
+			buildPhases = (
+				A361CA2B2C94BAA000EB2CA3 /* Sources */,
+				A361CA2C2C94BAA000EB2CA3 /* Frameworks */,
+				A361CA2D2C94BAA000EB2CA3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A361CA412C94CF4D00EB2CA3 /* PBXTargetDependency */,
+			);
+			name = UpVPNNetworkExtensiontvOS;
+			packageProductDependencies = (
+				A361CA622C94D06200EB2CA3 /* WireGuardKit */,
+			);
+			productName = UpVPNNetworkExtensiontvOS;
+			productReference = A361CA2F2C94BAA000EB2CA3 /* UpVPNNetworkExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -896,6 +1184,12 @@
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					A3212BEB2C8D6450005E7D3D = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A3212C162C8D69C4005E7D3D = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					A350DED42C25141100BA1BA6 = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -906,6 +1200,9 @@
 						CreatedOnToolsVersion = 15.4;
 					};
 					A350DF1D2C251E2A00BA1BA6 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A361CA2E2C94BAA000EB2CA3 = {
 						CreatedOnToolsVersion = 15.4;
 					};
 					A3AA4B112C256EC2001135FD = {
@@ -939,11 +1236,25 @@
 				A350DF1D2C251E2A00BA1BA6 /* UpVPNNetworkExtensionmacOS */,
 				A3AA4B112C256EC2001135FD /* WireGuardGoBridgeiOS */,
 				A3AA4B152C256ED0001135FD /* WireGuardGoBridgemacOS */,
+				A3212C162C8D69C4005E7D3D /* UpVPNtvOS */,
+				A361CA2E2C94BAA000EB2CA3 /* UpVPNNetworkExtensiontvOS */,
+				A3212BEB2C8D6450005E7D3D /* WireGuardGoBridgetvOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A3212C152C8D69C4005E7D3D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A33E307B2C97E4A7001C0E89 /* LaunchScreen.storyboard in Resources */,
+				A3212C212C8D69C5005E7D3D /* Preview Assets.xcassets in Resources */,
+				A33E307D2C9925A4001C0E89 /* PrivacyInfo.xcprivacy in Resources */,
+				A3212C1E2C8D69C5005E7D3D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A350DED32C25141100BA1BA6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -979,9 +1290,91 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A361CA2D2C94BAA000EB2CA3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A3212C132C8D69C4005E7D3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A379AAFC2C950F0600BC55AA /* Color+Extension.swift in Sources */,
+				A361CA7F2C94E8AF00EB2CA3 /* VPNState.swift in Sources */,
+				A33E30712C972E11001C0E89 /* PrepaidPlansView.swift in Sources */,
+				A361CA7C2C94E78000EB2CA3 /* AppConfig.swift in Sources */,
+				A361CA7B2C94E75200EB2CA3 /* StoreKeys.swift in Sources */,
+				A379AB032C950F3400BC55AA /* KeyValueView.swift in Sources */,
+				A361CA7A2C94E72D00EB2CA3 /* Utils.swift in Sources */,
+				A361CA782C94E6C200EB2CA3 /* Keychain.swift in Sources */,
+				A361CA792C94E6C200EB2CA3 /* Client.swift in Sources */,
+				A361CA732C94E6A600EB2CA3 /* UserStore.swift in Sources */,
+				A379AB002C950F2500BC55AA /* AccountView.swift in Sources */,
+				A379AAF72C950EE600BC55AA /* Location+Extension.swift in Sources */,
+				A33E30732C973C8A001C0E89 /* HelpView.swift in Sources */,
+				A361CA742C94E6A600EB2CA3 /* StoreError.swift in Sources */,
+				A379AAF12C950E6F00BC55AA /* ContentView.swift in Sources */,
+				A33E30692C96B8AA001C0E89 /* VPNSwitch.swift in Sources */,
+				A361CA752C94E6A600EB2CA3 /* LocationStore.swift in Sources */,
+				A379AB092C950F5000BC55AA /* PlanManagement.swift in Sources */,
+				A361CA762C94E6A600EB2CA3 /* Location.swift in Sources */,
+				A379AB132C951CBA00BC55AA /* Response.swift in Sources */,
+				A379AB152C951CC400BC55AA /* NETunnelProviderSessionExtension.swift in Sources */,
+				A33E306D2C971BE8001C0E89 /* PriceCapsule.swift in Sources */,
+				A361CA772C94E6A600EB2CA3 /* Types.swift in Sources */,
+				A33E307C2C992171001C0E89 /* CardContainer.swift in Sources */,
+				A33E30672C96B210001C0E89 /* HomeCard.swift in Sources */,
+				A379AAF02C950E4800BC55AA /* LocationsMapView.swift in Sources */,
+				A361CA6E2C94E62700EB2CA3 /* Device.swift in Sources */,
+				A33E30632C968EE0001C0E89 /* LocationView.swift in Sources */,
+				A361CA6F2C94E62700EB2CA3 /* UserCredentials.swift in Sources */,
+				A379AB142C951CC000BC55AA /* AppMessageHandler.swift in Sources */,
+				A33E30772C97D52A001C0E89 /* LoginView.swift in Sources */,
+				A379AAF82C950EEB00BC55AA /* TunnelStatus+Extension.swift in Sources */,
+				A379AAF42C950EAF00BC55AA /* MainView.swift in Sources */,
+				A379AB0B2C950F8900BC55AA /* Country.swift in Sources */,
+				A379AAEA2C950D7400BC55AA /* RuntimeConfigurationView.swift in Sources */,
+				A379AB012C950F2B00BC55AA /* SignOutView.swift in Sources */,
+				A361CA702C94E62700EB2CA3 /* VPNApiService.swift in Sources */,
+				A361CA712C94E62700EB2CA3 /* TunnelManager.swift in Sources */,
+				A379AAE42C950BFA00BC55AA /* UIUtils.swift in Sources */,
+				A379AB082C950F4C00BC55AA /* PurchaseButton.swift in Sources */,
+				A379AAEF2C950E2400BC55AA /* FlagImage.swift in Sources */,
+				A379AB122C951CB000BC55AA /* Request.swift in Sources */,
+				A361CA7E2C94E85900EB2CA3 /* TunnelStatus.swift in Sources */,
+				A379AAE32C9509EF00BC55AA /* FileManager+Extension.swift in Sources */,
+				A361CA722C94E62700EB2CA3 /* TunnelObserver.swift in Sources */,
+				A379AB042C950F3B00BC55AA /* UserDataConsent.swift in Sources */,
+				A379AAEC2C950DB900BC55AA /* SettingsView.swift in Sources */,
+				A361CA682C94E5E400EB2CA3 /* DeviceStore.swift in Sources */,
+				A361CA812C94E90300EB2CA3 /* PlanRepository.swift in Sources */,
+				A361CA7D2C94E84C00EB2CA3 /* TunnelManagerSimulator.swift in Sources */,
+				A361CA692C94E5E400EB2CA3 /* DataRepository.swift in Sources */,
+				A379AB0A2C950F5400BC55AA /* PlanView.swift in Sources */,
+				A361CA6A2C94E5E400EB2CA3 /* TunnelViewModel.swift in Sources */,
+				A361CA6B2C94E5E400EB2CA3 /* AuthViewModel.swift in Sources */,
+				A361CA802C94E8E200EB2CA3 /* InterfaceConfiguration+Device.swift in Sources */,
+				A361CA6C2C94E5E400EB2CA3 /* LocationViewModel.swift in Sources */,
+				A361CA6D2C94E5E400EB2CA3 /* PlanViewModel.swift in Sources */,
+				A33E306B2C96C660001C0E89 /* StatsCard.swift in Sources */,
+				A379AAF92C950EF100BC55AA /* ElapsedTimeView.swift in Sources */,
+				A379AAF32C950E7D00BC55AA /* WelcomeView.swift in Sources */,
+				A379AB022C950F3000BC55AA /* VersionView.swift in Sources */,
+				A33E30652C969BB7001C0E89 /* HomeView.swift in Sources */,
+				A379AB162C951CE600BC55AA /* TunnelConfiguration+UapiConfig.swift in Sources */,
+				A379AB0C2C95104100BC55AA /* String+ArrayConversion.swift in Sources */,
+				A379AB072C950F4800BC55AA /* YearlyPlanView.swift in Sources */,
+				A33E30752C973FED001C0E89 /* LocationsView.swift in Sources */,
+				A361CA672C94D68E00EB2CA3 /* UpVPNApp.swift in Sources */,
+				A379AAE92C950D4B00BC55AA /* MainContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A350DED12C25141100BA1BA6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1215,6 +1608,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A361CA2B2C94BAA000EB2CA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A361CA422C94D04A00EB2CA3 /* VPNState.swift in Sources */,
+				A361CA432C94D04A00EB2CA3 /* FileManager+Extension.swift in Sources */,
+				A361CA442C94D04A00EB2CA3 /* Keychain.swift in Sources */,
+				A361CA452C94D04A00EB2CA3 /* Utils.swift in Sources */,
+				A361CA462C94D04A00EB2CA3 /* AppConfig.swift in Sources */,
+				A361CA472C94D04A00EB2CA3 /* DeviceStore.swift in Sources */,
+				A361CA482C94D04A00EB2CA3 /* StoreKeys.swift in Sources */,
+				A361CA492C94D04A00EB2CA3 /* UserStore.swift in Sources */,
+				A361CA4A2C94D04A00EB2CA3 /* StoreError.swift in Sources */,
+				A361CA4B2C94D04A00EB2CA3 /* LocationStore.swift in Sources */,
+				A361CA4C2C94D04A00EB2CA3 /* DataRepository.swift in Sources */,
+				A361CA4D2C94D04A00EB2CA3 /* Request.swift in Sources */,
+				A361CA4E2C94D04A00EB2CA3 /* Response.swift in Sources */,
+				A361CA4F2C94D04A00EB2CA3 /* AppMessageHandler.swift in Sources */,
+				A361CA502C94D04A00EB2CA3 /* Location.swift in Sources */,
+				A361CA512C94D04A00EB2CA3 /* Device.swift in Sources */,
+				A361CA522C94D04A00EB2CA3 /* UserCredentials.swift in Sources */,
+				A361CA532C94D04A00EB2CA3 /* Types.swift in Sources */,
+				A361CA542C94D04A00EB2CA3 /* InterfaceConfiguration+Device.swift in Sources */,
+				A361CA552C94D04A00EB2CA3 /* Client.swift in Sources */,
+				A361CA562C94D04A00EB2CA3 /* VPNApiService.swift in Sources */,
+				A361CA572C94D04A00EB2CA3 /* PacketTunnelProvider.swift in Sources */,
+				A361CA582C94D04A00EB2CA3 /* VPNSessionWatcher.swift in Sources */,
+				A361CA592C94D04A00EB2CA3 /* VPNSessionRepository.swift in Sources */,
+				A361CA5A2C94D04A00EB2CA3 /* VPNSessionStore.swift in Sources */,
+				A361CA5B2C94D04A00EB2CA3 /* VPNSessionReclaimer.swift in Sources */,
+				A361CA5C2C94D04A00EB2CA3 /* OrcestratorCommand.swift in Sources */,
+				A361CA5D2C94D04A00EB2CA3 /* VPNOrchestrator.swift in Sources */,
+				A361CA5E2C94D04A00EB2CA3 /* VPNOrchestratorState.swift in Sources */,
+				A361CA5F2C94D04A00EB2CA3 /* ErrorNotifier.swift in Sources */,
+				A361CA602C94D04A00EB2CA3 /* TunnelConfigurationExtension.swift in Sources */,
+				A361CA612C94D04A00EB2CA3 /* WGAdapterAsync.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1227,6 +1659,16 @@
 			isa = PBXTargetDependency;
 			target = A350DF1D2C251E2A00BA1BA6 /* UpVPNNetworkExtensionmacOS */;
 			targetProxy = A350DF252C251E2A00BA1BA6 /* PBXContainerItemProxy */;
+		};
+		A361CA372C94BAA000EB2CA3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A361CA2E2C94BAA000EB2CA3 /* UpVPNNetworkExtensiontvOS */;
+			targetProxy = A361CA362C94BAA000EB2CA3 /* PBXContainerItemProxy */;
+		};
+		A361CA412C94CF4D00EB2CA3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3212BEB2C8D6450005E7D3D /* WireGuardGoBridgetvOS */;
+			targetProxy = A361CA402C94CF4D00EB2CA3 /* PBXContainerItemProxy */;
 		};
 		A3AA4B1A2C256F69001135FD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1241,6 +1683,104 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		A3212BEC2C8D6450005E7D3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GOOS_appletvos = ios;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PATH = "$PATH:/opt/homebrew/bin";
+				PLATFORM_NAME = appletvos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+			};
+			name = Debug;
+		};
+		A3212BED2C8D6450005E7D3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GOOS_appletvos = ios;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PATH = "$PATH:/opt/homebrew/bin";
+				PLATFORM_NAME = appletvos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+			};
+			name = Release;
+		};
+		A3212C232C8D69C5005E7D3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = tvOS/UpVPN.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "tvOS/Preview\\ Content";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = tvOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPN;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_TVOS)";
+				PRODUCT_NAME = UpVPN;
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
+			};
+			name = Debug;
+		};
+		A3212C242C8D69C5005E7D3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = tvOS/UpVPN.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "tvOS/Preview\\ Content";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = tvOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPN;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_TVOS)";
+				PRODUCT_NAME = UpVPN;
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		A350DEE22C25141300BA1BA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A33336B22C457D84004D8C8E /* Config.xcconfig */;
@@ -1623,6 +2163,61 @@
 			};
 			name = Release;
 		};
+		A361CA3A2C94BAA000EB2CA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UpVPNNetworkExtension/UpVPNNetworkExtension_tvOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UpVPNNetworkExtension/tvOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPNNetworkExtensiontvOS;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_TVOS).network-extension";
+				PRODUCT_NAME = UpVPNNetworkExtension;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
+			};
+			name = Debug;
+		};
+		A361CA3B2C94BAA000EB2CA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UpVPNNetworkExtension/UpVPNNetworkExtension_tvOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UpVPNNetworkExtension/tvOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPNNetworkExtensiontvOS;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_TVOS).network-extension";
+				PRODUCT_NAME = UpVPNNetworkExtension;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		A3AA4B132C256EC2001135FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1690,6 +2285,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A3212BEE2C8D6450005E7D3D /* Build configuration list for PBXLegacyTarget "WireGuardGoBridgetvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3212BEC2C8D6450005E7D3D /* Debug */,
+				A3212BED2C8D6450005E7D3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A3212C222C8D69C5005E7D3D /* Build configuration list for PBXNativeTarget "UpVPNtvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3212C232C8D69C5005E7D3D /* Debug */,
+				A3212C242C8D69C5005E7D3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A350DED02C25141100BA1BA6 /* Build configuration list for PBXProject "UpVPN" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1735,6 +2348,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A361CA392C94BAA000EB2CA3 /* Build configuration list for PBXNativeTarget "UpVPNNetworkExtensiontvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A361CA3A2C94BAA000EB2CA3 /* Debug */,
+				A361CA3B2C94BAA000EB2CA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A3AA4B122C256EC2001135FD /* Build configuration list for PBXLegacyTarget "WireGuardGoBridgeiOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1769,7 +2391,7 @@
 			repositoryURL = "https://github.com/upvpn/wireguard-apple";
 			requirement = {
 				kind = revision;
-				revision = b40a6251d29b944932c31a0696a94ceb4a00a005;
+				revision = d6ca70c60dd92eb5c997f2092ef71577ef07040b;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1785,12 +2407,27 @@
 			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
 			productName = WireGuardKit;
 		};
+		A361CA622C94D06200EB2CA3 /* WireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
+			productName = WireGuardKit;
+		};
+		A361CA642C94D0BA00EB2CA3 /* WireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
+			productName = WireGuardKit;
+		};
 		A36566582C57071A00C2E748 /* FlagKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */;
 			productName = FlagKit;
 		};
 		A365665A2C57072000C2E748 /* FlagKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */;
+			productName = FlagKit;
+		};
+		A38864172C94EBC000E91A1D /* FlagKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */;
 			productName = FlagKit;

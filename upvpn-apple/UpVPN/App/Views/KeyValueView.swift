@@ -17,7 +17,9 @@ struct KeyValueView: View {
             Text(value)
                 .lineLimit(1)
                 .opacity(0.5)
+            #if !os(tvOS)
                 .textSelection(.enabled)
+            #endif
         }
     }
 }

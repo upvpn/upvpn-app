@@ -15,6 +15,8 @@ extension FileManager {
     static var appGroupId: String? {
         #if os(iOS)
         let appGroupIdInfoDictionaryKey = "app.upvpn.apple.ios.app_group_id"
+        #elseif os(tvOS)
+        let appGroupIdInfoDictionaryKey = "app.upvpn.apple.tvos.app_group_id"
         #elseif os(macOS)
         let appGroupIdInfoDictionaryKey = "app.upvpn.apple.macos.app_group_id"
         #else
@@ -28,10 +30,19 @@ extension FileManager {
             os_log("Cannot obtain app group ID from bundle", log: OSLog.default, type: .error)
             return nil
         }
-        guard let sharedFolderURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupId) else {
+        guard let appGroupSharedFolderURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupId) else {
             os_log(.error, "Cannot obtain shared folder URL")
             return nil
         }
+
+        var sharedFolderURL = appGroupSharedFolderURL
+
+        #if os(tvOS)
+        // cannot write file in the folder, hence write in directory thats created by default inside app group container
+        // https://developer.apple.com/documentation/foundation/filemanager/1412643-containerurl#2851195
+        sharedFolderURL = sharedFolderURL.appendingPathComponent("Library/Caches")
+        #endif
+
         return sharedFolderURL
     }
 

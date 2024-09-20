@@ -31,7 +31,7 @@ class Keychain {
     /// More info: https://developer.apple.com/forums/thread/133677?answerId=422887022#422887022
     /// Hence on macOS we use keychain access group instead of app group
     static var keychainGroupId: String? {
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
         return FileManager.appGroupId
         #elseif os(macOS)
         let keychainGroupIdInfoDictionaryKey = "app.upvpn.apple.macos.keychain_group_id"

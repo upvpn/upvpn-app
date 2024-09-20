@@ -46,6 +46,12 @@ struct RuntimeConfigurationView: View {
                                             .localizedString(for: lastHandshakeTime, relativeTo: Date()))
                     }
                 }
+                #if os(tvOS)
+                // so that list can scroll on tvOS
+                .focusable()
+                #endif
+                // otherwise list does not update
+                .onReceive(tunnelViewModel.tunnelObserver.$runtimeConfig) { _ in  }
             }
         }
         #if os(iOS)

@@ -102,7 +102,12 @@ struct LocationsMapView: View {
                     if let coordinate = getCoordinate(location) {
                         Annotation("", coordinate: coordinate) {
                             LocationView(location: location)
+                                .id(locationViewModel.locationsLastUpdated)
+                            #if os(tvOS)
+                                .background(.ultraThinMaterial)
+                            #else
                                 .background(Color.uSecondarySystemGroupedBackground)
+                            #endif
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .environmentObject(locationViewModel)
                         }

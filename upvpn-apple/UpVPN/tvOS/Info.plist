@@ -2,12 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>UpVPNNetworkExtension</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,27 +15,16 @@
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
-	<string>XPC!</string>
+	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(VERSION_NAME)</string>
 	<key>CFBundleVersion</key>
 	<string>$(VERSION_ID)</string>
-	<key>LSMinimumSystemVersion</key>
-	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
-	<key>app.upvpn.apple.macos.app_group_id</key>
-	<string>$(DEVELOPMENT_TEAM).group.$(APP_ID_MACOS)</string>
-	<key>app.upvpn.apple.ios.app_group_id</key>
-	<string>group.$(APP_ID_IOS)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>app.upvpn.apple.tvos.app_group_id</key>
 	<string>group.$(APP_ID_TVOS)</string>
-	<key>app.upvpn.apple.macos.keychain_group_id</key>
-	<string>$(DEVELOPMENT_TEAM).$(APP_ID_MACOS).keychain</string>
-	<key>NSExtension</key>
-	<dict>
-		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.networkextension.packet-tunnel</string>
-		<key>NSExtensionPrincipalClass</key>
-		<string>$(PRODUCT_MODULE_NAME).PacketTunnelProvider</string>
-	</dict>
 </dict>
 </plist>

@@ -14,10 +14,14 @@ struct PrepaidPlansView: View {
     var selectedProduct: Product? = nil
     var setSelectedProduct: (Product) -> Void
 
+    #if os(tvOS)
+    private let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 40), count: 4)
+    #else
     private let columns = [
         GridItem(.fixed(120)),
         GridItem(.fixed(120))
     ]
+    #endif
 
     var body: some View {
         Group {
