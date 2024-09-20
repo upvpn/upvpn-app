@@ -113,7 +113,7 @@ struct LoginView: View {
 
             HStack {
                 Text("""
-By using UpVPN you agree to our [Terms](https://upvpn.app/terms-of-service) and [Privacy Policy](https://upvpn.app/privacy-policy)
+By using UpVPN.app you agree to our [Terms](https://upvpn.app/terms-of-service) and [Privacy Policy](https://upvpn.app/privacy-policy)
 """)
             }
             .font(.caption)

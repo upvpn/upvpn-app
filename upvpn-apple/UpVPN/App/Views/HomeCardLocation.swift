@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct HomeCardLocation: View {
-    var selectedLocation: Location = Location.default
+    private var selectedLocation: Location {
+        // hack to always return updated location to get updated estimate
+        if let foundIdx = self.locationViewModel.locations.firstIndex(of: self.locationViewModel.selected ?? Location.default) {
+            return self.locationViewModel.locations[foundIdx]
+        } else {
+            return Location.default
+        }
+    }
     var isDisconnectedOrConnected: Bool = false
     var isDisconnected: Bool = true
 
@@ -24,11 +31,11 @@ struct HomeCardLocation: View {
                 Circle()
                     .fill(selectedLocation.warmOrColdColor())
                     .frame(width: 12, height: 12)
+                    .id(locationViewModel.locationsLastUpdated)
             } else {
                 ProgressView()
                     .modifier(ScaleEffectModifier())
             }
-
         }
         .padding()
         .cornerRadius(15)

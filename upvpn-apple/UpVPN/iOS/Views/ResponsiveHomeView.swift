@@ -83,7 +83,6 @@ struct ResponsiveHomeView: View {
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
                         HomeCard(tunnelStatus: tunnelViewModel.tunnelObserver.tunnelStatus,
-                                 selectedLocation: locationViewModel.selected,
                                  start: {
                             if let location = locationViewModel.selected {
                                 locationViewModel.addRecent(location: location)

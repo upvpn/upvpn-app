@@ -23,7 +23,6 @@ struct HomeView: View {
                         .fill(Color.uSystemGroupedBackground)
                         .ignoresSafeArea()
                     HomeCard(tunnelStatus: tunnelViewModel.tunnelObserver.tunnelStatus,
-                             selectedLocation: locationViewModel.selected,
                              start: {
                         if let location = locationViewModel.selected {
                             locationViewModel.addRecent(location: location)
