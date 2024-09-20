@@ -1,0 +1,9 @@
+
+
+xcuserdata
+
+# UpVPN Developer config
+Config/Developer.xcconfig
+
+# Vim
+.*.swp

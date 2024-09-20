@@ -1,0 +1,23 @@
+{
+  "originHash" : "bd0020a40e930c31183511f81e0427b203d42212c20477ff8b1cafc3e995cbe4",
+  "pins" : [
+    {
+      "identity" : "flagkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/madebybowtie/FlagKit.git",
+      "state" : {
+        "revision" : "f12111d91902d23fd1d9cc7ad9198030b049795d",
+        "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "wireguard-apple",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/upvpn/wireguard-apple",
+      "state" : {
+        "revision" : "b40a6251d29b944932c31a0696a94ceb4a00a005"
+      }
+    }
+  ],
+  "version" : 3
+}
