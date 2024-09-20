@@ -57,14 +57,31 @@ struct MainViewContentNew: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationStack {
-                LocationsView()
+                if #available(iOS 17, *), UIDevice.current.userInterfaceIdiom == .pad {
+                    NavigationSplitView {
+                        LocationsView(showMapInToolbar: UIDevice.current.userInterfaceIdiom == .phone)
+                    } detail: {
+                        LocationsMapView(
+                            coordinateSpan: .large
+                        )
+                        // to remove transparent background bar on top
+                        .toolbarBackground(.hidden, for: .automatic)
+                    }
+                    // hack: otherwise searchbox shows up on toolbar
+                    .searchable(text: .constant(""), placement: .sidebar)
                     .navigationTitle("Locations")
+                    // hack: otherwise an empty toolbar (and navigation title) with big height shows up.
+                    .toolbar(.hidden)
+                } else {
+                    LocationsView(showMapInToolbar: UIDevice.current.userInterfaceIdiom == .phone)
+                        .navigationTitle("Locations")
+                }
             }
             .tabItem {
                 Label("Locations", systemImage: "location")
             }.tag(1)
 
-            HomeView(onStatsTap: { showInspector.toggle() })
+            ResponsiveHomeView(onStatsTap: { showInspector.toggle() })
                 .modifier(InspectorModifier(showInspector: $showInspector))
                 .tabItem {
                 Label("Home", systemImage: "house")
@@ -114,5 +131,10 @@ struct MainViewContent : View {
 
 
 #Preview {
-    MainViewContent()
+    let locationViewModel = LocationViewModel(dataRepository: DataRepository.shared, isDisconnected: {return true})
+
+    return MainViewContent()
+        .environmentObject(TunnelViewModel())
+        .environmentObject(AuthViewModel(dataRepository: DataRepository.shared, isDisconnected: {return true}))
+        .environmentObject(locationViewModel)
 }

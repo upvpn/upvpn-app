@@ -13,6 +13,8 @@ struct LocationsView: View {
 
     @State private var search: String = ""
 
+    var showMapInToolbar: Bool = false
+
     private var filteredLocations: [Location] {
         return if search.isEmpty {
             locationViewModel.locations
@@ -39,6 +41,22 @@ struct LocationsView: View {
         }
         .onAppear {
             locationViewModel.reload()
+        }
+        .toolbar {
+            if showMapInToolbar {
+                #if os(iOS)
+                if #available(iOS 17, *) {
+                    NavigationLink {
+                        LocationsMapView()
+                            .navigationTitle("Locations Map")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbarBackground(.hidden, for: .automatic)
+                    } label: {
+                        Label("Map", systemImage: "map")
+                    }
+                }
+                #endif
+            }
         }
     }
 }

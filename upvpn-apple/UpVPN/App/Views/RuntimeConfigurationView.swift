@@ -50,10 +50,25 @@ struct RuntimeConfigurationView: View {
         }
         #if os(iOS)
         // only available on iOS
-        .listStyle(.grouped)
+        .modifier(ListStyleModifer())
         #endif
     }
 }
+
+#if os(iOS)
+struct ListStyleModifer : ViewModifier {
+    
+    func body(content: Content) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            content
+                .listStyle(.insetGrouped)
+        } else {
+            content
+                .listStyle(.grouped)
+        }
+    }
+}
+#endif
 
 #Preview {
     RuntimeConfigurationView()
