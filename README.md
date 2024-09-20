@@ -37,7 +37,7 @@ Alternatively, visit [Github Releases](https://github.com/upvpn/upvpn-app/releas
 | Crate or Directory | Description |
 | --- | --- |
 | upvpn-android | Standalone app for Android. |
-| upvpn-apple | Standalone apps for tvOS, iOS and macOS built using [Network Extension](https://developer.apple.com/documentation/networkextension). macOS app doesn't include `upvpn` CLI. |
+| upvpn-apple | Standalone apps for tvOS, iOS and macOS built using [Network Extension](https://developer.apple.com/documentation/networkextension). The macOS app doesn't include the `upvpn` CLI. |
 | upvpn-cli | Code for `upvpn` cli. |
 | upvpn-config | Configuration read from env vars, `upvpn.conf.toml` are merged at runtime in `upvpn-config` and is source of runtime configuration for `upvpn-cli`, `upvpn-daemon`, and `upvpn-ui`. |
 | upvpn-controller | Defines GRPC protobuf for APIs exposed by `upvpn-daemon` to be consumed by `upvpn-cli` and `upvpn-ui`. |
@@ -64,7 +64,7 @@ Please see [upvpn-apple/README.md](./upvpn-apple/README.md)
 
 # License
 
- Android app, apps for Apple Platform, and all Rust crates in this repository are [licensed under GPL version 3](./LICENSE).
+ Android app, apps for Apple Platforms, and all Rust crates in this repository are [licensed under GPL version 3](./LICENSE).
 
 Copyright (C) 2023  upvpn LLC
 
