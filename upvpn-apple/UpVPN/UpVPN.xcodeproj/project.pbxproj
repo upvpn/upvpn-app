@@ -1,0 +1,1799 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A323FAE52C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */; };
+		A323FAE62C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */; };
+		A323FAE82C580F0D00CF9D84 /* HomeCardDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE72C580F0D00CF9D84 /* HomeCardDivider.swift */; };
+		A323FAE92C580F0D00CF9D84 /* HomeCardDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE72C580F0D00CF9D84 /* HomeCardDivider.swift */; };
+		A323FAEB2C58100A00CF9D84 /* HomeCardLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAEA2C58100A00CF9D84 /* HomeCardLocation.swift */; };
+		A323FAEC2C58100A00CF9D84 /* HomeCardLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAEA2C58100A00CF9D84 /* HomeCardLocation.swift */; };
+		A323FAEE2C5842A700CF9D84 /* FlagImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAED2C5842A700CF9D84 /* FlagImage.swift */; };
+		A323FAEF2C5842A700CF9D84 /* FlagImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAED2C5842A700CF9D84 /* FlagImage.swift */; };
+		A323FAF12C58637A00CF9D84 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF02C58637A00CF9D84 /* Color+Extension.swift */; };
+		A323FAF22C58637A00CF9D84 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF02C58637A00CF9D84 /* Color+Extension.swift */; };
+		A323FAF42C58699000CF9D84 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF32C58699000CF9D84 /* Country.swift */; };
+		A323FAF52C58699000CF9D84 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF32C58699000CF9D84 /* Country.swift */; };
+		A323FAF72C5963CD00CF9D84 /* CardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF62C5963CD00CF9D84 /* CardContainer.swift */; };
+		A323FAF82C5963CD00CF9D84 /* CardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF62C5963CD00CF9D84 /* CardContainer.swift */; };
+		A33336B62C463394004D8C8E /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336B52C463394004D8C8E /* FileManager+Extension.swift */; };
+		A33336B72C463394004D8C8E /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336B52C463394004D8C8E /* FileManager+Extension.swift */; };
+		A33336B82C463394004D8C8E /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336B52C463394004D8C8E /* FileManager+Extension.swift */; };
+		A33336B92C463394004D8C8E /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336B52C463394004D8C8E /* FileManager+Extension.swift */; };
+		A33336BB2C464079004D8C8E /* ErrorNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BA2C464079004D8C8E /* ErrorNotifier.swift */; };
+		A33336BC2C464079004D8C8E /* ErrorNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BA2C464079004D8C8E /* ErrorNotifier.swift */; };
+		A33336BE2C475E2C004D8C8E /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BD2C475E2C004D8C8E /* Keychain.swift */; };
+		A33336BF2C475E2C004D8C8E /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BD2C475E2C004D8C8E /* Keychain.swift */; };
+		A33336C02C475E2C004D8C8E /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BD2C475E2C004D8C8E /* Keychain.swift */; };
+		A33336C12C475E2C004D8C8E /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336BD2C475E2C004D8C8E /* Keychain.swift */; };
+		A33336C42C479C0E004D8C8E /* DeviceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C32C479C0E004D8C8E /* DeviceStore.swift */; };
+		A33336C52C479C0E004D8C8E /* DeviceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C32C479C0E004D8C8E /* DeviceStore.swift */; };
+		A33336C62C479C0E004D8C8E /* DeviceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C32C479C0E004D8C8E /* DeviceStore.swift */; };
+		A33336C72C479C0E004D8C8E /* DeviceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C32C479C0E004D8C8E /* DeviceStore.swift */; };
+		A33336C92C479D9F004D8C8E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C82C479D9F004D8C8E /* Device.swift */; };
+		A33336CA2C479D9F004D8C8E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C82C479D9F004D8C8E /* Device.swift */; };
+		A33336CB2C479D9F004D8C8E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C82C479D9F004D8C8E /* Device.swift */; };
+		A33336CC2C479D9F004D8C8E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336C82C479D9F004D8C8E /* Device.swift */; };
+		A33336CE2C47A158004D8C8E /* StoreKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336CD2C47A158004D8C8E /* StoreKeys.swift */; };
+		A33336CF2C47A158004D8C8E /* StoreKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336CD2C47A158004D8C8E /* StoreKeys.swift */; };
+		A33336D02C47A158004D8C8E /* StoreKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336CD2C47A158004D8C8E /* StoreKeys.swift */; };
+		A33336D12C47A158004D8C8E /* StoreKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336CD2C47A158004D8C8E /* StoreKeys.swift */; };
+		A33336D32C47AC0E004D8C8E /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A33336D22C47AC0E004D8C8E /* WireGuardKit */; };
+		A33336D52C47AC13004D8C8E /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A33336D42C47AC13004D8C8E /* WireGuardKit */; };
+		A33336D72C47B937004D8C8E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
+		A33336D82C47B937004D8C8E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
+		A33336D92C47B937004D8C8E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
+		A33336DA2C47B937004D8C8E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33336D62C47B937004D8C8E /* Utils.swift */; };
+		A3422DBC2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */; };
+		A3422DBD2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */; };
+		A3422DC82C3562B700A3D867 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
+		A3422DC92C3562B700A3D867 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
+		A3422DCA2C3562B700A3D867 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
+		A3422DCB2C3562B700A3D867 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
+		A3422DCE2C3879FD00A3D867 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DCD2C3879FD00A3D867 /* Request.swift */; };
+		A3422DCF2C3879FD00A3D867 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DCD2C3879FD00A3D867 /* Request.swift */; };
+		A3422DD02C3879FD00A3D867 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DCD2C3879FD00A3D867 /* Request.swift */; };
+		A3422DD12C3879FD00A3D867 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DCD2C3879FD00A3D867 /* Request.swift */; };
+		A3422DD32C387A0600A3D867 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD22C387A0600A3D867 /* Response.swift */; };
+		A3422DD42C387A0600A3D867 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD22C387A0600A3D867 /* Response.swift */; };
+		A3422DD52C387A0600A3D867 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD22C387A0600A3D867 /* Response.swift */; };
+		A3422DD62C387A0600A3D867 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD22C387A0600A3D867 /* Response.swift */; };
+		A3422DD92C387A8100A3D867 /* VPNState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD82C387A8100A3D867 /* VPNState.swift */; };
+		A3422DDA2C387A8100A3D867 /* VPNState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD82C387A8100A3D867 /* VPNState.swift */; };
+		A3422DDB2C387A8100A3D867 /* VPNState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD82C387A8100A3D867 /* VPNState.swift */; };
+		A3422DDC2C387A8100A3D867 /* VPNState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DD82C387A8100A3D867 /* VPNState.swift */; };
+		A3422DDE2C387B0E00A3D867 /* AppMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */; };
+		A3422DDF2C387B0E00A3D867 /* AppMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */; };
+		A3422DE02C387B0E00A3D867 /* AppMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */; };
+		A3422DE12C387B0E00A3D867 /* AppMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */; };
+		A3422DE62C3DB4DE00A3D867 /* TunnelObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DE52C3DB4DE00A3D867 /* TunnelObserver.swift */; };
+		A3422DE72C3DB4DE00A3D867 /* TunnelObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DE52C3DB4DE00A3D867 /* TunnelObserver.swift */; };
+		A3422DE92C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DE82C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift */; };
+		A3422DEA2C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DE82C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift */; };
+		A3422DEC2C3E8D4700A3D867 /* VPNOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DEB2C3E8D4700A3D867 /* VPNOrchestrator.swift */; };
+		A3422DED2C3E8D4700A3D867 /* VPNOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DEB2C3E8D4700A3D867 /* VPNOrchestrator.swift */; };
+		A3422DEF2C3E8D7B00A3D867 /* OrcestratorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DEE2C3E8D7B00A3D867 /* OrcestratorCommand.swift */; };
+		A3422DF02C3E8D7B00A3D867 /* OrcestratorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DEE2C3E8D7B00A3D867 /* OrcestratorCommand.swift */; };
+		A3422DF22C3EA41100A3D867 /* WGAdapterAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF12C3EA41100A3D867 /* WGAdapterAsync.swift */; };
+		A3422DF32C3EA41100A3D867 /* WGAdapterAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF12C3EA41100A3D867 /* WGAdapterAsync.swift */; };
+		A3422DF62C3F7F2100A3D867 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF52C3F7F2100A3D867 /* Client.swift */; };
+		A3422DF72C3F7F2100A3D867 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF52C3F7F2100A3D867 /* Client.swift */; };
+		A3422DF82C3F7F2100A3D867 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF52C3F7F2100A3D867 /* Client.swift */; };
+		A3422DF92C3F7F2100A3D867 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DF52C3F7F2100A3D867 /* Client.swift */; };
+		A3422E002C3F802300A3D867 /* VPNApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DFF2C3F802300A3D867 /* VPNApiService.swift */; };
+		A3422E012C3F802300A3D867 /* VPNApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DFF2C3F802300A3D867 /* VPNApiService.swift */; };
+		A3422E022C3F802300A3D867 /* VPNApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DFF2C3F802300A3D867 /* VPNApiService.swift */; };
+		A3422E032C3F802300A3D867 /* VPNApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DFF2C3F802300A3D867 /* VPNApiService.swift */; };
+		A3422E0B2C3F8ADF00A3D867 /* VPNSessionWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422E0A2C3F8ADF00A3D867 /* VPNSessionWatcher.swift */; };
+		A3422E0C2C3F8ADF00A3D867 /* VPNSessionWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422E0A2C3F8ADF00A3D867 /* VPNSessionWatcher.swift */; };
+		A347A8232C59B80500FEF961 /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347A8222C59B80500FEF961 /* StatsCard.swift */; };
+		A347A8242C59B80500FEF961 /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347A8222C59B80500FEF961 /* StatsCard.swift */; };
+		A347A8262C6129CC00FEF961 /* PlanManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347A8252C6129CC00FEF961 /* PlanManagement.swift */; };
+		A347A8272C6129CC00FEF961 /* PlanManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347A8252C6129CC00FEF961 /* PlanManagement.swift */; };
+		A347A82A2C61A38C00FEF961 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347A8292C61A38C00FEF961 /* HelpView.swift */; };
+		A347A82B2C61A38C00FEF961 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347A8292C61A38C00FEF961 /* HelpView.swift */; };
+		A350DED92C25141200BA1BA6 /* UpVPNApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DED82C25141200BA1BA6 /* UpVPNApp.swift */; };
+		A350DEDB2C25141200BA1BA6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DEDA2C25141200BA1BA6 /* ContentView.swift */; };
+		A350DEDD2C25141300BA1BA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A350DEDC2C25141300BA1BA6 /* Assets.xcassets */; };
+		A350DEE02C25141300BA1BA6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A350DEDF2C25141300BA1BA6 /* Preview Assets.xcassets */; };
+		A350DEF22C25147D00BA1BA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A350DEF12C25147D00BA1BA6 /* Assets.xcassets */; };
+		A350DEF52C25147D00BA1BA6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A350DEF42C25147D00BA1BA6 /* Preview Assets.xcassets */; };
+		A350DF0D2C251E0C00BA1BA6 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A350DF0C2C251E0B00BA1BA6 /* NetworkExtension.framework */; };
+		A350DF102C251E0C00BA1BA6 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DF0F2C251E0C00BA1BA6 /* PacketTunnelProvider.swift */; };
+		A350DF152C251E0C00BA1BA6 /* UpVPNNetworkExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A350DF0A2C251E0B00BA1BA6 /* UpVPNNetworkExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A350DF1F2C251E2A00BA1BA6 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A350DF0C2C251E0B00BA1BA6 /* NetworkExtension.framework */; };
+		A350DF272C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A350DF2C2C251F6100BA1BA6 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DF0F2C251E0C00BA1BA6 /* PacketTunnelProvider.swift */; };
+		A364B0B72C7EB9C500A82952 /* UserDataConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */; };
+		A364B0B82C7EB9C500A82952 /* UserDataConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */; };
+		A36565F82C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */; };
+		A36565F92C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */; };
+		A36565FB2C52E87300C2E748 /* String+ArrayConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */; };
+		A36565FC2C52E87300C2E748 /* String+ArrayConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */; };
+		A36565FF2C545F8F00C2E748 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FE2C545F8F00C2E748 /* MainView.swift */; };
+		A36566002C545F8F00C2E748 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FE2C545F8F00C2E748 /* MainView.swift */; };
+		A36566022C54600C00C2E748 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566012C54600C00C2E748 /* LoginView.swift */; };
+		A36566032C54600C00C2E748 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566012C54600C00C2E748 /* LoginView.swift */; };
+		A36566052C54613A00C2E748 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566042C54613A00C2E748 /* WelcomeView.swift */; };
+		A36566062C54613A00C2E748 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566042C54613A00C2E748 /* WelcomeView.swift */; };
+		A36566082C556EFE00C2E748 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566072C556EFE00C2E748 /* HomeView.swift */; };
+		A36566092C556EFE00C2E748 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566072C556EFE00C2E748 /* HomeView.swift */; };
+		A365660B2C556FF500C2E748 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365660A2C556FF500C2E748 /* LocationsView.swift */; };
+		A365660C2C556FF500C2E748 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365660A2C556FF500C2E748 /* LocationsView.swift */; };
+		A365660E2C55700200C2E748 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365660D2C55700200C2E748 /* SettingsView.swift */; };
+		A365660F2C55700200C2E748 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365660D2C55700200C2E748 /* SettingsView.swift */; };
+		A36566112C55808D00C2E748 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A36566102C55808D00C2E748 /* LaunchScreen.storyboard */; };
+		A365664B2C56C66500C2E748 /* HomeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365664A2C56C66500C2E748 /* HomeCard.swift */; };
+		A365664C2C56C66500C2E748 /* HomeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365664A2C56C66500C2E748 /* HomeCard.swift */; };
+		A365664E2C56C67500C2E748 /* RecentLocationsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365664D2C56C67500C2E748 /* RecentLocationsCard.swift */; };
+		A365664F2C56C67500C2E748 /* RecentLocationsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365664D2C56C67500C2E748 /* RecentLocationsCard.swift */; };
+		A36566512C56E75600C2E748 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566502C56E75600C2E748 /* LocationView.swift */; };
+		A36566522C56E75600C2E748 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566502C56E75600C2E748 /* LocationView.swift */; };
+		A36566542C57031600C2E748 /* Location+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566532C57031600C2E748 /* Location+Extension.swift */; };
+		A36566552C57031600C2E748 /* Location+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566532C57031600C2E748 /* Location+Extension.swift */; };
+		A36566592C57071A00C2E748 /* FlagKit in Frameworks */ = {isa = PBXBuildFile; productRef = A36566582C57071A00C2E748 /* FlagKit */; };
+		A365665B2C57072000C2E748 /* FlagKit in Frameworks */ = {isa = PBXBuildFile; productRef = A365665A2C57072000C2E748 /* FlagKit */; };
+		A365665D2C570B8C00C2E748 /* TunnelStatus+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */; };
+		A365665E2C570B8C00C2E748 /* TunnelStatus+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */; };
+		A380AA9A2C6308CF007E09A1 /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A380AA992C6308CF007E09A1 /* PlanRepository.swift */; };
+		A380AA9B2C6308CF007E09A1 /* PlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A380AA992C6308CF007E09A1 /* PlanRepository.swift */; };
+		A391D98A2C4919FA0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
+		A391D98B2C4919FA0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
+		A391D98F2C4939F90008D23F /* StoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D98E2C4939F90008D23F /* StoreError.swift */; };
+		A391D9902C4939F90008D23F /* StoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D98E2C4939F90008D23F /* StoreError.swift */; };
+		A391D9912C4939F90008D23F /* StoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D98E2C4939F90008D23F /* StoreError.swift */; };
+		A391D9922C4939F90008D23F /* StoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D98E2C4939F90008D23F /* StoreError.swift */; };
+		A391D9942C493A820008D23F /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9932C493A820008D23F /* UserCredentials.swift */; };
+		A391D9952C493A820008D23F /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9932C493A820008D23F /* UserCredentials.swift */; };
+		A391D99C2C4954A00008D23F /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99B2C4954A00008D23F /* AuthViewModel.swift */; };
+		A391D99D2C4954A00008D23F /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99B2C4954A00008D23F /* AuthViewModel.swift */; };
+		A391D99F2C4968130008D23F /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99E2C4968130008D23F /* Types.swift */; };
+		A391D9A02C4968130008D23F /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99E2C4968130008D23F /* Types.swift */; };
+		A391D9A12C4968130008D23F /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99E2C4968130008D23F /* Types.swift */; };
+		A391D9A22C4968130008D23F /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D99E2C4968130008D23F /* Types.swift */; };
+		A391D9A32C4969D70008D23F /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9932C493A820008D23F /* UserCredentials.swift */; };
+		A391D9A42C4969D70008D23F /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9932C493A820008D23F /* UserCredentials.swift */; };
+		A391D9A72C4979080008D23F /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9A62C4979080008D23F /* DataRepository.swift */; };
+		A391D9A82C4979080008D23F /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9A62C4979080008D23F /* DataRepository.swift */; };
+		A391D9A92C4979080008D23F /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9A62C4979080008D23F /* DataRepository.swift */; };
+		A391D9AA2C4979080008D23F /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9A62C4979080008D23F /* DataRepository.swift */; };
+		A391D9AB2C49867A0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
+		A391D9AC2C49867B0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
+		A3A7635C2C4EF5B00088D5F5 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
+		A3A7635D2C4EF5B00088D5F5 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
+		A3A7635E2C4EF5B00088D5F5 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
+		A3A7635F2C4EF5B00088D5F5 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
+		A3A763612C50122C0088D5F5 /* VPNSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763602C50122C0088D5F5 /* VPNSessionRepository.swift */; };
+		A3A763622C50122C0088D5F5 /* VPNSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763602C50122C0088D5F5 /* VPNSessionRepository.swift */; };
+		A3A763642C501B210088D5F5 /* VPNOrchestratorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763632C501B210088D5F5 /* VPNOrchestratorState.swift */; };
+		A3A763652C501B210088D5F5 /* VPNOrchestratorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763632C501B210088D5F5 /* VPNOrchestratorState.swift */; };
+		A3A763672C509C0E0088D5F5 /* TunnelConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763662C509C0E0088D5F5 /* TunnelConfigurationExtension.swift */; };
+		A3A763682C509C0E0088D5F5 /* TunnelConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763662C509C0E0088D5F5 /* TunnelConfigurationExtension.swift */; };
+		A3A7636D2C51877B0088D5F5 /* VPNSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7636C2C51877B0088D5F5 /* VPNSessionStore.swift */; };
+		A3A7636E2C51877B0088D5F5 /* VPNSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7636C2C51877B0088D5F5 /* VPNSessionStore.swift */; };
+		A3A763702C5196750088D5F5 /* VPNSessionReclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7636F2C5196750088D5F5 /* VPNSessionReclaimer.swift */; };
+		A3A763712C5196750088D5F5 /* VPNSessionReclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7636F2C5196750088D5F5 /* VPNSessionReclaimer.swift */; };
+		A3A763732C521EF80088D5F5 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763722C521EF80088D5F5 /* LocationStore.swift */; };
+		A3A763742C521EF80088D5F5 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763722C521EF80088D5F5 /* LocationStore.swift */; };
+		A3A763752C5223120088D5F5 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763722C521EF80088D5F5 /* LocationStore.swift */; };
+		A3A763762C5223130088D5F5 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A763722C521EF80088D5F5 /* LocationStore.swift */; };
+		A3A7637B2C5225E00088D5F5 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7637A2C5225E00088D5F5 /* LocationViewModel.swift */; };
+		A3A7637C2C5225E00088D5F5 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7637A2C5225E00088D5F5 /* LocationViewModel.swift */; };
+		A3A9F0F12C6E6FEF00AF1490 /* MainViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F02C6E6FEF00AF1490 /* MainViewContent.swift */; };
+		A3A9F0F32C6E704900AF1490 /* MainViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F22C6E704900AF1490 /* MainViewContent.swift */; };
+		A3A9F0F52C6E934300AF1490 /* RuntimeConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F42C6E934300AF1490 /* RuntimeConfigurationView.swift */; };
+		A3A9F0F62C6E934300AF1490 /* RuntimeConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F42C6E934300AF1490 /* RuntimeConfigurationView.swift */; };
+		A3A9F0F82C6FE58300AF1490 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F72C6FE58300AF1490 /* AccountView.swift */; };
+		A3A9F0F92C6FE58300AF1490 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0F72C6FE58300AF1490 /* AccountView.swift */; };
+		A3A9F0FB2C6FE59200AF1490 /* SignOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0FA2C6FE59200AF1490 /* SignOutView.swift */; };
+		A3A9F0FC2C6FE59200AF1490 /* SignOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0FA2C6FE59200AF1490 /* SignOutView.swift */; };
+		A3A9F0FE2C6FEF0100AF1490 /* VersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0FD2C6FEF0100AF1490 /* VersionView.swift */; };
+		A3A9F0FF2C6FEF0100AF1490 /* VersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F0FD2C6FEF0100AF1490 /* VersionView.swift */; };
+		A3A9F1012C701FA700AF1490 /* KeyValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1002C701FA700AF1490 /* KeyValueView.swift */; };
+		A3A9F1022C701FA700AF1490 /* KeyValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1002C701FA700AF1490 /* KeyValueView.swift */; };
+		A3A9F1042C70249700AF1490 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1032C70249700AF1490 /* UIUtils.swift */; };
+		A3A9F1052C70249700AF1490 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1032C70249700AF1490 /* UIUtils.swift */; };
+		A3A9F1072C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */; };
+		A3A9F1082C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */; };
+		A3A9F1092C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */; };
+		A3A9F10A2C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */; };
+		A3AA4B1C2C256F72001135FD /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A3AA4B1B2C256F72001135FD /* WireGuardKit */; };
+		A3AA4B202C256F80001135FD /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A3AA4B1F2C256F80001135FD /* WireGuardKit */; };
+		A3AA4B232C257CA2001135FD /* UpVPNApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DED82C25141200BA1BA6 /* UpVPNApp.swift */; };
+		A3AA4B242C257CA2001135FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DEDA2C25141200BA1BA6 /* ContentView.swift */; };
+		A3CD54542C7447A100B7848E /* TunnelManagerSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */; };
+		A3CD54552C7447A100B7848E /* TunnelManagerSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */; };
+		A3CD54572C76BA1D00B7848E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */; };
+		A3CD54582C76BA1D00B7848E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */; };
+		A3E352DA2C2E30B6008D0E30 /* TunnelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E352D92C2E30B6008D0E30 /* TunnelManager.swift */; };
+		A3E352DB2C2E30B6008D0E30 /* TunnelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E352D92C2E30B6008D0E30 /* TunnelManager.swift */; };
+		A3E352DD2C2E3D9D008D0E30 /* TunnelStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E352DC2C2E3D9D008D0E30 /* TunnelStatus.swift */; };
+		A3E352DE2C2E3D9D008D0E30 /* TunnelStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E352DC2C2E3D9D008D0E30 /* TunnelStatus.swift */; };
+		A3FABF8C2C6B068A004753D1 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF8B2C6B068A004753D1 /* PlanViewModel.swift */; };
+		A3FABF8D2C6B068A004753D1 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF8B2C6B068A004753D1 /* PlanViewModel.swift */; };
+		A3FABF8F2C6B2507004753D1 /* PrepaidPlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF8E2C6B2507004753D1 /* PrepaidPlansView.swift */; };
+		A3FABF902C6B2507004753D1 /* PrepaidPlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF8E2C6B2507004753D1 /* PrepaidPlansView.swift */; };
+		A3FABF922C6B38A6004753D1 /* PriceCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF912C6B38A6004753D1 /* PriceCapsule.swift */; };
+		A3FABF932C6B38A6004753D1 /* PriceCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF912C6B38A6004753D1 /* PriceCapsule.swift */; };
+		A3FABF952C6B3E3B004753D1 /* YearlyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF942C6B3E3B004753D1 /* YearlyPlanView.swift */; };
+		A3FABF962C6B3E3B004753D1 /* YearlyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF942C6B3E3B004753D1 /* YearlyPlanView.swift */; };
+		A3FABF982C6B4C3B004753D1 /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF972C6B4C3B004753D1 /* PurchaseButton.swift */; };
+		A3FABF992C6B4C3B004753D1 /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF972C6B4C3B004753D1 /* PurchaseButton.swift */; };
+		A3FABF9C2C6B4F02004753D1 /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF9B2C6B4F02004753D1 /* PlanView.swift */; };
+		A3FABF9D2C6B4F02004753D1 /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FABF9B2C6B4F02004753D1 /* PlanView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A350DF132C251E0C00BA1BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A350DECD2C25141100BA1BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A350DF092C251E0B00BA1BA6;
+			remoteInfo = UpVPNNetworkExtensioniOS;
+		};
+		A350DF252C251E2A00BA1BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A350DECD2C25141100BA1BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A350DF1D2C251E2A00BA1BA6;
+			remoteInfo = UpVPNNetworkExtensionmacOS;
+		};
+		A3AA4B192C256F69001135FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A350DECD2C25141100BA1BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3AA4B112C256EC2001135FD;
+			remoteInfo = WireGuardGoBridgeiOS;
+		};
+		A3AA4B1D2C256F7C001135FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A350DECD2C25141100BA1BA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3AA4B152C256ED0001135FD;
+			remoteInfo = WireGuardGoBridgemacOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A350DF192C251E0C00BA1BA6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A350DF152C251E0C00BA1BA6 /* UpVPNNetworkExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DF2B2C251E2A00BA1BA6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A350DF272C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTimeView.swift; sourceTree = "<group>"; };
+		A323FAE72C580F0D00CF9D84 /* HomeCardDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCardDivider.swift; sourceTree = "<group>"; };
+		A323FAEA2C58100A00CF9D84 /* HomeCardLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCardLocation.swift; sourceTree = "<group>"; };
+		A323FAED2C5842A700CF9D84 /* FlagImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagImage.swift; sourceTree = "<group>"; };
+		A323FAF02C58637A00CF9D84 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
+		A323FAF32C58699000CF9D84 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		A323FAF62C5963CD00CF9D84 /* CardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardContainer.swift; sourceTree = "<group>"; };
+		A33336B22C457D84004D8C8E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = Config/Config.xcconfig; sourceTree = "<group>"; };
+		A33336B32C45B0B3004D8C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A33336B42C45B0EA004D8C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A33336B52C463394004D8C8E /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
+		A33336BA2C464079004D8C8E /* ErrorNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorNotifier.swift; sourceTree = "<group>"; };
+		A33336BD2C475E2C004D8C8E /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		A33336C32C479C0E004D8C8E /* DeviceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStore.swift; sourceTree = "<group>"; };
+		A33336C82C479D9F004D8C8E /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		A33336CD2C47A158004D8C8E /* StoreKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKeys.swift; sourceTree = "<group>"; };
+		A33336D62C47B937004D8C8E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelViewModel.swift; sourceTree = "<group>"; };
+		A3422DC72C3562B700A3D867 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		A3422DCD2C3879FD00A3D867 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		A3422DD22C387A0600A3D867 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		A3422DD82C387A8100A3D867 /* VPNState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNState.swift; sourceTree = "<group>"; };
+		A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMessageHandler.swift; sourceTree = "<group>"; };
+		A3422DE52C3DB4DE00A3D867 /* TunnelObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelObserver.swift; sourceTree = "<group>"; };
+		A3422DE82C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NETunnelProviderSessionExtension.swift; sourceTree = "<group>"; };
+		A3422DEB2C3E8D4700A3D867 /* VPNOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNOrchestrator.swift; sourceTree = "<group>"; };
+		A3422DEE2C3E8D7B00A3D867 /* OrcestratorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrcestratorCommand.swift; sourceTree = "<group>"; };
+		A3422DF12C3EA41100A3D867 /* WGAdapterAsync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WGAdapterAsync.swift; sourceTree = "<group>"; };
+		A3422DF52C3F7F2100A3D867 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		A3422DFF2C3F802300A3D867 /* VPNApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNApiService.swift; sourceTree = "<group>"; };
+		A3422E0A2C3F8ADF00A3D867 /* VPNSessionWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNSessionWatcher.swift; sourceTree = "<group>"; };
+		A347A8222C59B80500FEF961 /* StatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCard.swift; sourceTree = "<group>"; };
+		A347A8252C6129CC00FEF961 /* PlanManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanManagement.swift; sourceTree = "<group>"; };
+		A347A8292C61A38C00FEF961 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		A350DED52C25141200BA1BA6 /* UpVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A350DED82C25141200BA1BA6 /* UpVPNApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpVPNApp.swift; sourceTree = "<group>"; };
+		A350DEDA2C25141200BA1BA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A350DEDC2C25141300BA1BA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A350DEDF2C25141300BA1BA6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A350DEE12C25141300BA1BA6 /* UpVPN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UpVPN.entitlements; sourceTree = "<group>"; };
+		A350DEEB2C25147C00BA1BA6 /* UpVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A350DEF12C25147D00BA1BA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A350DEF42C25147D00BA1BA6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A350DF0A2C251E0B00BA1BA6 /* UpVPNNetworkExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UpVPNNetworkExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A350DF0C2C251E0B00BA1BA6 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		A350DF0F2C251E0C00BA1BA6 /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
+		A350DF112C251E0C00BA1BA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A350DF122C251E0C00BA1BA6 /* UpVPNNetworkExtension_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UpVPNNetworkExtension_iOS.entitlements; sourceTree = "<group>"; };
+		A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UpVPNNetworkExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A350DF242C251E2A00BA1BA6 /* UpVPNNetworkExtension_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UpVPNNetworkExtension_macOS.entitlements; sourceTree = "<group>"; };
+		A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataConsent.swift; sourceTree = "<group>"; };
+		A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TunnelConfiguration+UapiConfig.swift"; sourceTree = "<group>"; };
+		A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ArrayConversion.swift"; sourceTree = "<group>"; };
+		A36565FE2C545F8F00C2E748 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		A36566012C54600C00C2E748 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A36566042C54613A00C2E748 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		A36566072C556EFE00C2E748 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A365660A2C556FF500C2E748 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
+		A365660D2C55700200C2E748 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A36566102C55808D00C2E748 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A365664A2C56C66500C2E748 /* HomeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCard.swift; sourceTree = "<group>"; };
+		A365664D2C56C67500C2E748 /* RecentLocationsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentLocationsCard.swift; sourceTree = "<group>"; };
+		A36566502C56E75600C2E748 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		A36566532C57031600C2E748 /* Location+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extension.swift"; sourceTree = "<group>"; };
+		A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TunnelStatus+Extension.swift"; sourceTree = "<group>"; };
+		A380AA992C6308CF007E09A1 /* PlanRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanRepository.swift; sourceTree = "<group>"; };
+		A391D9892C4919FA0008D23F /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
+		A391D98E2C4939F90008D23F /* StoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreError.swift; sourceTree = "<group>"; };
+		A391D9932C493A820008D23F /* UserCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCredentials.swift; sourceTree = "<group>"; };
+		A391D99B2C4954A00008D23F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		A391D99E2C4968130008D23F /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		A391D9A62C4979080008D23F /* DataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepository.swift; sourceTree = "<group>"; };
+		A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		A3A763602C50122C0088D5F5 /* VPNSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNSessionRepository.swift; sourceTree = "<group>"; };
+		A3A763632C501B210088D5F5 /* VPNOrchestratorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNOrchestratorState.swift; sourceTree = "<group>"; };
+		A3A763662C509C0E0088D5F5 /* TunnelConfigurationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelConfigurationExtension.swift; sourceTree = "<group>"; };
+		A3A7636C2C51877B0088D5F5 /* VPNSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNSessionStore.swift; sourceTree = "<group>"; };
+		A3A7636F2C5196750088D5F5 /* VPNSessionReclaimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNSessionReclaimer.swift; sourceTree = "<group>"; };
+		A3A763722C521EF80088D5F5 /* LocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStore.swift; sourceTree = "<group>"; };
+		A3A7637A2C5225E00088D5F5 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
+		A3A9F0F02C6E6FEF00AF1490 /* MainViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewContent.swift; sourceTree = "<group>"; };
+		A3A9F0F22C6E704900AF1490 /* MainViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewContent.swift; sourceTree = "<group>"; };
+		A3A9F0F42C6E934300AF1490 /* RuntimeConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeConfigurationView.swift; sourceTree = "<group>"; };
+		A3A9F0F72C6FE58300AF1490 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		A3A9F0FA2C6FE59200AF1490 /* SignOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutView.swift; sourceTree = "<group>"; };
+		A3A9F0FD2C6FEF0100AF1490 /* VersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionView.swift; sourceTree = "<group>"; };
+		A3A9F1002C701FA700AF1490 /* KeyValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueView.swift; sourceTree = "<group>"; };
+		A3A9F1032C70249700AF1490 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
+		A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InterfaceConfiguration+Device.swift"; sourceTree = "<group>"; };
+		A3AA4B212C257B5D001135FD /* UpVPN.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = UpVPN.entitlements; sourceTree = "<group>"; };
+		A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelManagerSimulator.swift; sourceTree = "<group>"; };
+		A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A3E352D92C2E30B6008D0E30 /* TunnelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelManager.swift; sourceTree = "<group>"; };
+		A3E352DC2C2E3D9D008D0E30 /* TunnelStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelStatus.swift; sourceTree = "<group>"; };
+		A3FABF8B2C6B068A004753D1 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
+		A3FABF8E2C6B2507004753D1 /* PrepaidPlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepaidPlansView.swift; sourceTree = "<group>"; };
+		A3FABF912C6B38A6004753D1 /* PriceCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCapsule.swift; sourceTree = "<group>"; };
+		A3FABF942C6B3E3B004753D1 /* YearlyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearlyPlanView.swift; sourceTree = "<group>"; };
+		A3FABF972C6B4C3B004753D1 /* PurchaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseButton.swift; sourceTree = "<group>"; };
+		A3FABF9B2C6B4F02004753D1 /* PlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A350DED22C25141100BA1BA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A33336D32C47AC0E004D8C8E /* WireGuardKit in Frameworks */,
+				A365665B2C57072000C2E748 /* FlagKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DEE82C25147C00BA1BA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A33336D52C47AC13004D8C8E /* WireGuardKit in Frameworks */,
+				A36566592C57071A00C2E748 /* FlagKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DF072C251E0B00BA1BA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3AA4B1C2C256F72001135FD /* WireGuardKit in Frameworks */,
+				A350DF0D2C251E0C00BA1BA6 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DF1B2C251E2A00BA1BA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3AA4B202C256F80001135FD /* WireGuardKit in Frameworks */,
+				A350DF1F2C251E2A00BA1BA6 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A33336C22C479BEF004D8C8E /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				A33336C32C479C0E004D8C8E /* DeviceStore.swift */,
+				A33336CD2C47A158004D8C8E /* StoreKeys.swift */,
+				A391D9892C4919FA0008D23F /* UserStore.swift */,
+				A391D98E2C4939F90008D23F /* StoreError.swift */,
+				A3A763722C521EF80088D5F5 /* LocationStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		A3422DB82C2E3FE600A3D867 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */,
+				A3422DC72C3562B700A3D867 /* Location.swift */,
+				A33336C82C479D9F004D8C8E /* Device.swift */,
+				A391D9932C493A820008D23F /* UserCredentials.swift */,
+				A391D99B2C4954A00008D23F /* AuthViewModel.swift */,
+				A391D99E2C4968130008D23F /* Types.swift */,
+				A3A7637A2C5225E00088D5F5 /* LocationViewModel.swift */,
+				A323FAF32C58699000CF9D84 /* Country.swift */,
+				A3FABF8B2C6B068A004753D1 /* PlanViewModel.swift */,
+				A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A3422DCC2C3879DF00A3D867 /* IPC */ = {
+			isa = PBXGroup;
+			children = (
+				A3422DCD2C3879FD00A3D867 /* Request.swift */,
+				A3422DD22C387A0600A3D867 /* Response.swift */,
+				A3422DDD2C387B0E00A3D867 /* AppMessageHandler.swift */,
+				A3422DE82C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift */,
+			);
+			path = IPC;
+			sourceTree = "<group>";
+		};
+		A3422DD72C387A5000A3D867 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A3422DD82C387A8100A3D867 /* VPNState.swift */,
+				A33336B52C463394004D8C8E /* FileManager+Extension.swift */,
+				A33336BD2C475E2C004D8C8E /* Keychain.swift */,
+				A33336D62C47B937004D8C8E /* Utils.swift */,
+				A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		A3422DF42C3F72C100A3D867 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A3422DF52C3F7F2100A3D867 /* Client.swift */,
+				A3422DFF2C3F802300A3D867 /* VPNApiService.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		A350DECC2C25141100BA1BA6 = {
+			isa = PBXGroup;
+			children = (
+				A33336B22C457D84004D8C8E /* Config.xcconfig */,
+				A3422DD72C387A5000A3D867 /* Common */,
+				A33336C22C479BEF004D8C8E /* Store */,
+				A391D9A52C4978F10008D23F /* Data */,
+				A3422DCC2C3879DF00A3D867 /* IPC */,
+				A3422DB82C2E3FE600A3D867 /* Model */,
+				A3422DF42C3F72C100A3D867 /* Network */,
+				A3E352D82C2E309B008D0E30 /* Tunnel */,
+				A3AA4B222C257C75001135FD /* App */,
+				A350DED72C25141200BA1BA6 /* macOS */,
+				A350DEEC2C25147C00BA1BA6 /* iOS */,
+				A350DF0E2C251E0C00BA1BA6 /* UpVPNNetworkExtension */,
+				A350DF0B2C251E0B00BA1BA6 /* Frameworks */,
+				A350DED62C25141200BA1BA6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A350DED62C25141200BA1BA6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A350DED52C25141200BA1BA6 /* UpVPN.app */,
+				A350DEEB2C25147C00BA1BA6 /* UpVPN.app */,
+				A350DF0A2C251E0B00BA1BA6 /* UpVPNNetworkExtension.appex */,
+				A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A350DED72C25141200BA1BA6 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A3A9F0EF2C6E6FAF00AF1490 /* Views */,
+				A33336B32C45B0B3004D8C8E /* Info.plist */,
+				A350DEDC2C25141300BA1BA6 /* Assets.xcassets */,
+				A350DEE12C25141300BA1BA6 /* UpVPN.entitlements */,
+				A350DEDE2C25141300BA1BA6 /* Preview Content */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		A350DEDE2C25141300BA1BA6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A350DEDF2C25141300BA1BA6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A350DEEC2C25147C00BA1BA6 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A3A9F0EE2C6E6FA900AF1490 /* Views */,
+				A33336B42C45B0EA004D8C8E /* Info.plist */,
+				A350DEF12C25147D00BA1BA6 /* Assets.xcassets */,
+				A3AA4B212C257B5D001135FD /* UpVPN.entitlements */,
+				A350DEF32C25147D00BA1BA6 /* Preview Content */,
+				A36566102C55808D00C2E748 /* LaunchScreen.storyboard */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		A350DEF32C25147D00BA1BA6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A350DEF42C25147D00BA1BA6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A350DF0B2C251E0B00BA1BA6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A350DF0C2C251E0B00BA1BA6 /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A350DF0E2C251E0C00BA1BA6 /* UpVPNNetworkExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A350DF0F2C251E0C00BA1BA6 /* PacketTunnelProvider.swift */,
+				A350DF112C251E0C00BA1BA6 /* Info.plist */,
+				A350DF242C251E2A00BA1BA6 /* UpVPNNetworkExtension_macOS.entitlements */,
+				A350DF122C251E0C00BA1BA6 /* UpVPNNetworkExtension_iOS.entitlements */,
+				A3A7636A2C5146C90088D5F5 /* Data */,
+				A3A763692C51460B0088D5F5 /* Orchestrator */,
+				A3A7636B2C5146E40088D5F5 /* Tunnel */,
+			);
+			path = UpVPNNetworkExtension;
+			sourceTree = "<group>";
+		};
+		A36565FD2C545F5200C2E748 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A36565FE2C545F8F00C2E748 /* MainView.swift */,
+				A36566012C54600C00C2E748 /* LoginView.swift */,
+				A36566042C54613A00C2E748 /* WelcomeView.swift */,
+				A36566072C556EFE00C2E748 /* HomeView.swift */,
+				A36566502C56E75600C2E748 /* LocationView.swift */,
+				A365660A2C556FF500C2E748 /* LocationsView.swift */,
+				A365660D2C55700200C2E748 /* SettingsView.swift */,
+				A365664A2C56C66500C2E748 /* HomeCard.swift */,
+				A365664D2C56C67500C2E748 /* RecentLocationsCard.swift */,
+				A36566532C57031600C2E748 /* Location+Extension.swift */,
+				A365665C2C570B8C00C2E748 /* TunnelStatus+Extension.swift */,
+				A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */,
+				A323FAE72C580F0D00CF9D84 /* HomeCardDivider.swift */,
+				A323FAEA2C58100A00CF9D84 /* HomeCardLocation.swift */,
+				A323FAED2C5842A700CF9D84 /* FlagImage.swift */,
+				A323FAF02C58637A00CF9D84 /* Color+Extension.swift */,
+				A323FAF62C5963CD00CF9D84 /* CardContainer.swift */,
+				A347A8222C59B80500FEF961 /* StatsCard.swift */,
+				A347A8292C61A38C00FEF961 /* HelpView.swift */,
+				A3A9F0F42C6E934300AF1490 /* RuntimeConfigurationView.swift */,
+				A3FABF9A2C6B4D3D004753D1 /* Plan */,
+				A3A9F0F72C6FE58300AF1490 /* AccountView.swift */,
+				A3A9F0FA2C6FE59200AF1490 /* SignOutView.swift */,
+				A3A9F0FD2C6FEF0100AF1490 /* VersionView.swift */,
+				A3A9F1002C701FA700AF1490 /* KeyValueView.swift */,
+				A3A9F1032C70249700AF1490 /* UIUtils.swift */,
+				A364B0B62C7EB9C500A82952 /* UserDataConsent.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A391D9A52C4978F10008D23F /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A391D9A62C4979080008D23F /* DataRepository.swift */,
+				A380AA992C6308CF007E09A1 /* PlanRepository.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		A3A763692C51460B0088D5F5 /* Orchestrator */ = {
+			isa = PBXGroup;
+			children = (
+				A3422DEE2C3E8D7B00A3D867 /* OrcestratorCommand.swift */,
+				A3422DEB2C3E8D4700A3D867 /* VPNOrchestrator.swift */,
+				A3A763632C501B210088D5F5 /* VPNOrchestratorState.swift */,
+			);
+			path = Orchestrator;
+			sourceTree = "<group>";
+		};
+		A3A7636A2C5146C90088D5F5 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A3422E0A2C3F8ADF00A3D867 /* VPNSessionWatcher.swift */,
+				A3A763602C50122C0088D5F5 /* VPNSessionRepository.swift */,
+				A3A7636C2C51877B0088D5F5 /* VPNSessionStore.swift */,
+				A3A7636F2C5196750088D5F5 /* VPNSessionReclaimer.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		A3A7636B2C5146E40088D5F5 /* Tunnel */ = {
+			isa = PBXGroup;
+			children = (
+				A33336BA2C464079004D8C8E /* ErrorNotifier.swift */,
+				A3A763662C509C0E0088D5F5 /* TunnelConfigurationExtension.swift */,
+				A3422DF12C3EA41100A3D867 /* WGAdapterAsync.swift */,
+			);
+			path = Tunnel;
+			sourceTree = "<group>";
+		};
+		A3A9F0EE2C6E6FA900AF1490 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A3A9F0F22C6E704900AF1490 /* MainViewContent.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A3A9F0EF2C6E6FAF00AF1490 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A3A9F0F02C6E6FEF00AF1490 /* MainViewContent.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A3AA4B222C257C75001135FD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A36565FD2C545F5200C2E748 /* Views */,
+				A350DED82C25141200BA1BA6 /* UpVPNApp.swift */,
+				A350DEDA2C25141200BA1BA6 /* ContentView.swift */,
+				A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A3E352D82C2E309B008D0E30 /* Tunnel */ = {
+			isa = PBXGroup;
+			children = (
+				A3E352D92C2E30B6008D0E30 /* TunnelManager.swift */,
+				A3E352DC2C2E3D9D008D0E30 /* TunnelStatus.swift */,
+				A3422DE52C3DB4DE00A3D867 /* TunnelObserver.swift */,
+				A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */,
+				A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */,
+				A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */,
+			);
+			path = Tunnel;
+			sourceTree = "<group>";
+		};
+		A3FABF9A2C6B4D3D004753D1 /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				A3FABF8E2C6B2507004753D1 /* PrepaidPlansView.swift */,
+				A3FABF912C6B38A6004753D1 /* PriceCapsule.swift */,
+				A3FABF942C6B3E3B004753D1 /* YearlyPlanView.swift */,
+				A3FABF972C6B4C3B004753D1 /* PurchaseButton.swift */,
+				A347A8252C6129CC00FEF961 /* PlanManagement.swift */,
+				A3FABF9B2C6B4F02004753D1 /* PlanView.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		A3AA4B112C256EC2001135FD /* WireGuardGoBridgeiOS */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = A3AA4B122C256EC2001135FD /* Build configuration list for PBXLegacyTarget "WireGuardGoBridgeiOS" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "$(SOURCE_PACKAGES_DIR)/checkouts/wireguard-apple/Sources/WireGuardKitGo";
+			dependencies = (
+			);
+			name = WireGuardGoBridgeiOS;
+			passBuildSettingsInEnvironment = 1;
+			productName = WireGuardGoBridgeiOS;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+</dict>
+</plist>
+";
+		};
+		A3AA4B152C256ED0001135FD /* WireGuardGoBridgemacOS */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = A3AA4B162C256ED0001135FD /* Build configuration list for PBXLegacyTarget "WireGuardGoBridgemacOS" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "$(SOURCE_PACKAGES_DIR)/checkouts/wireguard-apple/Sources/WireGuardKitGo";
+			dependencies = (
+			);
+			name = WireGuardGoBridgemacOS;
+			passBuildSettingsInEnvironment = 1;
+			productName = WireGuardGoBridgemacOS;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+</dict>
+</plist>
+";
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		A350DED42C25141100BA1BA6 /* UpVPNmacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A350DEE42C25141300BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNmacOS" */;
+			buildPhases = (
+				A350DED12C25141100BA1BA6 /* Sources */,
+				A350DED22C25141100BA1BA6 /* Frameworks */,
+				A350DED32C25141100BA1BA6 /* Resources */,
+				A350DF2B2C251E2A00BA1BA6 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A350DF262C251E2A00BA1BA6 /* PBXTargetDependency */,
+			);
+			name = UpVPNmacOS;
+			packageProductDependencies = (
+				A33336D22C47AC0E004D8C8E /* WireGuardKit */,
+				A365665A2C57072000C2E748 /* FlagKit */,
+			);
+			productName = UpVPN;
+			productReference = A350DED52C25141200BA1BA6 /* UpVPN.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A350DEEA2C25147C00BA1BA6 /* UpVPNiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A350DEF62C25147D00BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNiOS" */;
+			buildPhases = (
+				A350DEE72C25147C00BA1BA6 /* Sources */,
+				A350DEE82C25147C00BA1BA6 /* Frameworks */,
+				A350DEE92C25147C00BA1BA6 /* Resources */,
+				A350DF192C251E0C00BA1BA6 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A350DF142C251E0C00BA1BA6 /* PBXTargetDependency */,
+			);
+			name = UpVPNiOS;
+			packageProductDependencies = (
+				A33336D42C47AC13004D8C8E /* WireGuardKit */,
+				A36566582C57071A00C2E748 /* FlagKit */,
+			);
+			productName = UpVPNiOS;
+			productReference = A350DEEB2C25147C00BA1BA6 /* UpVPN.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A350DF092C251E0B00BA1BA6 /* UpVPNNetworkExtensioniOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A350DF162C251E0C00BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNNetworkExtensioniOS" */;
+			buildPhases = (
+				A350DF062C251E0B00BA1BA6 /* Sources */,
+				A350DF072C251E0B00BA1BA6 /* Frameworks */,
+				A350DF082C251E0B00BA1BA6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A3AA4B1A2C256F69001135FD /* PBXTargetDependency */,
+			);
+			name = UpVPNNetworkExtensioniOS;
+			packageProductDependencies = (
+				A3AA4B1B2C256F72001135FD /* WireGuardKit */,
+			);
+			productName = UpVPNNetworkExtensioniOS;
+			productReference = A350DF0A2C251E0B00BA1BA6 /* UpVPNNetworkExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A350DF1D2C251E2A00BA1BA6 /* UpVPNNetworkExtensionmacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A350DF282C251E2A00BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNNetworkExtensionmacOS" */;
+			buildPhases = (
+				A350DF1A2C251E2A00BA1BA6 /* Sources */,
+				A350DF1B2C251E2A00BA1BA6 /* Frameworks */,
+				A350DF1C2C251E2A00BA1BA6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A3AA4B1E2C256F7C001135FD /* PBXTargetDependency */,
+			);
+			name = UpVPNNetworkExtensionmacOS;
+			packageProductDependencies = (
+				A3AA4B1F2C256F80001135FD /* WireGuardKit */,
+			);
+			productName = UpVPNNetworkExtensionmacOS;
+			productReference = A350DF1E2C251E2A00BA1BA6 /* UpVPNNetworkExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A350DECD2C25141100BA1BA6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					A350DED42C25141100BA1BA6 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A350DEEA2C25147C00BA1BA6 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A350DF092C251E0B00BA1BA6 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A350DF1D2C251E2A00BA1BA6 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A3AA4B112C256EC2001135FD = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A3AA4B152C256ED0001135FD = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = A350DED02C25141100BA1BA6 /* Build configuration list for PBXProject "UpVPN" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A350DECC2C25141100BA1BA6;
+			packageReferences = (
+				A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */,
+				A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */,
+			);
+			productRefGroup = A350DED62C25141200BA1BA6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A350DED42C25141100BA1BA6 /* UpVPNmacOS */,
+				A350DEEA2C25147C00BA1BA6 /* UpVPNiOS */,
+				A350DF092C251E0B00BA1BA6 /* UpVPNNetworkExtensioniOS */,
+				A350DF1D2C251E2A00BA1BA6 /* UpVPNNetworkExtensionmacOS */,
+				A3AA4B112C256EC2001135FD /* WireGuardGoBridgeiOS */,
+				A3AA4B152C256ED0001135FD /* WireGuardGoBridgemacOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A350DED32C25141100BA1BA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3CD54572C76BA1D00B7848E /* PrivacyInfo.xcprivacy in Resources */,
+				A350DEE02C25141300BA1BA6 /* Preview Assets.xcassets in Resources */,
+				A350DEDD2C25141300BA1BA6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DEE92C25147C00BA1BA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A36566112C55808D00C2E748 /* LaunchScreen.storyboard in Resources */,
+				A350DEF52C25147D00BA1BA6 /* Preview Assets.xcassets in Resources */,
+				A3CD54582C76BA1D00B7848E /* PrivacyInfo.xcprivacy in Resources */,
+				A350DEF22C25147D00BA1BA6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DF082C251E0B00BA1BA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DF1C2C251E2A00BA1BA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A350DED12C25141100BA1BA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3A7635C2C4EF5B00088D5F5 /* AppConfig.swift in Sources */,
+				A3CD54542C7447A100B7848E /* TunnelManagerSimulator.swift in Sources */,
+				A347A82A2C61A38C00FEF961 /* HelpView.swift in Sources */,
+				A3A9F1012C701FA700AF1490 /* KeyValueView.swift in Sources */,
+				A364B0B72C7EB9C500A82952 /* UserDataConsent.swift in Sources */,
+				A3FABF982C6B4C3B004753D1 /* PurchaseButton.swift in Sources */,
+				A3A9F0F12C6E6FEF00AF1490 /* MainViewContent.swift in Sources */,
+				A323FAF72C5963CD00CF9D84 /* CardContainer.swift in Sources */,
+				A391D98F2C4939F90008D23F /* StoreError.swift in Sources */,
+				A33336C42C479C0E004D8C8E /* DeviceStore.swift in Sources */,
+				A391D9942C493A820008D23F /* UserCredentials.swift in Sources */,
+				A3422DD32C387A0600A3D867 /* Response.swift in Sources */,
+				A323FAEE2C5842A700CF9D84 /* FlagImage.swift in Sources */,
+				A3422E002C3F802300A3D867 /* VPNApiService.swift in Sources */,
+				A365660E2C55700200C2E748 /* SettingsView.swift in Sources */,
+				A365664E2C56C67500C2E748 /* RecentLocationsCard.swift in Sources */,
+				A33336CE2C47A158004D8C8E /* StoreKeys.swift in Sources */,
+				A33336C92C479D9F004D8C8E /* Device.swift in Sources */,
+				A36566082C556EFE00C2E748 /* HomeView.swift in Sources */,
+				A3A9F0FB2C6FE59200AF1490 /* SignOutView.swift in Sources */,
+				A3422DE62C3DB4DE00A3D867 /* TunnelObserver.swift in Sources */,
+				A391D99F2C4968130008D23F /* Types.swift in Sources */,
+				A365664B2C56C66500C2E748 /* HomeCard.swift in Sources */,
+				A3FABF8C2C6B068A004753D1 /* PlanViewModel.swift in Sources */,
+				A3422DE92C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift in Sources */,
+				A3422DBC2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */,
+				A33336BE2C475E2C004D8C8E /* Keychain.swift in Sources */,
+				A36566512C56E75600C2E748 /* LocationView.swift in Sources */,
+				A3FABF8F2C6B2507004753D1 /* PrepaidPlansView.swift in Sources */,
+				A36565FF2C545F8F00C2E748 /* MainView.swift in Sources */,
+				A3E352DA2C2E30B6008D0E30 /* TunnelManager.swift in Sources */,
+				A3A7637B2C5225E00088D5F5 /* LocationViewModel.swift in Sources */,
+				A3A9F1072C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */,
+				A350DEDB2C25141200BA1BA6 /* ContentView.swift in Sources */,
+				A36565FB2C52E87300C2E748 /* String+ArrayConversion.swift in Sources */,
+				A3422DF62C3F7F2100A3D867 /* Client.swift in Sources */,
+				A350DED92C25141200BA1BA6 /* UpVPNApp.swift in Sources */,
+				A3422DD92C387A8100A3D867 /* VPNState.swift in Sources */,
+				A323FAF12C58637A00CF9D84 /* Color+Extension.swift in Sources */,
+				A347A8262C6129CC00FEF961 /* PlanManagement.swift in Sources */,
+				A323FAF42C58699000CF9D84 /* Country.swift in Sources */,
+				A323FAE82C580F0D00CF9D84 /* HomeCardDivider.swift in Sources */,
+				A36566052C54613A00C2E748 /* WelcomeView.swift in Sources */,
+				A3422DCE2C3879FD00A3D867 /* Request.swift in Sources */,
+				A391D98A2C4919FA0008D23F /* UserStore.swift in Sources */,
+				A3FABF9C2C6B4F02004753D1 /* PlanView.swift in Sources */,
+				A323FAE52C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */,
+				A347A8232C59B80500FEF961 /* StatsCard.swift in Sources */,
+				A3A9F0F52C6E934300AF1490 /* RuntimeConfigurationView.swift in Sources */,
+				A391D9A72C4979080008D23F /* DataRepository.swift in Sources */,
+				A3A9F1042C70249700AF1490 /* UIUtils.swift in Sources */,
+				A380AA9A2C6308CF007E09A1 /* PlanRepository.swift in Sources */,
+				A33336D72C47B937004D8C8E /* Utils.swift in Sources */,
+				A3FABF952C6B3E3B004753D1 /* YearlyPlanView.swift in Sources */,
+				A323FAEB2C58100A00CF9D84 /* HomeCardLocation.swift in Sources */,
+				A365665D2C570B8C00C2E748 /* TunnelStatus+Extension.swift in Sources */,
+				A33336B62C463394004D8C8E /* FileManager+Extension.swift in Sources */,
+				A36566542C57031600C2E748 /* Location+Extension.swift in Sources */,
+				A3A9F0FE2C6FEF0100AF1490 /* VersionView.swift in Sources */,
+				A391D99C2C4954A00008D23F /* AuthViewModel.swift in Sources */,
+				A36565F82C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */,
+				A3A763732C521EF80088D5F5 /* LocationStore.swift in Sources */,
+				A3422DC82C3562B700A3D867 /* Location.swift in Sources */,
+				A36566022C54600C00C2E748 /* LoginView.swift in Sources */,
+				A365660B2C556FF500C2E748 /* LocationsView.swift in Sources */,
+				A3FABF922C6B38A6004753D1 /* PriceCapsule.swift in Sources */,
+				A3A9F0F82C6FE58300AF1490 /* AccountView.swift in Sources */,
+				A3422DDE2C387B0E00A3D867 /* AppMessageHandler.swift in Sources */,
+				A3E352DD2C2E3D9D008D0E30 /* TunnelStatus.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DEE72C25147C00BA1BA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3A7635D2C4EF5B00088D5F5 /* AppConfig.swift in Sources */,
+				A3CD54552C7447A100B7848E /* TunnelManagerSimulator.swift in Sources */,
+				A347A82B2C61A38C00FEF961 /* HelpView.swift in Sources */,
+				A3A9F1022C701FA700AF1490 /* KeyValueView.swift in Sources */,
+				A364B0B82C7EB9C500A82952 /* UserDataConsent.swift in Sources */,
+				A3FABF992C6B4C3B004753D1 /* PurchaseButton.swift in Sources */,
+				A3A9F0F32C6E704900AF1490 /* MainViewContent.swift in Sources */,
+				A323FAF82C5963CD00CF9D84 /* CardContainer.swift in Sources */,
+				A391D9902C4939F90008D23F /* StoreError.swift in Sources */,
+				A33336C52C479C0E004D8C8E /* DeviceStore.swift in Sources */,
+				A391D9952C493A820008D23F /* UserCredentials.swift in Sources */,
+				A3422DD42C387A0600A3D867 /* Response.swift in Sources */,
+				A323FAEF2C5842A700CF9D84 /* FlagImage.swift in Sources */,
+				A3422E012C3F802300A3D867 /* VPNApiService.swift in Sources */,
+				A365660F2C55700200C2E748 /* SettingsView.swift in Sources */,
+				A365664F2C56C67500C2E748 /* RecentLocationsCard.swift in Sources */,
+				A33336CF2C47A158004D8C8E /* StoreKeys.swift in Sources */,
+				A33336CA2C479D9F004D8C8E /* Device.swift in Sources */,
+				A36566092C556EFE00C2E748 /* HomeView.swift in Sources */,
+				A3A9F0FC2C6FE59200AF1490 /* SignOutView.swift in Sources */,
+				A3422DE72C3DB4DE00A3D867 /* TunnelObserver.swift in Sources */,
+				A391D9A02C4968130008D23F /* Types.swift in Sources */,
+				A365664C2C56C66500C2E748 /* HomeCard.swift in Sources */,
+				A3FABF8D2C6B068A004753D1 /* PlanViewModel.swift in Sources */,
+				A3422DEA2C3DE35100A3D867 /* NETunnelProviderSessionExtension.swift in Sources */,
+				A3422DBD2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */,
+				A33336BF2C475E2C004D8C8E /* Keychain.swift in Sources */,
+				A36566522C56E75600C2E748 /* LocationView.swift in Sources */,
+				A3FABF902C6B2507004753D1 /* PrepaidPlansView.swift in Sources */,
+				A36566002C545F8F00C2E748 /* MainView.swift in Sources */,
+				A3E352DB2C2E30B6008D0E30 /* TunnelManager.swift in Sources */,
+				A3A7637C2C5225E00088D5F5 /* LocationViewModel.swift in Sources */,
+				A3A9F1082C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */,
+				A3AA4B232C257CA2001135FD /* UpVPNApp.swift in Sources */,
+				A36565FC2C52E87300C2E748 /* String+ArrayConversion.swift in Sources */,
+				A3422DF72C3F7F2100A3D867 /* Client.swift in Sources */,
+				A3AA4B242C257CA2001135FD /* ContentView.swift in Sources */,
+				A3422DDA2C387A8100A3D867 /* VPNState.swift in Sources */,
+				A323FAF22C58637A00CF9D84 /* Color+Extension.swift in Sources */,
+				A347A8272C6129CC00FEF961 /* PlanManagement.swift in Sources */,
+				A323FAF52C58699000CF9D84 /* Country.swift in Sources */,
+				A323FAE92C580F0D00CF9D84 /* HomeCardDivider.swift in Sources */,
+				A36566062C54613A00C2E748 /* WelcomeView.swift in Sources */,
+				A3422DCF2C3879FD00A3D867 /* Request.swift in Sources */,
+				A391D98B2C4919FA0008D23F /* UserStore.swift in Sources */,
+				A3FABF9D2C6B4F02004753D1 /* PlanView.swift in Sources */,
+				A323FAE62C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */,
+				A347A8242C59B80500FEF961 /* StatsCard.swift in Sources */,
+				A3A9F0F62C6E934300AF1490 /* RuntimeConfigurationView.swift in Sources */,
+				A391D9A82C4979080008D23F /* DataRepository.swift in Sources */,
+				A3A9F1052C70249700AF1490 /* UIUtils.swift in Sources */,
+				A380AA9B2C6308CF007E09A1 /* PlanRepository.swift in Sources */,
+				A33336D82C47B937004D8C8E /* Utils.swift in Sources */,
+				A3FABF962C6B3E3B004753D1 /* YearlyPlanView.swift in Sources */,
+				A323FAEC2C58100A00CF9D84 /* HomeCardLocation.swift in Sources */,
+				A365665E2C570B8C00C2E748 /* TunnelStatus+Extension.swift in Sources */,
+				A33336B72C463394004D8C8E /* FileManager+Extension.swift in Sources */,
+				A36566552C57031600C2E748 /* Location+Extension.swift in Sources */,
+				A3A9F0FF2C6FEF0100AF1490 /* VersionView.swift in Sources */,
+				A391D99D2C4954A00008D23F /* AuthViewModel.swift in Sources */,
+				A36565F92C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */,
+				A3A763742C521EF80088D5F5 /* LocationStore.swift in Sources */,
+				A3422DC92C3562B700A3D867 /* Location.swift in Sources */,
+				A36566032C54600C00C2E748 /* LoginView.swift in Sources */,
+				A365660C2C556FF500C2E748 /* LocationsView.swift in Sources */,
+				A3FABF932C6B38A6004753D1 /* PriceCapsule.swift in Sources */,
+				A3A9F0F92C6FE58300AF1490 /* AccountView.swift in Sources */,
+				A3422DDF2C387B0E00A3D867 /* AppMessageHandler.swift in Sources */,
+				A3E352DE2C2E3D9D008D0E30 /* TunnelStatus.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DF062C251E0B00BA1BA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3422DEF2C3E8D7B00A3D867 /* OrcestratorCommand.swift in Sources */,
+				A3A7635E2C4EF5B00088D5F5 /* AppConfig.swift in Sources */,
+				A391D9A32C4969D70008D23F /* UserCredentials.swift in Sources */,
+				A3422DD52C387A0600A3D867 /* Response.swift in Sources */,
+				A33336BB2C464079004D8C8E /* ErrorNotifier.swift in Sources */,
+				A391D9A12C4968130008D23F /* Types.swift in Sources */,
+				A33336CB2C479D9F004D8C8E /* Device.swift in Sources */,
+				A391D9AB2C49867A0008D23F /* UserStore.swift in Sources */,
+				A3A763702C5196750088D5F5 /* VPNSessionReclaimer.swift in Sources */,
+				A391D9A92C4979080008D23F /* DataRepository.swift in Sources */,
+				A350DF102C251E0C00BA1BA6 /* PacketTunnelProvider.swift in Sources */,
+				A3422DEC2C3E8D4700A3D867 /* VPNOrchestrator.swift in Sources */,
+				A3422DD02C3879FD00A3D867 /* Request.swift in Sources */,
+				A3422DDB2C387A8100A3D867 /* VPNState.swift in Sources */,
+				A3A763752C5223120088D5F5 /* LocationStore.swift in Sources */,
+				A3A763642C501B210088D5F5 /* VPNOrchestratorState.swift in Sources */,
+				A391D9912C4939F90008D23F /* StoreError.swift in Sources */,
+				A3A7636D2C51877B0088D5F5 /* VPNSessionStore.swift in Sources */,
+				A3A9F1092C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */,
+				A3422DF22C3EA41100A3D867 /* WGAdapterAsync.swift in Sources */,
+				A3A763612C50122C0088D5F5 /* VPNSessionRepository.swift in Sources */,
+				A33336D02C47A158004D8C8E /* StoreKeys.swift in Sources */,
+				A3422DE02C387B0E00A3D867 /* AppMessageHandler.swift in Sources */,
+				A33336C62C479C0E004D8C8E /* DeviceStore.swift in Sources */,
+				A3422E0B2C3F8ADF00A3D867 /* VPNSessionWatcher.swift in Sources */,
+				A3422E022C3F802300A3D867 /* VPNApiService.swift in Sources */,
+				A33336B82C463394004D8C8E /* FileManager+Extension.swift in Sources */,
+				A3422DF82C3F7F2100A3D867 /* Client.swift in Sources */,
+				A3A763672C509C0E0088D5F5 /* TunnelConfigurationExtension.swift in Sources */,
+				A3422DCA2C3562B700A3D867 /* Location.swift in Sources */,
+				A33336D92C47B937004D8C8E /* Utils.swift in Sources */,
+				A33336C02C475E2C004D8C8E /* Keychain.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A350DF1A2C251E2A00BA1BA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3422DF02C3E8D7B00A3D867 /* OrcestratorCommand.swift in Sources */,
+				A3A7635F2C4EF5B00088D5F5 /* AppConfig.swift in Sources */,
+				A391D9A42C4969D70008D23F /* UserCredentials.swift in Sources */,
+				A3422DD62C387A0600A3D867 /* Response.swift in Sources */,
+				A33336BC2C464079004D8C8E /* ErrorNotifier.swift in Sources */,
+				A391D9A22C4968130008D23F /* Types.swift in Sources */,
+				A33336CC2C479D9F004D8C8E /* Device.swift in Sources */,
+				A391D9AC2C49867B0008D23F /* UserStore.swift in Sources */,
+				A3A763712C5196750088D5F5 /* VPNSessionReclaimer.swift in Sources */,
+				A391D9AA2C4979080008D23F /* DataRepository.swift in Sources */,
+				A350DF2C2C251F6100BA1BA6 /* PacketTunnelProvider.swift in Sources */,
+				A3422DED2C3E8D4700A3D867 /* VPNOrchestrator.swift in Sources */,
+				A3422DD12C3879FD00A3D867 /* Request.swift in Sources */,
+				A3422DDC2C387A8100A3D867 /* VPNState.swift in Sources */,
+				A3A763762C5223130088D5F5 /* LocationStore.swift in Sources */,
+				A3A763652C501B210088D5F5 /* VPNOrchestratorState.swift in Sources */,
+				A391D9922C4939F90008D23F /* StoreError.swift in Sources */,
+				A3A7636E2C51877B0088D5F5 /* VPNSessionStore.swift in Sources */,
+				A3A9F10A2C708F6700AF1490 /* InterfaceConfiguration+Device.swift in Sources */,
+				A3422DF32C3EA41100A3D867 /* WGAdapterAsync.swift in Sources */,
+				A3A763622C50122C0088D5F5 /* VPNSessionRepository.swift in Sources */,
+				A33336D12C47A158004D8C8E /* StoreKeys.swift in Sources */,
+				A3422DE12C387B0E00A3D867 /* AppMessageHandler.swift in Sources */,
+				A33336C72C479C0E004D8C8E /* DeviceStore.swift in Sources */,
+				A3422E0C2C3F8ADF00A3D867 /* VPNSessionWatcher.swift in Sources */,
+				A3422E032C3F802300A3D867 /* VPNApiService.swift in Sources */,
+				A33336B92C463394004D8C8E /* FileManager+Extension.swift in Sources */,
+				A3422DF92C3F7F2100A3D867 /* Client.swift in Sources */,
+				A3A763682C509C0E0088D5F5 /* TunnelConfigurationExtension.swift in Sources */,
+				A3422DCB2C3562B700A3D867 /* Location.swift in Sources */,
+				A33336DA2C47B937004D8C8E /* Utils.swift in Sources */,
+				A33336C12C475E2C004D8C8E /* Keychain.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A350DF142C251E0C00BA1BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A350DF092C251E0B00BA1BA6 /* UpVPNNetworkExtensioniOS */;
+			targetProxy = A350DF132C251E0C00BA1BA6 /* PBXContainerItemProxy */;
+		};
+		A350DF262C251E2A00BA1BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A350DF1D2C251E2A00BA1BA6 /* UpVPNNetworkExtensionmacOS */;
+			targetProxy = A350DF252C251E2A00BA1BA6 /* PBXContainerItemProxy */;
+		};
+		A3AA4B1A2C256F69001135FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3AA4B112C256EC2001135FD /* WireGuardGoBridgeiOS */;
+			targetProxy = A3AA4B192C256F69001135FD /* PBXContainerItemProxy */;
+		};
+		A3AA4B1E2C256F7C001135FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3AA4B152C256ED0001135FD /* WireGuardGoBridgemacOS */;
+			targetProxy = A3AA4B1D2C256F7C001135FD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A350DEE22C25141300BA1BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A33336B22C457D84004D8C8E /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A350DEE32C25141300BA1BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A33336B22C457D84004D8C8E /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A350DEE52C25141300BA1BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = macOS/UpVPN.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "macOS/Preview\\ Content";
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = macOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPN;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_MACOS)";
+				PRODUCT_NAME = UpVPN;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A350DEE62C25141300BA1BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = macOS/UpVPN.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "macOS/Preview\\ Content";
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = macOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPN;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_MACOS)";
+				PRODUCT_NAME = UpVPN;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A350DEF72C25147D00BA1BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = iOS/UpVPN.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "iOS/Preview\\ Content";
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPN;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_IOS)";
+				PRODUCT_NAME = UpVPN;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A350DEF82C25147D00BA1BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = iOS/UpVPN.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "iOS/Preview\\ Content";
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPN;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_IOS)";
+				PRODUCT_NAME = UpVPN;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A350DF172C251E0C00BA1BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UpVPNNetworkExtension/UpVPNNetworkExtension_iOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_BITCODE = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UpVPNNetworkExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPNNetworkExtensioniOS;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_IOS).network-extension";
+				PRODUCT_NAME = UpVPNNetworkExtension;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A350DF182C251E0C00BA1BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UpVPNNetworkExtension/UpVPNNetworkExtension_iOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_BITCODE = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UpVPNNetworkExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPNNetworkExtensioniOS;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_IOS).network-extension";
+				PRODUCT_NAME = UpVPNNetworkExtension;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A350DF292C251E2A00BA1BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UpVPNNetworkExtension/UpVPNNetworkExtension_macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UpVPNNetworkExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPNNetworkExtensionmacOS;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_MACOS).network-extension";
+				PRODUCT_NAME = UpVPNNetworkExtension;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A350DF2A2C251E2A00BA1BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UpVPNNetworkExtension/UpVPNNetworkExtension_macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UpVPNNetworkExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = UpVPNNetworkExtensionmacOS;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_ID_MACOS).network-extension";
+				PRODUCT_NAME = UpVPNNetworkExtension;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A3AA4B132C256EC2001135FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GOOS_iphonesimulator = "";
+				"GOOS_iphonesimulator[sdk=iphonesimulator*]" = ios;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PATH = "$PATH:/opt/homebrew/bin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A3AA4B142C256EC2001135FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				GOOS_iphonesimulator = "";
+				"GOOS_iphonesimulator[sdk=iphonesimulator*]" = ios;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PATH = "$PATH:/opt/homebrew/bin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		A3AA4B172C256ED0001135FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PATH = "$PATH:/opt/homebrew/bin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A3AA4B182C256ED0001135FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PATH = "$PATH:/opt/homebrew/bin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A350DED02C25141100BA1BA6 /* Build configuration list for PBXProject "UpVPN" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A350DEE22C25141300BA1BA6 /* Debug */,
+				A350DEE32C25141300BA1BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A350DEE42C25141300BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNmacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A350DEE52C25141300BA1BA6 /* Debug */,
+				A350DEE62C25141300BA1BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A350DEF62C25147D00BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A350DEF72C25147D00BA1BA6 /* Debug */,
+				A350DEF82C25147D00BA1BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A350DF162C251E0C00BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNNetworkExtensioniOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A350DF172C251E0C00BA1BA6 /* Debug */,
+				A350DF182C251E0C00BA1BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A350DF282C251E2A00BA1BA6 /* Build configuration list for PBXNativeTarget "UpVPNNetworkExtensionmacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A350DF292C251E2A00BA1BA6 /* Debug */,
+				A350DF2A2C251E2A00BA1BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A3AA4B122C256EC2001135FD /* Build configuration list for PBXLegacyTarget "WireGuardGoBridgeiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3AA4B132C256EC2001135FD /* Debug */,
+				A3AA4B142C256EC2001135FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A3AA4B162C256ED0001135FD /* Build configuration list for PBXLegacyTarget "WireGuardGoBridgemacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3AA4B172C256ED0001135FD /* Debug */,
+				A3AA4B182C256ED0001135FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/madebybowtie/FlagKit.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.4.0;
+			};
+		};
+		A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/upvpn/wireguard-apple";
+			requirement = {
+				kind = revision;
+				revision = b40a6251d29b944932c31a0696a94ceb4a00a005;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A33336D22C47AC0E004D8C8E /* WireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
+			productName = WireGuardKit;
+		};
+		A33336D42C47AC13004D8C8E /* WireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
+			productName = WireGuardKit;
+		};
+		A36566582C57071A00C2E748 /* FlagKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */;
+			productName = FlagKit;
+		};
+		A365665A2C57072000C2E748 /* FlagKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */;
+			productName = FlagKit;
+		};
+		A3AA4B1B2C256F72001135FD /* WireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
+			productName = WireGuardKit;
+		};
+		A3AA4B1F2C256F80001135FD /* WireGuardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
+			productName = WireGuardKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A350DECD2C25141100BA1BA6 /* Project object */;
+}
