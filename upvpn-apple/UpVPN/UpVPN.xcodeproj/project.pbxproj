@@ -164,6 +164,9 @@
 		A391D9AA2C4979080008D23F /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9A62C4979080008D23F /* DataRepository.swift */; };
 		A391D9AB2C49867A0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
 		A391D9AC2C49867B0008D23F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A391D9892C4919FA0008D23F /* UserStore.swift */; };
+		A3A21D892C87118100600C2C /* ResponsiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A21D882C87118100600C2C /* ResponsiveHomeView.swift */; };
+		A3A21D8B2C87362E00600C2C /* LocationsMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A21D8A2C87362E00600C2C /* LocationsMapView.swift */; };
+		A3A21D8D2C8773E800600C2C /* RuntimeConfigMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A21D8C2C8773E800600C2C /* RuntimeConfigMapView.swift */; };
 		A3A7635C2C4EF5B00088D5F5 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
 		A3A7635D2C4EF5B00088D5F5 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
 		A3A7635E2C4EF5B00088D5F5 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */; };
@@ -357,6 +360,9 @@
 		A391D99B2C4954A00008D23F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		A391D99E2C4968130008D23F /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		A391D9A62C4979080008D23F /* DataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRepository.swift; sourceTree = "<group>"; };
+		A3A21D882C87118100600C2C /* ResponsiveHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveHomeView.swift; sourceTree = "<group>"; };
+		A3A21D8A2C87362E00600C2C /* LocationsMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsMapView.swift; sourceTree = "<group>"; };
+		A3A21D8C2C8773E800600C2C /* RuntimeConfigMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeConfigMapView.swift; sourceTree = "<group>"; };
 		A3A7635B2C4EF5B00088D5F5 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		A3A763602C50122C0088D5F5 /* VPNSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNSessionRepository.swift; sourceTree = "<group>"; };
 		A3A763632C501B210088D5F5 /* VPNOrchestratorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNOrchestratorState.swift; sourceTree = "<group>"; };
@@ -591,6 +597,7 @@
 				A36566072C556EFE00C2E748 /* HomeView.swift */,
 				A36566502C56E75600C2E748 /* LocationView.swift */,
 				A365660A2C556FF500C2E748 /* LocationsView.swift */,
+				A3A21D8A2C87362E00600C2C /* LocationsMapView.swift */,
 				A365660D2C55700200C2E748 /* SettingsView.swift */,
 				A365664A2C56C66500C2E748 /* HomeCard.swift */,
 				A365664D2C56C67500C2E748 /* RecentLocationsCard.swift */,
@@ -660,6 +667,8 @@
 			isa = PBXGroup;
 			children = (
 				A3A9F0F22C6E704900AF1490 /* MainViewContent.swift */,
+				A3A21D882C87118100600C2C /* ResponsiveHomeView.swift */,
+				A3A21D8C2C8773E800600C2C /* RuntimeConfigMapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1071,6 +1080,7 @@
 				A365664F2C56C67500C2E748 /* RecentLocationsCard.swift in Sources */,
 				A33336CF2C47A158004D8C8E /* StoreKeys.swift in Sources */,
 				A33336CA2C479D9F004D8C8E /* Device.swift in Sources */,
+				A3A21D892C87118100600C2C /* ResponsiveHomeView.swift in Sources */,
 				A36566092C556EFE00C2E748 /* HomeView.swift in Sources */,
 				A3A9F0FC2C6FE59200AF1490 /* SignOutView.swift in Sources */,
 				A3422DE72C3DB4DE00A3D867 /* TunnelObserver.swift in Sources */,
@@ -1099,6 +1109,7 @@
 				A3422DCF2C3879FD00A3D867 /* Request.swift in Sources */,
 				A391D98B2C4919FA0008D23F /* UserStore.swift in Sources */,
 				A3FABF9D2C6B4F02004753D1 /* PlanView.swift in Sources */,
+				A3A21D8B2C87362E00600C2C /* LocationsMapView.swift in Sources */,
 				A323FAE62C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */,
 				A347A8242C59B80500FEF961 /* StatsCard.swift in Sources */,
 				A3A9F0F62C6E934300AF1490 /* RuntimeConfigurationView.swift in Sources */,
@@ -1115,6 +1126,7 @@
 				A391D99D2C4954A00008D23F /* AuthViewModel.swift in Sources */,
 				A36565F92C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */,
 				A3A763742C521EF80088D5F5 /* LocationStore.swift in Sources */,
+				A3A21D8D2C8773E800600C2C /* RuntimeConfigMapView.swift in Sources */,
 				A3422DC92C3562B700A3D867 /* Location.swift in Sources */,
 				A36566032C54600C00C2E748 /* LoginView.swift in Sources */,
 				A365660C2C556FF500C2E748 /* LocationsView.swift in Sources */,
