@@ -9,20 +9,26 @@
 
 # upvpn
 
-upvpn (pronounced Up VPN) app is WireGuard VPN client for Linux, macOS, Windows, and Android.
+upvpn (pronounced Up VPN) app is a WireGuard VPN client for Linux, Windows, Android, tvOS, iOS, and macOS.
 For more information please visit https://upvpn.app
 
 upvpn desktop app is made up of UI, CLI and background Daemon.
 
 # Serverless
 
-upvpn uses Serverless computing model, where a Linux based WireGuard server is provisioned on public cloud providers when app requests to connect to VPN. And server is deprovisioned when app requests to disconnect from VPN.
+upvpn utilizes a serverless computing model, where a Linux-based WireGuard server is provisioned on public cloud providers when the app requests a VPN connection. The server is deprovisioned when the app requests to disconnect from the VPN.
 
-All of it happens with a single click or tap on the UI, or a single command on terminal.
+This entire process occurs with a single click or tap on the user interface, or through a single command in the terminal.
 
 # Install
-App for Linux, macOS, Windows, and Android is available for download on [Github Releases](https://github.com/upvpn/upvpn-app/releases) or on website at https://upvpn.app/download
 
+- [Linux](https://upvpn.app/downloads/linux)
+- [Windows](https://upvpn.app/downloads/windows)
+- [macOS](https://upvpn.app/downloads/macos) | [App Store](https://apps.apple.com/app/serverless-vpn-upvpn/id6596774170)
+- [iOS | iPadOS | tvOS](https://upvpn.app/downloads/ios) | [App Store](https://apps.apple.com/app/serverless-vpn-upvpn/id6596774170)
+- [Android](https://upvpn.app/downloads/android) | [Google Play](https://play.google.com/store/apps/details?id=app.upvpn.upvpn) | [Amazon Appstore](https://www.amazon.com/dp/B0CQ3PNX54) | [Galaxy Store](https://galaxy.store/upvpn) | [APK from Github Releases](https://github.com/upvpn/upvpn-app/releases)
+
+Alternatively, visit [Github Releases](https://github.com/upvpn/upvpn-app/releases) or the website at https://upvpn.app/download
 
 # Code
 
@@ -31,6 +37,7 @@ App for Linux, macOS, Windows, and Android is available for download on [Github 
 | Crate or Directory | Description |
 | --- | --- |
 | upvpn-android | Standalone app for Android. |
+| upvpn-apple | Standalone apps for tvOS, iOS and macOS built using [Network Extension](https://developer.apple.com/documentation/networkextension). The macOS app doesn't include the `upvpn` CLI. |
 | upvpn-cli | Code for `upvpn` cli. |
 | upvpn-config | Configuration read from env vars, `upvpn.conf.toml` are merged at runtime in `upvpn-config` and is source of runtime configuration for `upvpn-cli`, `upvpn-daemon`, and `upvpn-ui`. |
 | upvpn-controller | Defines GRPC protobuf for APIs exposed by `upvpn-daemon` to be consumed by `upvpn-cli` and `upvpn-ui`. |
@@ -51,9 +58,13 @@ Please see [Build.md](./Build.md)
 
 Please see [upvpn-android/README.md](./upvpn-android/README.md)
 
+## Building iOS, tvOS, macOS Apps
+
+Please see [upvpn-apple/README.md](./upvpn-apple/README.md)
+
 # License
 
- Android app, and all Rust crates in this repository are [licensed under GPL version 3](./LICENSE).
+ Android app, apps for Apple Platforms, and all Rust crates in this repository are [licensed under GPL version 3](./LICENSE).
 
 Copyright (C) 2023  upvpn LLC
 
