@@ -108,7 +108,6 @@ struct MenuBarExtraWrapper: View {
         case .signedIn:
             VStack(spacing: 10) {
                 HomeCard(tunnelStatus: tunnelViewModel.tunnelObserver.tunnelStatus,
-                         selectedLocation: locationViewModel.selected,
                          start: {
                     if let location = locationViewModel.selected {
                         locationViewModel.addRecent(location: location)

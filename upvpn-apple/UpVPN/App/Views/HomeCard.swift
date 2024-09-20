@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HomeCard: View {
     var tunnelStatus: TunnelStatus
-    var selectedLocation: Location?
     var start: () -> Void = {}
     var stop: () -> Void = {}
 
@@ -60,7 +59,6 @@ struct HomeCard: View {
             VStack(spacing: 15) {
 
                 HomeCardLocation(
-                    selectedLocation: selectedLocation ?? Location.default,
                     isDisconnectedOrConnected: tunnelStatus.isDisconnectedOrConnected(),
                     isDisconnected: tunnelStatus.isDisconnected())
 
@@ -79,11 +77,11 @@ struct HomeCard: View {
 }
 
 #Preview {
-    HomeCard(tunnelStatus: TunnelStatus.connected(Location.default, Date.now), selectedLocation: Location.default)
+    HomeCard(tunnelStatus: TunnelStatus.connected(Location.default, Date.now))
         .environmentObject(LocationViewModel(dataRepository: DataRepository.shared, isDisconnected: { return true }))
 }
 
 #Preview {
-    HomeCard(tunnelStatus: TunnelStatus.serverRunning(Location.default), selectedLocation: Location.default)
+    HomeCard(tunnelStatus: TunnelStatus.serverRunning(Location.default))
         .environmentObject(LocationViewModel(dataRepository: DataRepository.shared, isDisconnected: { return true }))
 }
