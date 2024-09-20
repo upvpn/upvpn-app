@@ -1,5 +1,5 @@
 {
-  "originHash" : "bd0020a40e930c31183511f81e0427b203d42212c20477ff8b1cafc3e995cbe4",
+  "originHash" : "cec72ce8a25e7626c8eb7b18c5aa4242ac51ee109d1016c39a18faf14f64a21f",
   "pins" : [
     {
       "identity" : "flagkit",
@@ -15,7 +15,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/upvpn/wireguard-apple",
       "state" : {
-        "revision" : "b40a6251d29b944932c31a0696a94ceb4a00a005"
+        "revision" : "d6ca70c60dd92eb5c997f2092ef71577ef07040b"
       }
     }
   ],
