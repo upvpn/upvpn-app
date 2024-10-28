@@ -1,5 +1,8 @@
 package app.upvpn.upvpn.util
 
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
 import app.upvpn.upvpn.model.Location
 
 fun Long.msTimerString(): String {
@@ -25,4 +28,10 @@ fun locationForPreview(): Location {
         state = "California",
         stateCode = "CA"
     )
+}
+
+fun Context.getActivityOrNull(): ComponentActivity? = when (this) {
+    is ComponentActivity -> this
+    is ContextWrapper -> baseContext.getActivityOrNull()
+    else -> null
 }

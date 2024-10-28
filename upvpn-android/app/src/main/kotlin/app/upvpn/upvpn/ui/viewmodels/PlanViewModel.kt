@@ -19,6 +19,17 @@ sealed class PlanState {
     data class Error(val msg: String) : PlanState()
 }
 
+fun PlanState.isYearlyPlan(): Boolean {
+    return when (this) {
+        is PlanState.Plan -> when (this.userPlan) {
+            is UserPlan.AnnualSubscription -> true
+            else -> false
+        }
+
+        else -> false
+    }
+}
+
 class PlanViewModel(
     private val planRepository: PlanRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO

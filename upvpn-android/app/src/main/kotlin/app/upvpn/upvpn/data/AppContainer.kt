@@ -82,7 +82,7 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
     }
 
     override val planRepository: PlanRepository by lazy {
-        DefaultPlanRepository(retrofitService)
+        DefaultPlanRepository(retrofitService, vpnDatabase)
     }
 
     override val serviceConnectionManager: VPNServiceConnectionManager by lazy {

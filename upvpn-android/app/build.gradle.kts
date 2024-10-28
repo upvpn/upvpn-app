@@ -27,8 +27,8 @@ android {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
         targetSdk = 34
-        versionCode = 10
-        versionName = "u4"
+        versionCode = 12
+        versionName = "u5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -68,7 +68,10 @@ android {
         debug {
             isMinifyEnabled = false
             versionNameSuffix = ".debug"
-            val baseUrl = gradleLocalProperties(rootDir).getProperty("baseUrl", "https://upvpn.dev")
+            val baseUrl = gradleLocalProperties(rootDir, providers).getProperty(
+                "baseUrl",
+                "https://upvpn.dev"
+            )
             buildConfigField(
                 "String",
                 "UPVPN_BASE_URL",
@@ -138,21 +141,22 @@ android {
 }
 
 dependencies {
-    val navVersion = "2.8.2"
+    val navVersion = "2.8.3"
     val roomVersion = "2.6.1"
     val sandwichVersion = "1.3.9"
+    val billingVersion = "7.1.1"
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
-    implementation("androidx.activity:activity-compose:1.9.2")
-    implementation(platform("androidx.compose:compose-bom:2024.09.03"))
-    implementation("androidx.compose.ui:ui:1.7.3")
-    implementation("androidx.compose.ui:ui-graphics:1.7.3")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.7.3")
+    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    implementation("androidx.compose.ui:ui:1.7.4")
+    implementation("androidx.compose.ui:ui-graphics:1.7.4")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.4")
     implementation("androidx.compose.material3:material3:1.3.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.3.0")
-    implementation("androidx.compose.material:material-icons-extended:1.7.3")
+    implementation("androidx.compose.material:material-icons-extended:1.7.4")
     implementation("androidx.navigation:navigation-compose:$navVersion")
     implementation("com.google.accompanist:accompanist-adaptive:0.32.0")
 
@@ -176,6 +180,11 @@ dependencies {
     // Network response
     implementation("com.github.skydoves:sandwich:$sandwichVersion")
 
+    // IAP
+    implementation("com.android.billingclient:billing:$billingVersion")
+    implementation("com.android.billingclient:billing-ktx:$billingVersion")
+
+
     // for java.time
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
 
@@ -184,7 +193,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.03"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

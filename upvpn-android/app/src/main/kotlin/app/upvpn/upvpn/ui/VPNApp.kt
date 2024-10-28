@@ -23,6 +23,7 @@ import androidx.window.layout.DisplayFeature
 import app.upvpn.upvpn.BuildConfig
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.ui.components.LocationsPopup
+import app.upvpn.upvpn.ui.components.PlanBottomSheet
 import app.upvpn.upvpn.ui.components.VPNLayout
 import app.upvpn.upvpn.ui.screens.HelpScreen
 import app.upvpn.upvpn.ui.screens.HomeScreen
@@ -63,6 +64,8 @@ fun VPNApp(
     val authViewModel: AuthViewModel = viewModel(factory = VPNAppViewModelProvider.Factory)
     val uiState = authViewModel.uiState.collectAsStateWithLifecycle()
     val signOutUiState = authViewModel.signOutUiState.collectAsStateWithLifecycle()
+
+    var showPlanSheet by remember { mutableStateOf(false) }
 
     val (startDestination, userEmail) = when (uiState.value.signInState) {
         is SignInState.SignedIn -> {
@@ -116,12 +119,19 @@ fun VPNApp(
 
     // show alert dialog for errors
     vpnNotifications.value.forEach { notification ->
+        val dismissNotification = {
+            homeVM.ackVpnNotification(notification)
+            if (notification.msg.lowercase().contains("insufficient balance")) {
+                showPlanSheet = true
+            }
+        }
+
         AlertDialog(
-            onDismissRequest = { homeVM.ackVpnNotification(notification) },
+            onDismissRequest = dismissNotification,
             title = { Text("Oh No") },
             text = { Text(notification.msg) },
             confirmButton = {
-                TextButton(onClick = { homeVM.ackVpnNotification(notification) }) {
+                TextButton(onClick = dismissNotification) {
                     Text("OK")
                 }
             }
@@ -192,6 +202,12 @@ fun VPNApp(
         dismissPopup = { showPopup = false },
         onRefresh = locationVM::onRefresh
     )
+
+    PlanBottomSheet(
+        showPlanSheet = showPlanSheet,
+        dismissPlanSheet = { showPlanSheet = false },
+        planState = planState.value,
+        refresh = { planVM.fetchPlan() })
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = VPNScreen.Login.name) {
