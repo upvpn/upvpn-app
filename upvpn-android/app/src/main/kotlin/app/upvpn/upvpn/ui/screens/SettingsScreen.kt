@@ -230,7 +230,7 @@ fun AppVersion(
 ) {
     Row(modifier = modifier) {
         Text(
-            text = "$versionCode / $versionName",
+            text = "$versionName / $versionCode",
         )
     }
 }

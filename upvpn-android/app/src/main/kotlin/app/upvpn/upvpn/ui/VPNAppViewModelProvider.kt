@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import app.upvpn.upvpn.VPNApplication
 import app.upvpn.upvpn.ui.viewmodels.AuthViewModel
+import app.upvpn.upvpn.ui.viewmodels.BillingViewModel
 import app.upvpn.upvpn.ui.viewmodels.HomeViewModel
 import app.upvpn.upvpn.ui.viewmodels.LocationViewModel
 import app.upvpn.upvpn.ui.viewmodels.PlanViewModel
@@ -39,6 +40,12 @@ object VPNAppViewModelProvider {
             val application =
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as VPNApplication)
             PlanViewModel(application.container.planRepository)
+        }
+
+        initializer {
+            val application =
+                (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as VPNApplication)
+            BillingViewModel(application.container.planRepository)
         }
     }
 }
