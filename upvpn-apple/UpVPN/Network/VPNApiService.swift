@@ -21,6 +21,10 @@ protocol VPNApiService {
 
     func endVpnSession(request: EndSessionApi) async -> Result<Ended, ApiError>
 
+    func requestCode(onlyEmail: OnlyEmail) async -> Result<(), ApiError>
+
+    func signUp(userCredsWithCode: UserCredentialsWithCode) async -> Result<(), ApiError>
+
 }
 
 protocol PlanApiService {
@@ -58,7 +62,21 @@ class DefaultVpnApiService: VPNApiService, PlanApiService {
 
         return result.map { _ in () }
     }
-    
+
+    func signUp(userCredsWithCode: UserCredentialsWithCode) async -> Result<(), ApiError> {
+        let result: Result<Empty, ApiError> = await self.client.request("account", method: .post,
+                                                                        body: encodeToData(userCredsWithCode))
+            .mapError(mapClientError)
+        return result.map { _ in () }
+    }
+
+    func requestCode(onlyEmail: OnlyEmail) async -> Result<(), ApiError> {
+        let result: Result<Empty, ApiError> = await self.client.request("account/send-code", method: .post,
+                                                                        body: encodeToData(onlyEmail))
+            .mapError(mapClientError)
+        return result.map { _ in () }
+    }
+
     func getLocations() async -> Result<[Location], ApiError> {
         return await self.client.request("locations")
             .mapError(mapClientError)

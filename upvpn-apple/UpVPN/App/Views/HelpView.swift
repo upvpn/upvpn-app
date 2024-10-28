@@ -9,29 +9,30 @@ import SwiftUI
 
 struct HelpView: View {
     var body: some View {
-            Group {
-                VStack {
-                    Text("""
+        VStack(alignment: .leading) {
+            Text("""
 Have questions about **product** or **pricing**?
 
 Visit [FAQ](https://upvpn.app/faq/)
 
-Or send us a message at [support@upvpn.app](mailto:support@upvpn.app) and we'll be happy to assist!
+Or email us at [support@upvpn.app](mailto:support@upvpn.app) and we'll be happy to assist!
 """)
 
-                    Spacer()
-                    Text("""
-[Acknowledgements](https://upvpn.app/oss/apple/)
-""").font(.caption).padding()
+                Spacer()
+                Text("""
+To delete your account, visit the [account page on the dashboard](https://upvpn.app/dashboard/account)
 
-                }
-            }
-            .textSelection(.enabled)
-            .padding()
-            .multilineTextAlignment(.leading)
-            .navigationTitle("Help")
-            .frame(maxWidth: .infinity)
+
+[Acknowledgements](https://upvpn.app/oss/apple/)
+""").font(.caption)
         }
+        .multilineTextAlignment(.leading)
+        .textSelection(.enabled)
+        .padding()
+        .padding()
+        .navigationTitle("Help")
+        .frame(maxWidth: .infinity)
+    }
 }
 
 #Preview {

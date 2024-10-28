@@ -10,7 +10,7 @@ import Foundation
 struct AppConfig {
 
     static let baseURL: URL = URL(string: "https://upvpn.app/api/v1/")!
-//     static let baseURL: URL = URL(string: "http://DEV/api/v1/")!
+//    static let baseURL: URL = URL(string: "http://DEV/api/v1/")!
 
     static let version: String? = {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String

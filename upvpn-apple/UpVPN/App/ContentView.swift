@@ -21,7 +21,7 @@ struct ContentView: View {
             case .checkingLocal:
                 WelcomeView()
             case .notSignedIn, .signingIn:
-                LoginView()
+                AuthView()
             case .signedIn, .signingOut:
                 MainView()
             }
