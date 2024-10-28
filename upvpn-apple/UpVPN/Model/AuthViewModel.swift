@@ -15,6 +15,11 @@ enum SignInState {
     case signingOut
 }
 
+enum AuthAction {
+    case signUp
+    case signIn
+}
+
 @MainActor
 class AuthViewModel: ObservableObject {
     @Published var userCredentials: UserCredentials = UserCredentials(email: "", password: "")
@@ -25,6 +30,13 @@ class AuthViewModel: ObservableObject {
 
     @Published var signInErrorMessage: String? = nil
     @Published var signOutErrorMessage: String? = nil
+    @Published var signUpErrorMessage: String? = nil
+
+    @Published var signUpEmailCode: String = ""
+    @Published var signUpEmailCodeRequestedAt: Date? = nil
+
+    @Published var isSigningUp: Bool = false
+    @Published var authAction: AuthAction = .signIn
 
     private var dataRepository: DataRepository
 
@@ -59,17 +71,26 @@ class AuthViewModel: ObservableObject {
         self.signInErrorMessage = nil
     }
 
+    func clearSignUpError() {
+        self.signUpErrorMessage = nil
+    }
+
     func clearSignOutError() {
         self.signOutErrorMessage = nil
+    }
+
+
+    private func sanitizeUserCredentials() {
+        // trim spaces from email
+        self.userCredentials = UserCredentials(email: self.userCredentials.email.trimmingCharacters(in: .whitespacesAndNewlines),
+                                          password: self.userCredentials.password)
     }
 
     func signIn() {
         self.clearSignInError()
         self.signInState = SignInState.signingIn
 
-        // trim spaces from email
-        self.userCredentials = UserCredentials(email: self.userCredentials.email.trimmingCharacters(in: .whitespacesAndNewlines),
-                                          password: self.userCredentials.password)
+        self.sanitizeUserCredentials()
 
         Task {
             let result = await self.dataRepository.addDevice(userCredentials: self.userCredentials)
@@ -83,6 +104,59 @@ class AuthViewModel: ObservableObject {
                     self.signInState = SignInState.notSignedIn
                     self.signInErrorMessage = dataRepoError.message
                 }
+            }
+        }
+    }
+
+    func signUp() {
+        self.clearSignUpError()
+        self.isSigningUp = true
+
+        self.sanitizeUserCredentials()
+
+        Task {
+            let result = await self.dataRepository
+                .signUp(userCredsWithCode:
+                            self.userCredentials.toUserCredentialsWithCode(code: self.signUpEmailCode))
+            await MainActor.run {
+                switch result {
+                case .success:
+                    self.signUpEmailCode = ""
+                    self.signIn()
+                    self.authAction = .signIn
+                case .failure(let dataRepoError):
+                    self.signUpErrorMessage = dataRepoError.message
+                }
+                self.isSigningUp = false
+            }
+        }
+    }
+
+    func requestCode() {
+        self.sanitizeUserCredentials()
+
+        Task {
+            let result = await self.dataRepository.requestCode(email: self.userCredentials.email)
+            await MainActor.run {
+                switch result {
+                case .success:
+                    self.signUpEmailCodeRequestedAt = Date()
+                case .failure(let dataRepoError):
+                    self.signUpErrorMessage = dataRepoError.message
+                }
+            }
+        }
+    }
+
+    func onSubmit(_ userHasConsented: Bool) {
+        if userHasConsented && !self.userCredentials.email.isEmpty && !self.userCredentials.password.isEmpty {
+            switch authAction {
+            case .signUp:
+                if !self.signUpEmailCode.isEmpty {
+                    self.signUp()
+                }
+            case .signIn:
+                self.signIn()
             }
         }
     }

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A30FE9642CB585DA00AE6FD1 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30FE9622CB585D400AE6FD1 /* PasswordField.swift */; };
+		A30FE9652CB585DA00AE6FD1 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30FE9622CB585D400AE6FD1 /* PasswordField.swift */; };
+		A30FE9682CB598B400AE6FD1 /* EmailCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30FE9662CB598AD00AE6FD1 /* EmailCodeView.swift */; };
+		A30FE9692CB598B400AE6FD1 /* EmailCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30FE9662CB598AD00AE6FD1 /* EmailCodeView.swift */; };
 		A3212C1E2C8D69C5005E7D3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3212C1D2C8D69C5005E7D3D /* Assets.xcassets */; };
 		A3212C212C8D69C5005E7D3D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3212C202C8D69C5005E7D3D /* Preview Assets.xcassets */; };
 		A323FAE52C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAE42C57FD4C00CF9D84 /* ElapsedTimeView.swift */; };
@@ -195,8 +199,8 @@
 		A36565FC2C52E87300C2E748 /* String+ArrayConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */; };
 		A36565FF2C545F8F00C2E748 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FE2C545F8F00C2E748 /* MainView.swift */; };
 		A36566002C545F8F00C2E748 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36565FE2C545F8F00C2E748 /* MainView.swift */; };
-		A36566022C54600C00C2E748 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566012C54600C00C2E748 /* LoginView.swift */; };
-		A36566032C54600C00C2E748 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566012C54600C00C2E748 /* LoginView.swift */; };
+		A36566022C54600C00C2E748 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566012C54600C00C2E748 /* AuthView.swift */; };
+		A36566032C54600C00C2E748 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566012C54600C00C2E748 /* AuthView.swift */; };
 		A36566052C54613A00C2E748 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566042C54613A00C2E748 /* WelcomeView.swift */; };
 		A36566062C54613A00C2E748 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566042C54613A00C2E748 /* WelcomeView.swift */; };
 		A36566082C556EFE00C2E748 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36566072C556EFE00C2E748 /* HomeView.swift */; };
@@ -422,6 +426,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A30FE9622CB585D400AE6FD1 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
+		A30FE9662CB598AD00AE6FD1 /* EmailCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailCodeView.swift; sourceTree = "<group>"; };
 		A3212C172C8D69C4005E7D3D /* UpVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3212C1D2C8D69C5005E7D3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A3212C202C8D69C5005E7D3D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -494,7 +500,7 @@
 		A36565F72C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TunnelConfiguration+UapiConfig.swift"; sourceTree = "<group>"; };
 		A36565FA2C52E87300C2E748 /* String+ArrayConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ArrayConversion.swift"; sourceTree = "<group>"; };
 		A36565FE2C545F8F00C2E748 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		A36566012C54600C00C2E748 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A36566012C54600C00C2E748 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		A36566042C54613A00C2E748 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		A36566072C556EFE00C2E748 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A365660A2C556FF500C2E748 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
@@ -805,7 +811,9 @@
 			isa = PBXGroup;
 			children = (
 				A36565FE2C545F8F00C2E748 /* MainView.swift */,
-				A36566012C54600C00C2E748 /* LoginView.swift */,
+				A36566012C54600C00C2E748 /* AuthView.swift */,
+				A30FE9622CB585D400AE6FD1 /* PasswordField.swift */,
+				A30FE9662CB598AD00AE6FD1 /* EmailCodeView.swift */,
 				A36566042C54613A00C2E748 /* WelcomeView.swift */,
 				A36566072C556EFE00C2E748 /* HomeView.swift */,
 				A36566502C56E75600C2E748 /* LocationView.swift */,
@@ -1415,7 +1423,9 @@
 				A350DEDB2C25141200BA1BA6 /* ContentView.swift in Sources */,
 				A36565FB2C52E87300C2E748 /* String+ArrayConversion.swift in Sources */,
 				A3422DF62C3F7F2100A3D867 /* Client.swift in Sources */,
+				A30FE9692CB598B400AE6FD1 /* EmailCodeView.swift in Sources */,
 				A350DED92C25141200BA1BA6 /* UpVPNApp.swift in Sources */,
+				A30FE9652CB585DA00AE6FD1 /* PasswordField.swift in Sources */,
 				A3422DD92C387A8100A3D867 /* VPNState.swift in Sources */,
 				A323FAF12C58637A00CF9D84 /* Color+Extension.swift in Sources */,
 				A347A8262C6129CC00FEF961 /* PlanManagement.swift in Sources */,
@@ -1442,7 +1452,7 @@
 				A36565F82C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */,
 				A3A763732C521EF80088D5F5 /* LocationStore.swift in Sources */,
 				A3422DC82C3562B700A3D867 /* Location.swift in Sources */,
-				A36566022C54600C00C2E748 /* LoginView.swift in Sources */,
+				A36566022C54600C00C2E748 /* AuthView.swift in Sources */,
 				A365660B2C556FF500C2E748 /* LocationsView.swift in Sources */,
 				A3FABF922C6B38A6004753D1 /* PriceCapsule.swift in Sources */,
 				A3A9F0F82C6FE58300AF1490 /* AccountView.swift in Sources */,
@@ -1464,6 +1474,7 @@
 				A3A9F0F32C6E704900AF1490 /* MainViewContent.swift in Sources */,
 				A323FAF82C5963CD00CF9D84 /* CardContainer.swift in Sources */,
 				A391D9902C4939F90008D23F /* StoreError.swift in Sources */,
+				A30FE9642CB585DA00AE6FD1 /* PasswordField.swift in Sources */,
 				A33336C52C479C0E004D8C8E /* DeviceStore.swift in Sources */,
 				A391D9952C493A820008D23F /* UserCredentials.swift in Sources */,
 				A3422DD42C387A0600A3D867 /* Response.swift in Sources */,
@@ -1474,6 +1485,7 @@
 				A33336CF2C47A158004D8C8E /* StoreKeys.swift in Sources */,
 				A33336CA2C479D9F004D8C8E /* Device.swift in Sources */,
 				A3A21D892C87118100600C2C /* ResponsiveHomeView.swift in Sources */,
+				A30FE9682CB598B400AE6FD1 /* EmailCodeView.swift in Sources */,
 				A36566092C556EFE00C2E748 /* HomeView.swift in Sources */,
 				A3A9F0FC2C6FE59200AF1490 /* SignOutView.swift in Sources */,
 				A3422DE72C3DB4DE00A3D867 /* TunnelObserver.swift in Sources */,
@@ -1521,7 +1533,7 @@
 				A3A763742C521EF80088D5F5 /* LocationStore.swift in Sources */,
 				A3A21D8D2C8773E800600C2C /* RuntimeConfigMapView.swift in Sources */,
 				A3422DC92C3562B700A3D867 /* Location.swift in Sources */,
-				A36566032C54600C00C2E748 /* LoginView.swift in Sources */,
+				A36566032C54600C00C2E748 /* AuthView.swift in Sources */,
 				A365660C2C556FF500C2E748 /* LocationsView.swift in Sources */,
 				A3FABF932C6B38A6004753D1 /* PriceCapsule.swift in Sources */,
 				A3A9F0F92C6FE58300AF1490 /* AccountView.swift in Sources */,
