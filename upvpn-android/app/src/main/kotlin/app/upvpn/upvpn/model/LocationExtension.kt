@@ -44,13 +44,13 @@ fun Location.displayText(): String {
     return when (countryCode.uppercase()) {
         "US", "CA" -> {
             when (stateCode) {
-                null -> city.uppercase()
-                else -> "${city.uppercase()}, ${stateCode.uppercase()}"
+                null -> city
+                else -> "${city}, ${stateCode.uppercase()}"
             }
         }
 
         else -> {
-            city.uppercase()
+            city
         }
     }
 }
@@ -60,7 +60,7 @@ val LOCATION_COLD_COLOR = Color(56, 189, 248, 255)
 
 fun Location.warmOrColdColor(): Color {
     return when (this.estimate) {
-        null -> Color.Unspecified
+        null -> LOCATION_COLD_COLOR
         else -> {
             when (this.estimate <= 10) {
                 true -> LOCATION_WARM_COLOR

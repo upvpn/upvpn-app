@@ -26,6 +26,7 @@ fun VpnUiState.shieldResourceId(): Int {
 
 fun VpnUiState.vpnDisplayText(): String {
     return when (this) {
+        is VpnUiState.Requesting -> "Requesting"
         is VpnUiState.Accepted -> "Accepted"
         is VpnUiState.ServerCreated -> "Server Created"
         is VpnUiState.ServerRunning -> "Server Running"
@@ -38,6 +39,10 @@ fun VpnUiState.vpnDisplayText(): String {
 }
 
 fun VpnUiState.isVpnSessionActivityInProgress(): Boolean = (this is VpnUiState.Disconnected).not()
+
+fun VpnUiState.isConnectedOrDisconnectedOrDisconnecting(): Boolean = (this is VpnUiState.Connected
+        || this is VpnUiState.Disconnected
+        || this is VpnUiState.Disconnecting)
 
 
 fun VpnUiState.switchEnabled(): Boolean {

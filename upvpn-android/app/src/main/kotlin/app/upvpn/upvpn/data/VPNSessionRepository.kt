@@ -23,6 +23,7 @@ import com.wireguard.config.InetNetwork
 import com.wireguard.config.Interface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -38,9 +39,9 @@ interface VPNSessionRepository {
 
     suspend fun getVpnSessionStatus(request: VpnSessionStatusRequest): Result<VpnSessionStatus, String>
 
-    fun endVpnSession(scope: CoroutineScope, requestId: UUID, reason: String)
+    fun endVpnSession(scope: CoroutineScope, requestId: UUID, reason: String): Job
 
-    fun runReclaimer(scope: CoroutineScope)
+    suspend fun runReclaimer(scope: CoroutineScope)
 
 }
 
@@ -52,17 +53,10 @@ class DefaultVPNSessionRepository(
 
     private val tag = "DefaultVPNSessionRepository"
 
-    private var sessionReclaimer: VpnSessionReclaimer? = null
 
-    override fun runReclaimer(scope: CoroutineScope) {
-        synchronized(this) {
-            val reclaimer = sessionReclaimer
-            if (reclaimer == null || reclaimer.running().not()) {
-                val newReclaimer = VpnSessionReclaimer(vpnDatabase, this)
-                newReclaimer.reclaim(scope)
-                sessionReclaimer = newReclaimer
-            }
-        }
+    override suspend fun runReclaimer(scope: CoroutineScope) {
+        val newReclaimer = VpnSessionReclaimer(vpnDatabase, this)
+        newReclaimer.reclaim(scope)
     }
 
     override fun newVpnSession(
@@ -77,6 +71,9 @@ class DefaultVPNSessionRepository(
             vpnDatabase.vpnSessionDao().insert(vpnSessionDb)
             // TODO init if device is null? or return error?
             val deviceDb = vpnDatabase.deviceDao().getDevice()
+
+            // run reclaimer
+            runReclaimer(newSessionScope)
 
             val newSession =
                 NewSession(vpnSessionDb.requestId, deviceDb!!.uniqueId, vpnSessionDb.code)
@@ -102,12 +99,6 @@ class DefaultVPNSessionRepository(
             // first call callback so that orchestrator can update the state before first
             // vpn session update arrives from network
             onConnectResponseCallback(response)
-
-            // update last access for recent locations
-            newSessionScope.launch(Dispatchers.IO) {
-                vpnDatabase.locationDao()
-                    .updateLastAccess(location.code, System.currentTimeMillis() / 1000)
-            }
 
             response.onSuccess { (accepted, _) ->
                 // start vpn session watch
@@ -135,8 +126,8 @@ class DefaultVPNSessionRepository(
         return vpnApiService.getVpnSessionStatus(request).toResult().mapError { e -> e.message }
     }
 
-    override fun endVpnSession(scope: CoroutineScope, requestId: UUID, reason: String) {
-        scope.launch(Dispatchers.IO) {
+    override fun endVpnSession(scope: CoroutineScope, requestId: UUID, reason: String): Job {
+        return scope.launch(Dispatchers.IO) {
             Log.i(tag, "endVpnSession: reason: $reason, requestId: $requestId")
             val device = vpnDatabase.deviceDao().getDevice()
 
@@ -170,8 +161,6 @@ class DefaultVPNSessionRepository(
                             vpnSession?.let {
                                 vpnDatabase.vpnSessionDao().markAllForDeletion()
                             }
-
-                            runReclaimer(scope)
                         }
                     }
                 )

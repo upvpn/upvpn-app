@@ -18,4 +18,6 @@ sealed class OrchestratorMessage() : Parcelable {
 
     data class VpnSessionUpdate(val location: Location, val status: @RawValue VpnSessionStatus) :
         OrchestratorMessage()
+
+    data object GetAndPublishWGConfig : OrchestratorMessage()
 }

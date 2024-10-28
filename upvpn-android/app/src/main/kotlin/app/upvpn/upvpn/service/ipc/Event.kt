@@ -10,4 +10,5 @@ sealed class Event : Parcelable {
     data class ListenerRegistered(val id: Int) : Event()
     data class VpnState(val vpnState: VPNState) : Event()
     data class VpnNotification(val notification: VPNNotification) : Event()
+    data class WgConfig(val config: String?) : Event()
 }

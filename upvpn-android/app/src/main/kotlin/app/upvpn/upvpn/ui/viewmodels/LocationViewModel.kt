@@ -4,19 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.upvpn.upvpn.data.VPNRepository
+import app.upvpn.upvpn.model.DEFAULT_LOCATION
 import app.upvpn.upvpn.model.Location
-import app.upvpn.upvpn.ui.state.LocationState
 import app.upvpn.upvpn.ui.state.LocationUiState
 import com.github.michaelbull.result.fold
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -30,54 +26,49 @@ class LocationViewModel(
     private val _uiState = MutableStateFlow(LocationUiState())
     val uiState: StateFlow<LocationUiState> = _uiState.asStateFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val recentLocations = vpnRepository.getRecentLocations(5)
-        .mapLatest { list ->
-            // map to get estimates from location
-            when (_uiState.value.locationState) {
-                is LocationState.Locations -> {
-                    val locations =
-                        (_uiState.value.locationState as LocationState.Locations).locations;
 
-                    list.map { location ->
-                        val estimate = locations.find { it.code == location.code }
-                        location.copy(estimate = estimate?.estimate)
-                    }
-                }
+    private val _recentLocations = MutableStateFlow(listOf<Location>())
+    val recentLocations = _recentLocations.asStateFlow()
 
-                else -> list
-            }
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf<Location>())
+    private suspend fun getRecentLocations() {
+        val newRecentLocations = vpnRepository.getRecentLocations(5)
+        _recentLocations.update { newRecentLocations }
+    }
 
     private suspend fun getLocations() {
-        _uiState.update { value -> value.copy(locationState = LocationState.Loading) }
+        _uiState.update { value -> value.copy(isLoading = true) }
         val locations = vpnRepository.getLocations()
         locations.fold(
-            success = { locations ->
+            success = { newLocations ->
                 _uiState.update { value ->
-
-                    if (value.selectedLocation == null && locations.isEmpty().not()) {
-                        value.copy(
-                            locationState = LocationState.Locations(
-                                locations
-                            ),
-                            selectedLocation = locations.find {
+                    value.copy(
+                        isLoading = false,
+                        locations = newLocations,
+                        // to update estimates
+                        selectedLocation = value.selectedLocation
+                            // find same location as selected from newLocations
+                            ?.let { sl -> newLocations.firstOrNull { it.code == sl.code } }
+                            ?: /* now try computing default selected location */
+                            (newLocations.find {
                                 it.city.lowercase().contains("ashburn")
-                            } ?: locations.first()
-                        )
-                    } else {
-                        value.copy(
-                            locationState = LocationState.Locations(
-                                locations
-                            )
-                        )
+                            } ?: DEFAULT_LOCATION)
+                    )
+                }
+
+                // make sure to preserve recent locations order
+                _recentLocations.update { list ->
+                    list.map { recentLocation ->
+                        newLocations.firstOrNull { it.code == recentLocation.code }
+                            ?: recentLocation
                     }
                 }
             },
             failure = { error ->
                 _uiState.update { value ->
-                    value.copy(locationState = LocationState.Error(error))
+                    value.copy(
+                        isLoading = false,
+                        locationFetchError = error
+                    )
                 }
             }
         )
@@ -85,6 +76,7 @@ class LocationViewModel(
 
     init {
         viewModelScope.launch(dispatcher) {
+            getRecentLocations()
             getLocations()
         }
     }
@@ -105,6 +97,15 @@ class LocationViewModel(
 
     fun onLocationSelected(location: Location) {
         _uiState.update { value -> value.copy(selectedLocation = location) }
+    }
+
+    fun addRecentLocation(location: Location) {
+        _recentLocations.update { list ->
+            list.filter { it.code != location.code } + location
+        }
+        viewModelScope.launch {
+            vpnRepository.addRecentLocation(location)
+        }
     }
 
     override fun onCleared() {

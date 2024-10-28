@@ -15,6 +15,7 @@ class VPNServiceClient(private val serviceMessenger: Messenger, private val loop
 
     val vpnManager = VPNManager(serviceMessenger, messageHandler)
     val vpnInAppNotificationManager = VPNInAppNotificationManager(messageHandler)
+    val wgConfigManager = VPNConfigManager(messageHandler)
 
     private val clientMessenger = Messenger(messageHandler)
     private var listenerId: Int? = null

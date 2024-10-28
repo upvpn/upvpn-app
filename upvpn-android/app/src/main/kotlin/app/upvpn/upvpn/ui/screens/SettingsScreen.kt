@@ -1,7 +1,6 @@
 package app.upvpn.upvpn.ui.screens
 
-import android.content.Intent
-import android.net.Uri
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,61 +10,83 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.OpenInNew
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.upvpn.upvpn.BuildConfig
+import app.upvpn.upvpn.ui.VPNScreen
 import app.upvpn.upvpn.ui.state.SignOutState
 
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewSettingsScreen() {
-    SettingsScreen(true, "support@upvpn.app", SignOutState.NotSignedOut, {})
+    SettingsScreen(true, "support@upvpn.app", SignOutState.NotSignedOut, {}, {})
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SettingsScreen(
     isVpnSessionActivityInProgress: Boolean,
     signedInEmail: String,
     signOutState: SignOutState,
     onSignOutClick: () -> Unit,
+    navigateTo: (VPNScreen) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = modifier
-            .fillMaxSize()
-            .padding(15.dp)
-    ) {
-        AccountAndSettingsHeader()
-        // LazyColumn instead of Column so that its scrollable
-        // on rotated small screen
-        LazyColumn(
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            AccountAndSettingsHeader()
+        })
+    }) { innerPadding ->
+        Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier.weight(1f)
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(innerPadding)
+                .padding(horizontal = 15.dp)
+                .padding(bottom = 20.dp)
         ) {
-            item {
-                AccountCard(
-                    isVpnSessionActivityInProgress,
-                    signedInEmail = signedInEmail, signOutState, onSignOutClick
-                )
-            }
-            item {
-                AboutCard()
+            // LazyColumn instead of Column so that its scrollable
+            // on rotated small screen
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier.weight(1f)
+            ) {
+                item {
+                    AccountCard(
+                        signedInEmail,
+                        navigateTo,
+                    )
+                }
+                item {
+                    AboutCard()
+                }
+
+                item {
+                    SignOut(
+                        isVpnSessionActivityInProgress,
+                        signOutState,
+                        onSignOutClick
+                    )
+                }
             }
         }
     }
@@ -74,81 +95,88 @@ fun SettingsScreen(
 @Composable
 fun AccountAndSettingsHeader() {
     Text(
-        "Account and Settings",
-        fontSize = 20.sp,
+        "Account",
+        style = MaterialTheme.typography.titleLarge,
         modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center
     )
 }
 
 @Composable
 fun AboutCard() {
-    val context = LocalContext.current
+    Text(
+        text = "VERSION",
+        style = MaterialTheme.typography.labelMedium,
+        modifier = Modifier.padding(15.dp, 4.dp)
+    )
+
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .padding(15.dp, 10.dp)
                 .fillMaxWidth()
         ) {
-            Text(text = "ABOUT", fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+
             AppVersion(BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME)
-            Divider()
-            Row(horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(BuildConfig.UPVPN_BASE_URL + "/oss/android/${BuildConfig.VERSION_NAME}")
-                        )
-                        context.startActivity(intent)
-                    }) {
-                Text(text = "Open Source Licenses")
-                Icon(imageVector = Icons.Default.OpenInNew, contentDescription = "Open externally")
-            }
         }
     }
 }
 
 @Composable
 fun AccountCard(
-    isVpnSessionActivityInProgress: Boolean,
-    signedInEmail: String, signOutState: SignOutState, onSignOutClick: () -> Unit
+    signedInEmail: String,
+    navigateTo: (VPNScreen) -> Unit,
 ) {
-    val context = LocalContext.current
+    Text(
+        text = "ACCOUNT",
+        style = MaterialTheme.typography.labelMedium,
+        modifier = Modifier.padding(15.dp, 4.dp)
+    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
 
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
-                .padding(15.dp, 10.dp)
                 .fillMaxWidth()
         ) {
-            Text(text = "ACCOUNT", fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
-            Text(text = signedInEmail)
-            Divider()
+            Text(
+                text = signedInEmail,
+                modifier = Modifier.padding(vertical = 10.dp, horizontal = 15.dp)
+            )
+            HorizontalDivider(color = DividerDefaults.color.copy(alpha = 0.45f))
             Row(horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(BuildConfig.UPVPN_BASE_URL + "/dashboard")
-                        )
-                        context.startActivity(intent)
-                    }) {
-                Text(text = "Dashboard")
-                Icon(imageVector = Icons.Default.OpenInNew, contentDescription = "Open externally")
+                        navigateTo(VPNScreen.Plan)
+                    }
+                    .padding(horizontal = 15.dp)
+            ) {
+                Text(text = "Plan", modifier = Modifier.padding(vertical = 10.dp))
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    contentDescription = "Your plan",
+                    modifier = Modifier.size(15.dp)
+                )
             }
-            Divider()
-            Column(modifier = Modifier.padding(top = 20.dp)) {
-                SignOut(
-                    isVpnSessionActivityInProgress,
-                    signOutState = signOutState, onSignOutClick
+            HorizontalDivider(color = DividerDefaults.color.copy(alpha = 0.45f))
+            Row(horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        navigateTo(VPNScreen.Help)
+                    }
+                    .padding(horizontal = 15.dp)
+            ) {
+                Text(text = "Help", modifier = Modifier.padding(vertical = 10.dp))
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    contentDescription = "Go to Help",
+                    modifier = Modifier.size(15.dp)
                 )
             }
         }
@@ -158,39 +186,40 @@ fun AccountCard(
 @Composable
 fun SignOut(
     isVpnSessionActivityInProgress: Boolean,
-    signOutState: SignOutState, onSignOutClick: () -> Unit
+    signOutState: SignOutState,
+    onSignOutClick: () -> Unit
 ) {
+    val isEnabled = signOutState is SignOutState.NotSignedOut
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
 
-    val isEnabled =
-        signOutState is SignOutState.NotSignedOut || signOutState is SignOutState.SignOutError
-    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        Button(
-            enabled = isEnabled && isVpnSessionActivityInProgress.not(),
-            onClick = {
-                onSignOutClick()
-            },
-            shape = RoundedCornerShape(5.dp),
-            modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            when (signOutState) {
-                SignOutState.SignedOut -> Text(text = "Signed Out")
-                SignOutState.SigningOut -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = "Signing Out", modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 0.dp)
-                    )
+            TextButton(
+                enabled = isEnabled && isVpnSessionActivityInProgress.not(),
+                onClick = {
+                    onSignOutClick()
+                }) {
+                when (signOutState) {
+                    SignOutState.SignedOut -> Text(text = "Signed Out")
+                    SignOutState.SigningOut -> {
+                        Text(
+                            text = "Signing Out",
+                            modifier = Modifier.padding(horizontal = 20.dp)
+                        )
+                    }
+
+                    else -> Text(text = "Sign Out")
                 }
-
-                else -> Text(text = "Sign Out")
             }
-
-        }
-        if (signOutState is SignOutState.SignOutError) {
-            Text(text = signOutState.error, fontSize = 10.sp)
         }
     }
+
 }
 
 @Composable
@@ -201,7 +230,7 @@ fun AppVersion(
 ) {
     Row(modifier = modifier) {
         Text(
-            text = "App version $versionCode / $versionName",
+            text = "$versionCode / $versionName",
         )
     }
 }

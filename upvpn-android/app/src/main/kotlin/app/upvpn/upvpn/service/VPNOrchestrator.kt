@@ -4,6 +4,7 @@ import android.net.VpnService
 import android.os.Looper
 import android.os.Messenger
 import android.util.Log
+import app.upvpn.upvpn.BuildConfig
 import app.upvpn.upvpn.data.AppContainer
 import app.upvpn.upvpn.data.DefaultAppContainer
 import app.upvpn.upvpn.model.Accepted
@@ -25,8 +26,11 @@ import com.github.michaelbull.result.fold
 import com.github.michaelbull.result.onFailure
 import com.wireguard.config.Interface
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class VPNOrchestrator(
@@ -46,9 +50,12 @@ class VPNOrchestrator(
     private val vpnSessionRepository = appContainer.vpnSessionRepository
     private val endVpnSessionScope = appContainer.appScope
     private val vpnNotificationManager = appContainer.vpnNotificationManager
+    private var wgConfigJob: Job? = null
 
     init {
-        vpnSessionRepository.runReclaimer(endVpnSessionScope)
+        endVpnSessionScope.launch {
+            vpnSessionRepository.runReclaimer(endVpnSessionScope)
+        }
     }
 
     private fun getListenerId(): Int {
@@ -77,6 +84,9 @@ class VPNOrchestrator(
         }
         orchestratorMessageHandler.registerHandler(OrchestratorMessage.VpnSessionUpdate::class) {
             onVpnSessionUpdate(it.location, it.status)
+        }
+        orchestratorMessageHandler.registerHandler(OrchestratorMessage.GetAndPublishWGConfig::class) {
+            onGetAndPublishWGConfig()
         }
     }
 
@@ -233,6 +243,9 @@ class VPNOrchestrator(
         val connectedState = connectingState.toConnected()
         updateStateAndNotifyClients(connectedState)
 
+        // start job to send wg config events to client
+        startWgConfigJob()
+
         // TODO: send client connected call to backend
     }
 
@@ -254,6 +267,9 @@ class VPNOrchestrator(
                 return
             }
 
+            // stop wg config job
+            stopWgConfigJob()
+
             // when disconnect is received before session was even ready and watcher is running
             // cancel those coroutines first
             vpnSessionScope.coroutineContext.cancelChildren()
@@ -270,6 +286,9 @@ class VPNOrchestrator(
             if (shouldTurnOff) {
                 turnOffVPN()
             }
+
+            // clear any client side config
+            dispatchEvent(Event.WgConfig(null))
 
             // service may need to stop here because disconnect
             // can arrive from notification and without activity visible
@@ -290,6 +309,33 @@ class VPNOrchestrator(
     private fun cleanupIPC() {
         orchestratorMessageHandler.removeCallbacksAndMessages(null)
         messageHandler.removeCallbacksAndMessages(null)
+    }
+
+    private fun onGetAndPublishWGConfig() {
+        if (listeners.isNotEmpty()) {
+            val config = vpnService.getWgConfig()
+            dispatchEvent(Event.WgConfig(config))
+        }
+    }
+
+    private fun stopWgConfigJob() {
+        synchronized(this) {
+            wgConfigJob?.cancel()
+            wgConfigJob = null
+        }
+    }
+
+    private fun startWgConfigJob() {
+        synchronized(this) {
+            if (wgConfigJob == null) {
+                wgConfigJob = vpnSessionScope.launch {
+                    while (true) {
+                        sendOrchestratorMessage(OrchestratorMessage.GetAndPublishWGConfig)
+                        delay(1000)
+                    }
+                }
+            }
+        }
     }
 
     fun onDestroy() {
@@ -353,7 +399,9 @@ class VPNOrchestrator(
     }
 
     private fun dispatchEvent(event: Event) {
-        Log.d(tag, "dispatching: $event")
+        if (BuildConfig.DEBUG) {
+            Log.d(tag, "dispatching: $event")
+        }
         val deadListeners = mutableSetOf<Int>()
         for ((id, listener) in listeners) {
             if (listener.sendEvent(event).not()) {

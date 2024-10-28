@@ -8,6 +8,7 @@ import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.VPNNotification
 import app.upvpn.upvpn.service.VPNState
 import app.upvpn.upvpn.service.client.VPNServiceConnectionManager
+import app.upvpn.upvpn.service.client.WgConfigKV
 import app.upvpn.upvpn.ui.state.HomeUiState
 import app.upvpn.upvpn.ui.state.VpnUiState
 import app.upvpn.upvpn.ui.state.toVPNUiState
@@ -34,6 +35,9 @@ class HomeViewModel(
 
     private val _vpnNotificationState = MutableStateFlow(setOf<VPNNotification>())
     val vpnNotificationState = _vpnNotificationState.asStateFlow()
+
+    private val _wgConfig = MutableStateFlow(null as WgConfigKV?)
+    val wgConfig = _wgConfig.asStateFlow()
 
     init {
         getUpdates()
@@ -62,6 +66,17 @@ class HomeViewModel(
                 }
                 .collect { newVpnNotifications ->
                     _vpnNotificationState.update { newVpnNotifications }
+                }
+        }
+
+        viewModelScope.launch(dispatcher) {
+            serviceConnectionManager.vpnServiceClientFlow
+                .filterNotNull()
+                .flatMapLatest { vpnServiceClient ->
+                    vpnServiceClient.wgConfigManager.wgConfigFlow
+                }
+                .collect { newWgConfig ->
+                    _wgConfig.update { newWgConfig }
                 }
         }
     }

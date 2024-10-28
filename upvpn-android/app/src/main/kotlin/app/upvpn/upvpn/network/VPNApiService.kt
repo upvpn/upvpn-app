@@ -7,6 +7,9 @@ import app.upvpn.upvpn.model.EndSessionApi
 import app.upvpn.upvpn.model.Ended
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.NewSession
+import app.upvpn.upvpn.model.OnlyEmail
+import app.upvpn.upvpn.model.UserCredentialsWithCode
+import app.upvpn.upvpn.model.UserPlan
 import app.upvpn.upvpn.model.VpnSessionStatus
 import app.upvpn.upvpn.model.VpnSessionStatusRequest
 import com.skydoves.sandwich.ApiResponse
@@ -20,6 +23,15 @@ interface VPNApiService {
 
     @POST("sign-out")
     suspend fun signOut(): ApiResponse<Unit>
+
+    @POST("account/send-code")
+    suspend fun requestCode(@Body request: OnlyEmail): ApiResponse<Unit>
+
+    @POST("account")
+    suspend fun signUp(@Body request: UserCredentialsWithCode): ApiResponse<Unit>
+
+    @GET("plan/current")
+    suspend fun getUserPlan(): ApiResponse<UserPlan>
 
     @GET("locations")
     suspend fun getLocations(): ApiResponse<List<Location>>

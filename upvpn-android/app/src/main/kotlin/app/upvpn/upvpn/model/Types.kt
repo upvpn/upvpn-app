@@ -2,12 +2,26 @@ package app.upvpn.upvpn.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlin.math.absoluteValue
 
 @Serializable
 data class UserCredentials(
     val email: String,
     val password: String
+)
+
+@Serializable
+data class UserCredentialsWithCode(
+    val email: String,
+    val password: String,
+    val code: String,
+)
+
+@Serializable
+data class OnlyEmail(
+    val email: String,
 )
 
 @Serializable
@@ -69,6 +83,18 @@ data class Location(
     val stateCode: String? = null,
     val estimate: Short? = null
 ) : Parcelable
+
+
+val DEFAULT_LOCATION = Location(
+    code = "us_va_ashburn",
+    country = "United States of America",
+    countryCode = "US",
+    city = "Ashburn",
+    cityCode = "ash",
+    state = "Virginia",
+    stateCode = "VA",
+    estimate = null
+)
 
 @Serializable
 data class NewSession(
@@ -195,4 +221,30 @@ sealed class VpnSessionStatus {
     data class Ended(val content: app.upvpn.upvpn.model.Ended) : VpnSessionStatus()
 }
 
+@Serializable
+data class UserPlanPayAsYouGo(
+    val balance: Int
+)
 
+fun UserPlanPayAsYouGo.prettyBalance(): String {
+    val sign = if (this.balance < 0) "-" else ""
+    return "$sign$%.2f".format(this.balance.absoluteValue / 100.0)
+}
+
+@Serializable
+sealed class UserPlan {
+    @Serializable
+    @SerialName("PayAsYouGo")
+    data class PayAsYouGo(val content: UserPlanPayAsYouGo) : UserPlan()
+
+    @Serializable
+    @SerialName("AnnualSubscription")
+    data object AnnualSubscription : UserPlan()
+}
+
+fun UserPlan.forDisplay(): String {
+    return when (this) {
+        is UserPlan.PayAsYouGo -> "Pay as you go"
+        is UserPlan.AnnualSubscription -> "Yearly plan"
+    }
+}

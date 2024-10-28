@@ -7,7 +7,6 @@ import android.os.SystemClock
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,13 +19,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -49,25 +48,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.window.layout.DisplayFeature
-import app.upvpn.upvpn.R
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.random
+import app.upvpn.upvpn.service.client.WgConfigKV
 import app.upvpn.upvpn.ui.VPNScreen
 import app.upvpn.upvpn.ui.components.AllLocations
 import app.upvpn.upvpn.ui.components.LocationComponent
 import app.upvpn.upvpn.ui.components.LocationSelector
+import app.upvpn.upvpn.ui.components.Logo
+import app.upvpn.upvpn.ui.components.StatsCard
 import app.upvpn.upvpn.ui.components.VPNLayout
 import app.upvpn.upvpn.ui.state.HomeUiState
-import app.upvpn.upvpn.ui.state.LocationState
+import app.upvpn.upvpn.ui.state.LocationUiState
 import app.upvpn.upvpn.ui.state.VpnUiState
-import app.upvpn.upvpn.ui.state.isVpnSessionActivityInProgress
 import app.upvpn.upvpn.ui.state.progress
 import app.upvpn.upvpn.ui.state.shieldResourceId
 import app.upvpn.upvpn.ui.state.switchChecked
@@ -94,17 +93,18 @@ fun PreviewHomeScreen() {
             windowSize = WindowSizeClass.calculateFromSize(DpSize(300.dp, 720.dp)),
             displayFeatures = listOf(),
             selectedLocation = locationForPreview(),
-            locationState = LocationState.Loading,
+            locationUiState = LocationUiState(locations = locations),
             uiState =
             HomeUiState(),
             recentLocations = locations,
             connectPreVpnPermission = {},
             connectPostVpnPermission = { _, _ -> {} },
             disconnect = {},
-            openLocationScreen = {},
+            onLocationSelectorClick = {},
             reloadLocations = {},
             isSelectedLocation = { it == locations.first() },
-            onLocationSelected = {}
+            onLocationSelected = {},
+            null
         )
     }
 }
@@ -121,17 +121,18 @@ fun PreviewSmallHomeScreen() {
             windowSize = WindowSizeClass.calculateFromSize(DpSize(240.dp, 400.dp)),
             displayFeatures = listOf(),
             selectedLocation = locationForPreview(),
-            locationState = LocationState.Loading,
+            locationUiState = LocationUiState(locations = locations),
             uiState =
             HomeUiState(),
             recentLocations = locations,
             connectPreVpnPermission = {},
             connectPostVpnPermission = { _, _ -> {} },
             disconnect = {},
-            openLocationScreen = {},
+            onLocationSelectorClick = {},
             reloadLocations = {},
             isSelectedLocation = { it == locations.first() },
-            onLocationSelected = {}
+            onLocationSelected = {},
+            null
         )
     }
 }
@@ -148,23 +149,24 @@ fun PreviewHomeScreenCompactWidthMediumHeight() {
             windowSize = WindowSizeClass.calculateFromSize(DpSize(720.dp, 320.dp)),
             displayFeatures = listOf(),
             selectedLocation = locationForPreview(),
-            locationState = LocationState.Loading,
+            locationUiState = LocationUiState(locations = locations),
             uiState =
             HomeUiState(),
             recentLocations = locations,
             connectPreVpnPermission = {},
             connectPostVpnPermission = { _, _ -> {} },
             disconnect = {},
-            openLocationScreen = {},
+            onLocationSelectorClick = {},
             reloadLocations = {},
             isSelectedLocation = { it == locations.first() },
-            onLocationSelected = {}
+            onLocationSelected = {},
+            null
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-@Preview(device = Devices.TABLET)
+@Preview(device = "spec:width=1280dp,height=800dp,dpi=240")
 @Composable
 fun PreviewHomeScreenMedium() {
     UpVPNTheme(darkTheme = false) {
@@ -176,17 +178,18 @@ fun PreviewHomeScreenMedium() {
                 windowSize = WindowSizeClass.calculateFromSize(DpSize(720.dp, 720.dp)),
                 displayFeatures = listOf(),
                 selectedLocation = locationForPreview(),
-                locationState = LocationState.Locations(locations),
+                locationUiState = LocationUiState(locations = locations),
                 uiState =
                 HomeUiState(),
                 recentLocations = listOf<Location>().random(5),
                 connectPreVpnPermission = {},
                 connectPostVpnPermission = { _, _ -> {} },
                 disconnect = {},
-                openLocationScreen = {},
+                onLocationSelectorClick = {},
                 reloadLocations = {},
                 isSelectedLocation = { it == locations.first() },
-                onLocationSelected = {}
+                onLocationSelected = {},
+                null
             )
         }
     }
@@ -204,7 +207,7 @@ fun PreviewHomeScreenLarge() {
             windowSize = WindowSizeClass.calculateFromSize(DpSize(1080.dp, 1024.dp)),
             displayFeatures = listOf(),
             selectedLocation = locationForPreview(),
-            locationState = LocationState.Locations(locations),
+            locationUiState = LocationUiState(locations = locations),
             uiState =
             HomeUiState(
                 vpnUiState = VpnUiState.Connected(
@@ -216,10 +219,11 @@ fun PreviewHomeScreenLarge() {
             connectPreVpnPermission = {},
             connectPostVpnPermission = { _, _ -> {} },
             disconnect = {},
-            openLocationScreen = {},
+            onLocationSelectorClick = {},
             reloadLocations = {},
             isSelectedLocation = { it == locations.first() },
-            onLocationSelected = {}
+            onLocationSelected = {},
+            null,
         )
     }
 }
@@ -229,35 +233,36 @@ fun HomeCardAndRecentRow(
     homeCardModifier: Modifier,
     recentLocationsModifier: Modifier,
     selectedLocation: Location?,
-    locationState: LocationState,
+    locationUiState: LocationUiState,
     uiState: HomeUiState,
     recentLocations: List<Location>,
     connectPreVpnPermission: (Location?) -> Unit,
     connectPostVpnPermission: (Boolean, Location?) -> Unit,
     disconnect: () -> Unit,
-    openLocationScreen: () -> Unit,
+    onLocationSelectorClick: () -> Unit,
     reloadLocations: () -> Unit,
     isSelectedLocation: (Location) -> Boolean,
     onLocationSelected: (Location) -> Unit,
+    wgConfigKV: WgConfigKV?,
 ) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
             HomeCard(
                 selectedLocation,
-                locationState,
+                locationUiState,
                 uiState.vpnUiState,
                 connectPreVpnPermission,
                 connectPostVpnPermission,
                 disconnect,
-                openLocationScreen,
+                onLocationSelectorClick,
                 reloadLocations,
                 homeCardModifier.weight(1f)
             )
             RecentLocationsCard(
-                uiState.vpnUiState.isVpnSessionActivityInProgress(),
                 recentLocations,
                 isSelectedLocation,
                 onLocationSelected,
+                wgConfigKV,
                 recentLocationsModifier.weight(1f)
             )
         }
@@ -270,16 +275,17 @@ fun HomeCardAndRecentColumn(
     homeCardModifier: Modifier,
     recentLocationsModifier: Modifier,
     selectedLocation: Location?,
-    locationState: LocationState,
+    locationUiState: LocationUiState,
     uiState: HomeUiState,
     recentLocations: List<Location>,
     connectPreVpnPermission: (Location?) -> Unit,
     connectPostVpnPermission: (Boolean, Location?) -> Unit,
     disconnect: () -> Unit,
-    openLocationScreen: () -> Unit,
+    onLocationSelectorClick: () -> Unit,
     reloadLocations: () -> Unit,
     isSelectedLocation: (Location) -> Boolean,
     onLocationSelected: (Location) -> Unit,
+    wgConfigKV: WgConfigKV?,
 ) {
     Box(contentAlignment = Alignment.TopCenter, modifier = Modifier.fillMaxSize()) {
         Column(
@@ -288,20 +294,22 @@ fun HomeCardAndRecentColumn(
         ) {
             HomeCard(
                 selectedLocation,
-                locationState,
+                locationUiState,
                 uiState.vpnUiState,
                 connectPreVpnPermission,
                 connectPostVpnPermission,
                 disconnect,
-                openLocationScreen,
+                onLocationSelectorClick,
                 reloadLocations,
                 homeCardModifier.weight(0.65f)
             )
             // on large/long screen if height is compact dont show recent card
             if (windowSize.heightSizeClass != WindowHeightSizeClass.Compact) {
                 RecentLocationsCard(
-                    uiState.vpnUiState.isVpnSessionActivityInProgress(),
-                    recentLocations, isSelectedLocation, onLocationSelected,
+                    recentLocations,
+                    isSelectedLocation,
+                    onLocationSelected,
+                    wgConfigKV,
                     recentLocationsModifier.weight(0.35f)
                 )
             } else {
@@ -317,16 +325,17 @@ fun HomeScreen(
     windowSize: WindowSizeClass,
     displayFeatures: List<DisplayFeature>,
     selectedLocation: Location?,
-    locationState: LocationState,
+    locationUiState: LocationUiState,
     uiState: HomeUiState,
     recentLocations: List<Location>,
     connectPreVpnPermission: (Location?) -> Unit,
     connectPostVpnPermission: (Boolean, Location?) -> Unit,
     disconnect: () -> Unit,
-    openLocationScreen: () -> Unit,
+    onLocationSelectorClick: () -> Unit,
     reloadLocations: () -> Unit,
     isSelectedLocation: (Location) -> Boolean,
     onLocationSelected: (Location) -> Unit,
+    wgConfigKV: WgConfigKV?,
 ) {
     val isPortrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
 
@@ -362,12 +371,12 @@ fun HomeScreen(
             when (windowSize.widthSizeClass) {
                 WindowWidthSizeClass.Compact -> HomeCard(
                     selectedLocation,
-                    locationState,
+                    locationUiState,
                     uiState.vpnUiState,
                     connectPreVpnPermission,
                     connectPostVpnPermission,
                     disconnect,
-                    openLocationScreen,
+                    onLocationSelectorClick,
                     reloadLocations,
                     homeCardModifier
                 )
@@ -376,16 +385,17 @@ fun HomeScreen(
                     homeCardModifier,
                     recentLocationsModifier,
                     selectedLocation,
-                    locationState,
+                    locationUiState,
                     uiState,
                     recentLocations,
                     connectPreVpnPermission,
                     connectPostVpnPermission,
                     disconnect,
-                    openLocationScreen,
+                    onLocationSelectorClick,
                     reloadLocations,
                     isSelectedLocation,
-                    onLocationSelected
+                    onLocationSelected,
+                    wgConfigKV,
                 )
 
                 else ->
@@ -395,16 +405,17 @@ fun HomeScreen(
                             homeCardModifier,
                             recentLocationsModifier,
                             selectedLocation,
-                            locationState,
+                            locationUiState,
                             uiState,
                             recentLocations,
                             connectPreVpnPermission,
                             connectPostVpnPermission,
                             disconnect,
-                            openLocationScreen,
+                            onLocationSelectorClick,
                             reloadLocations,
                             isSelectedLocation,
-                            onLocationSelected
+                            onLocationSelected,
+                            wgConfigKV,
                         )
                     } else {
                         // when both w & h are expanded, but table is in portrait mode
@@ -413,16 +424,17 @@ fun HomeScreen(
                             homeCardModifier,
                             recentLocationsModifier,
                             selectedLocation,
-                            locationState,
+                            locationUiState,
                             uiState,
                             recentLocations,
                             connectPreVpnPermission,
                             connectPostVpnPermission,
                             disconnect,
-                            openLocationScreen,
+                            onLocationSelectorClick,
                             reloadLocations,
                             isSelectedLocation,
-                            onLocationSelected
+                            onLocationSelected,
+                            wgConfigKV,
                         )
                     }
 
@@ -431,14 +443,15 @@ fun HomeScreen(
         second = {
             when (windowSize.widthSizeClass) {
                 WindowWidthSizeClass.Compact -> RecentLocationsCard(
-                    uiState.vpnUiState.isVpnSessionActivityInProgress(),
-                    recentLocations, isSelectedLocation, onLocationSelected,
+                    recentLocations,
+                    isSelectedLocation,
+                    onLocationSelected,
+                    wgConfigKV,
                     recentLocationsModifier
                 )
 
                 WindowWidthSizeClass.Medium -> AllLocationsCard(
-                    uiState.vpnUiState.isVpnSessionActivityInProgress(),
-                    locationState,
+                    locationUiState,
                     reloadLocations,
                     isSelectedLocation,
                     onLocationSelected,
@@ -446,8 +459,7 @@ fun HomeScreen(
                 )
 
                 else -> AllLocationsCard(
-                    uiState.vpnUiState.isVpnSessionActivityInProgress(),
-                    locationState,
+                    locationUiState,
                     reloadLocations,
                     isSelectedLocation,
                     onLocationSelected,
@@ -478,7 +490,7 @@ fun HomeScreen(
 
             else -> {
                 if (isPortrait.not()) {
-                    HorizontalTwoPaneStrategy(0.38f)
+                    HorizontalTwoPaneStrategy(0.4f)
                 } else {
                     // when both w & h are expanded, but table is in portrait mode
                     // avoid showing thin layer of home card + recent in column
@@ -486,7 +498,7 @@ fun HomeScreen(
                 }
             }
         },
-        displayFeatures = displayFeatures
+        displayFeatures = listOf()
     )
 }
 
@@ -497,7 +509,7 @@ fun HomeCardDivider(vpnUiState: VpnUiState) {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .height(20.dp)
+            .height(25.dp)
     ) {
         when (vpnUiState) {
             is VpnUiState.Checking,
@@ -516,11 +528,10 @@ fun HomeCardDivider(vpnUiState: VpnUiState) {
             is VpnUiState.ServerRunning,
             is VpnUiState.ServerReady,
             is VpnUiState.Connecting -> LinearProgressIndicator(
-                progress = vpnUiState.progress(),
-                trackColor = MaterialTheme.colorScheme.background.copy(alpha = 0.6f),
+                progress = { vpnUiState.progress() },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 35.dp)
+                    .padding(horizontal = 35.dp),
             )
 
             is VpnUiState.Connected -> {
@@ -542,18 +553,18 @@ fun HomeCardDivider(vpnUiState: VpnUiState) {
                         .padding(horizontal = 35.dp)
                 ) {
 
-                    Divider(thickness = 2.dp, modifier = Modifier.weight(1f))
+                    HorizontalDivider(thickness = 2.dp, modifier = Modifier.weight(1f))
 
                     SuggestionChip(
                         onClick = { },
-                        label = { Text(text = elapsedTimeMs.msTimerString(), fontSize = 13.sp) },
+                        label = { Text(text = elapsedTimeMs.msTimerString(), fontSize = 18.sp) },
                         shape = RoundedCornerShape(15.dp),
                         colors = SuggestionChipDefaults.suggestionChipColors(
-                            containerColor = MaterialTheme.colorScheme.background
+                            containerColor = MaterialTheme.colorScheme.onPrimary
                         )
                     )
 
-                    Divider(thickness = 2.dp, modifier = Modifier.weight(1f))
+                    HorizontalDivider(thickness = 2.dp, modifier = Modifier.weight(1f))
                 }
 
             }
@@ -565,12 +576,12 @@ fun HomeCardDivider(vpnUiState: VpnUiState) {
 @Composable
 fun HomeCard(
     selectedLocation: Location?,
-    locationState: LocationState,
+    locationUiState: LocationUiState,
     vpnUiState: VpnUiState,
     connectPreVpnPermission: (Location?) -> Unit,
     connectPostVpnPermission: (Boolean, Location?) -> Unit,
     disconnect: () -> Unit,
-    openLocationScreen: () -> Unit,
+    onLocationSelectorClick: () -> Unit,
     reloadLocations: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -624,20 +635,29 @@ fun HomeCard(
                         .fillMaxHeight(0.3f)
                         .aspectRatio(1f)
                 )
-                SuggestionChip(
-                    onClick = { },
-                    label = { Text(text = vpnUiState.vpnDisplayText(), fontSize = 13.sp) },
-                    shape = RoundedCornerShape(15.dp),
-                    modifier = Modifier
-                        .fillMaxHeight(0.1f)
-                )
+
+                when (vpnUiState) {
+                    is VpnUiState.Connected -> {}
+                    else ->
+                        SuggestionChip(
+                            onClick = { },
+                            label = {
+                                Text(
+                                    text = vpnUiState.vpnDisplayText(),
+                                    style = MaterialTheme.typography.labelLarge
+                                )
+                            },
+                            shape = RoundedCornerShape(15.dp),
+                            modifier = Modifier
+                                .fillMaxHeight(0.1f)
+                        )
+                }
+
                 HomeCardDivider(vpnUiState)
                 LocationSelector(
                     selectedLocation = selectedLocation,
-                    locationState = locationState,
                     vpnUiState = vpnUiState,
-                    openLocationScreen = openLocationScreen,
-                    reloadLocations = reloadLocations
+                    onLocationSelectorClick = onLocationSelectorClick,
                 )
                 Switch(
                     enabled = vpnUiState.switchEnabled(),
@@ -652,9 +672,11 @@ fun HomeCard(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecentLocationsCard(
-    isVpnSessionActivityInProgress: Boolean,
-    recentLocations: List<Location>, isSelectedLocation: (Location) -> Boolean,
-    onLocationSelected: (Location) -> Unit, modifier: Modifier = Modifier
+    recentLocations: List<Location>,
+    isSelectedLocation: (Location) -> Boolean,
+    onLocationSelected: (Location) -> Unit,
+    wgConfigKV: WgConfigKV? = null,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
@@ -662,39 +684,37 @@ fun RecentLocationsCard(
             .widthIn(400.dp, 600.dp)
             .fillMaxSize()
     ) {
-        if (recentLocations.isEmpty()) {
+        if (wgConfigKV != null) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                Image(
-                    painterResource(R.drawable.upvpn),
-                    contentDescription = "UpVPN Logo",
-                    modifier = Modifier
-                        .width(60.dp)
-                        .height(60.dp)
-                )
+                StatsCard(wgConfigKV)
             }
         } else {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(5.dp),
-                modifier = Modifier.padding(10.dp, 15.dp, 10.dp, 10.dp)
-            ) {
-                Text(
-                    text = "Recent Locations",
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(12.dp, 0.dp, 0.dp, 0.dp)
-                )
-                LazyColumn(
-//                verticalArrangement = Arrangement.spacedBy(5.dp),
-                    modifier = Modifier.fillMaxWidth()
+            if (recentLocations.isEmpty()) {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    Logo()
+                }
+            } else {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    modifier = Modifier.padding(10.dp, 15.dp, 10.dp, 10.dp)
                 ) {
-                    items(recentLocations.size) {
-                        LocationComponent(
-                            isVpnSessionActivityInProgress = isVpnSessionActivityInProgress,
-                            location = recentLocations[it],
-                            isSelectedLocation = isSelectedLocation,
-                            onLocationSelected = onLocationSelected,
-                            modifier = Modifier.animateItemPlacement()
-                        )
+                    Text(
+                        text = "Recent Locations".uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier.padding(12.dp, 0.dp, 0.dp, 0.dp)
+                    )
+                    LazyColumn(
+//                verticalArrangement = Arrangement.spacedBy(5.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(recentLocations.size) {
+                            LocationComponent(
+                                location = recentLocations[recentLocations.size - it - 1],
+                                isSelectedLocation = isSelectedLocation,
+                                onLocationSelected = onLocationSelected,
+                                modifier = Modifier.animateItemPlacement()
+                            )
+                        }
                     }
                 }
             }
@@ -705,8 +725,7 @@ fun RecentLocationsCard(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AllLocationsCard(
-    isVpnSessionActivityInProgress: Boolean,
-    locationState: LocationState,
+    locationUiState: LocationUiState,
     onRefresh: () -> Unit,
     isSelectedLocation: (Location) -> Boolean,
     onLocationSelected: (Location) -> Unit,
@@ -715,8 +734,7 @@ fun AllLocationsCard(
     Card(modifier = modifier) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
             AllLocations(
-                isVpnSessionActivityInProgress = isVpnSessionActivityInProgress,
-                locationState = locationState,
+                locationUiState = locationUiState,
                 verticalCountrySpacing = 0.dp,
                 onRefresh = onRefresh,
                 isSelectedLocation = isSelectedLocation,

@@ -7,7 +7,6 @@ import android.os.IBinder
 import android.os.Looper
 import android.os.Messenger
 import android.util.Log
-import androidx.activity.ComponentActivity
 import app.upvpn.upvpn.service.VPNService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,7 +46,7 @@ class VPNServiceConnectionManager(private val context: Context) {
             if (bindCalled.not() && vpnServiceClient.value == null) {
                 val intent = Intent(context, VPNService::class.java)
                 context.startService(intent)
-                context.bindService(intent, serviceConnection, ComponentActivity.BIND_ABOVE_CLIENT)
+                context.bindService(intent, serviceConnection, Context.BIND_ABOVE_CLIENT)
                 bindCalled = true
             }
         }

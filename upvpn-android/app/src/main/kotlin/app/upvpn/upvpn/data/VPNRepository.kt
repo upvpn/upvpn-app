@@ -11,7 +11,9 @@ import app.upvpn.upvpn.data.db.toDeviceInfo
 import app.upvpn.upvpn.data.db.toModelLocation
 import app.upvpn.upvpn.model.AddDeviceRequest
 import app.upvpn.upvpn.model.Location
+import app.upvpn.upvpn.model.OnlyEmail
 import app.upvpn.upvpn.model.UserCredentials
+import app.upvpn.upvpn.model.UserCredentialsWithCode
 import app.upvpn.upvpn.network.VPNApiService
 import app.upvpn.upvpn.network.toResult
 import com.github.michaelbull.result.Err
@@ -22,8 +24,6 @@ import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.onSuccess
 import com.wireguard.crypto.KeyPair
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.util.UUID
 
 interface VPNRepository {
@@ -31,9 +31,12 @@ interface VPNRepository {
     suspend fun isAuthenticated(): String?
     suspend fun addDevice(userCredentials: UserCredentials): Result<String, String>
     suspend fun signOut(): Result<Unit, String>
+    suspend fun signUp(request: UserCredentialsWithCode): Result<Unit, String>
+    suspend fun requestCode(request: OnlyEmail): Result<Unit, String>
     suspend fun getLocations(): Result<List<Location>, String>
     suspend fun getUser(): User?
-    fun getRecentLocations(limit: Int): Flow<List<Location>>
+    suspend fun getRecentLocations(limit: Int): List<Location>
+    suspend fun addRecentLocation(location: Location)
 }
 
 class DefaultVPNRepository(
@@ -123,6 +126,14 @@ class DefaultVPNRepository(
         )
     }
 
+    override suspend fun requestCode(request: OnlyEmail): Result<Unit, String> {
+        return vpnApiService.requestCode(request).toResult().mapError { e -> e.message }
+    }
+
+    override suspend fun signUp(request: UserCredentialsWithCode): Result<Unit, String> {
+        return vpnApiService.signUp(request).toResult().mapError { e -> e.message }
+    }
+
     override suspend fun getLocations(): Result<List<Location>, String> {
 
         val apiResult = vpnApiService.getLocations().toResult().mapError { e -> e.message }
@@ -145,11 +156,17 @@ class DefaultVPNRepository(
         return result
     }
 
-    override fun getRecentLocations(limit: Int): Flow<List<Location>> {
+    override suspend fun getRecentLocations(limit: Int): List<Location> {
         return vpnDatabase.locationDao().recentLocations(limit)
-            .map { it.map { l -> l.toModelLocation() } }
+            .map { it.toModelLocation() }
     }
 
+    override suspend fun addRecentLocation(location: Location) {
+        // update last access for recent locations
+        vpnDatabase.locationDao()
+            .updateLastAccess(location.code, System.currentTimeMillis() / 1000)
+
+    }
 
     override suspend fun getUser(): User? {
         return vpnDatabase.userDao().getUser()
