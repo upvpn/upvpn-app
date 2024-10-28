@@ -1,17 +1,20 @@
 package app.upvpn.upvpn.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
@@ -32,6 +35,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,7 +71,8 @@ fun VPNLayout(
     content: @Composable() () -> Unit
 ) {
 
-    val allContents = when (windowSize.widthSizeClass == WindowWidthSizeClass.Expanded) {
+    val allContents = when (windowSize.widthSizeClass == WindowWidthSizeClass.Expanded
+            && windowSize.heightSizeClass == WindowHeightSizeClass.Expanded) {
         true -> VPNNavigationDrawerWithContent(
             currentVPNScreen = currentVPNScreen,
             vpnNavigationItems = allVpnNavigationItems(),
@@ -107,8 +112,11 @@ private fun VPNContentWithoutDrawer(
 ) {
 
     val showRail = windowSize.widthSizeClass == WindowWidthSizeClass.Medium ||
-            (windowSize.heightSizeClass == WindowHeightSizeClass.Compact && windowSize.widthSizeClass ==
-                    WindowWidthSizeClass.Compact)
+            (windowSize.heightSizeClass == WindowHeightSizeClass.Compact
+                    && windowSize.widthSizeClass == WindowWidthSizeClass.Compact) ||
+            (windowSize.widthSizeClass == WindowWidthSizeClass.Expanded
+                    && (windowSize.heightSizeClass == WindowHeightSizeClass.Compact ||
+                    windowSize.heightSizeClass == WindowHeightSizeClass.Medium))
 
     Row(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(visible = showRail) {
@@ -221,9 +229,16 @@ private fun VPNNavigationDrawerContent(
             NavigationDrawerItem(
                 icon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.upvpn),
-                        contentDescription = "upvpn logo",
-                        modifier = Modifier.size(26.dp)
+                        painterResource(R.drawable.upvpn),
+                        contentDescription = "UpVPN Logo",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .aspectRatio(1f)
+                            .background(
+                                shape = RoundedCornerShape(5.dp),
+                                color = Color.Black
+                            )
                     )
                 },
                 label = { Text(text = "UpVPN", fontWeight = FontWeight.Bold) },

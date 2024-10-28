@@ -142,6 +142,13 @@ class VPNService : android.net.VpnService() {
         }
     }
 
+    fun getWgConfig(): String? {
+        if (currentTunnelHandle != -1) {
+            return wgGetConfig(currentTunnelHandle)
+        }
+        return null
+    }
+
     companion object {
 
         const val NAME = "upvpn"

@@ -3,15 +3,9 @@ package app.upvpn.upvpn.ui.state
 import app.upvpn.upvpn.model.Location
 
 data class LocationUiState(
-    val locationState: LocationState = LocationState.Loading,
+    val locations: List<Location> = listOf<Location>(),
     val search: String = "",
-    val selectedLocation: Location? = null
+    val selectedLocation: Location? = null,
+    val isLoading: Boolean = true,
+    val locationFetchError: String? = null,
 )
-
-sealed class LocationState {
-    data object Loading : LocationState()
-
-    data class Locations(val locations: List<Location>) : LocationState()
-
-    data class Error(val message: String) : LocationState()
-}

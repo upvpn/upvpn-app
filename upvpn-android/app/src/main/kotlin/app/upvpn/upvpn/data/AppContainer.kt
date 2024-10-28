@@ -22,6 +22,7 @@ interface AppContainer {
     val appScope: CoroutineScope
     val vpnRepository: VPNRepository
     val vpnSessionRepository: VPNSessionRepository
+    val planRepository: PlanRepository
     val serviceConnectionManager: VPNServiceConnectionManager
     val vpnNotificationManager: VPNNotificationManager
     fun init()
@@ -55,9 +56,15 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
         })
         .build()
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .client(okHttpClient)
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(
+            json.asConverterFactory("application/json".toMediaType())
+        )
         .addCallAdapterFactory(ApiResponseCallAdapterFactory.create(appScope))
         .baseUrl(baseUrl)
         .build()
@@ -72,6 +79,10 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
 
     override val vpnSessionRepository: VPNSessionRepository by lazy {
         DefaultVPNSessionRepository(retrofitService, vpnDatabase)
+    }
+
+    override val planRepository: PlanRepository by lazy {
+        DefaultPlanRepository(retrofitService)
     }
 
     override val serviceConnectionManager: VPNServiceConnectionManager by lazy {

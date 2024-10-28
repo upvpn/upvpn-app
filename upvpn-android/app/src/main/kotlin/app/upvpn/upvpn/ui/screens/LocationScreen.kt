@@ -1,21 +1,26 @@
 package app.upvpn.upvpn.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.random
 import app.upvpn.upvpn.model.search
 import app.upvpn.upvpn.ui.components.AllLocations
 import app.upvpn.upvpn.ui.components.SearchBar
-import app.upvpn.upvpn.ui.state.LocationState
 import app.upvpn.upvpn.ui.state.LocationUiState
 
 @Preview(showSystemUi = true)
@@ -23,8 +28,7 @@ import app.upvpn.upvpn.ui.state.LocationUiState
 fun PreviewAlLLocationsWithSearch() {
     val locations = listOf<Location>().random(10)
     AllLocationsWithSearch(
-        isVpnSessionActivityInProgress = false,
-        locationState = LocationState.Locations(locations),
+        locationUiState = LocationUiState(locations),
         searchText = "a",
         onSearchValueChange = {},
         onRefresh = {},
@@ -34,9 +38,9 @@ fun PreviewAlLLocationsWithSearch() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationScreen(
-    isVpnSessionActivityInProgress: Boolean,
     uiState: LocationUiState,
     onSearchValueChange: (String) -> Unit,
     onRefresh: () -> Unit,
@@ -44,23 +48,39 @@ fun LocationScreen(
     isSelectedLocation: (Location) -> Boolean,
     onLocationSelected: (Location) -> Unit,
 ) {
-    AllLocationsWithSearch(
-        isVpnSessionActivityInProgress = isVpnSessionActivityInProgress,
-        locationState = uiState.locationState,
-        searchText = uiState.search,
-        onSearchValueChange = onSearchValueChange,
-        onRefresh = onRefresh,
-        clearSearchQuery = clearSearchQuery,
-        isSelectedLocation = isSelectedLocation,
-        onLocationSelected = onLocationSelected
-    )
+    val state = rememberPullToRefreshState()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    // reload locations whenever screen show
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+            onRefresh()
+        }
+    }
+
+    PullToRefreshBox(
+        state = state,
+        isRefreshing = uiState.isLoading,
+        onRefresh = onRefresh
+    ) {
+
+        AllLocationsWithSearch(
+            locationUiState = uiState,
+            searchText = uiState.search,
+            onSearchValueChange = onSearchValueChange,
+            onRefresh = onRefresh,
+            clearSearchQuery = clearSearchQuery,
+            isSelectedLocation = isSelectedLocation,
+            onLocationSelected = onLocationSelected
+        )
+    }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AllLocationsWithSearch(
-    isVpnSessionActivityInProgress: Boolean,
-    locationState: LocationState,
+    locationUiState: LocationUiState,
     searchText: String,
     onSearchValueChange: (String) -> Unit,
     onRefresh: () -> Unit,
@@ -68,20 +88,15 @@ fun AllLocationsWithSearch(
     isSelectedLocation: (Location) -> Boolean,
     onLocationSelected: (Location) -> Unit,
 ) {
-
-    val searchedLocationState = when (locationState) {
-        is LocationState.Loading -> locationState
-        is LocationState.Error -> locationState
-        is LocationState.Locations -> {
-            if (searchText.isEmpty()) {
-                locationState
-            } else {
-                LocationState.Locations(
-                    locationState.locations.search(searchText)
-                )
-            }
-        }
-    }
+    val searchedLocationUiState = LocationUiState(
+        locations = if (searchText.isEmpty()) locationUiState.locations else locationUiState.locations.search(
+            searchText
+        ),
+        search = locationUiState.search,
+        selectedLocation = locationUiState.selectedLocation,
+        isLoading = locationUiState.isLoading,
+        locationFetchError = locationUiState.locationFetchError
+    )
 
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -97,8 +112,7 @@ fun AllLocationsWithSearch(
         )
 
         AllLocations(
-            isVpnSessionActivityInProgress = isVpnSessionActivityInProgress,
-            locationState = searchedLocationState,
+            locationUiState = searchedLocationUiState,
             verticalCountrySpacing = 10.dp,
             onRefresh = onRefresh,
             isSelectedLocation = isSelectedLocation,

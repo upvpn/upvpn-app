@@ -2,7 +2,6 @@ package app.upvpn.upvpn
 
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,17 +36,6 @@ class MainActivity : ComponentActivity() {
         val app = application as VPNApplication
         serviceConnectionManager = app.container.serviceConnectionManager
 
-        // only login screen needs to be resized
-        val resizeWindow: (shouldResize: Boolean) -> Unit = { shouldResize ->
-            if (shouldResize) {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-            } else {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-            }
-        }
-
-
-
         setContent {
             UpVPNTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
@@ -76,7 +64,6 @@ class MainActivity : ComponentActivity() {
                         VPNApp(
                             windowSize = windowSize,
                             displayFeatures = displayFeatures,
-                            resizeWindow = resizeWindow,
                             showSnackBar = showSnackBar,
                             modifier = Modifier.padding(it)
                         )

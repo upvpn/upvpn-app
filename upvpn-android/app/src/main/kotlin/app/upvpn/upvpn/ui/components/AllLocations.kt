@@ -1,7 +1,6 @@
 package app.upvpn.upvpn.ui.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,40 +13,35 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.toCountries
-import app.upvpn.upvpn.ui.state.LocationState
+import app.upvpn.upvpn.ui.state.LocationUiState
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AllLocations(
-    isVpnSessionActivityInProgress: Boolean,
-    locationState: LocationState,
+    locationUiState: LocationUiState,
     verticalCountrySpacing: Dp,
     onRefresh: () -> Unit,
     isSelectedLocation: (Location) -> Boolean,
     onLocationSelected: (Location) -> Unit
 ) {
-    when (locationState) {
-        is LocationState.Loading -> LocationsLoading()
-        is LocationState.Error -> LocationsError(error = locationState.message, onRefresh)
-        is LocationState.Locations -> {
-            LazyVerticalStaggeredGrid(
-                verticalItemSpacing = verticalCountrySpacing,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                columns = StaggeredGridCells.Adaptive(300.dp),
-                // so that after scrolling there is a gap at the top and bottom
-                contentPadding = PaddingValues(0.dp, 10.dp, 0.dp, 10.dp),
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .animateContentSize()
-            ) {
-                items(locationState.locations.toCountries()) {
-                    CountryComponent(
-                        isVpnSessionActivityInProgress = isVpnSessionActivityInProgress,
-                        country = it,
-                        isSelectedLocation = isSelectedLocation,
-                        onLocationSelected = onLocationSelected
-                    )
-                }
+    if (locationUiState.locationFetchError != null && locationUiState.locations.isEmpty()) {
+        LocationsError(error = locationUiState.locationFetchError, onRefresh)
+    } else {
+        LazyVerticalStaggeredGrid(
+            verticalItemSpacing = verticalCountrySpacing,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            columns = StaggeredGridCells.Adaptive(300.dp),
+            // so that after scrolling there is a gap at the top and bottom
+            contentPadding = PaddingValues(0.dp, 10.dp, 0.dp, 10.dp),
+            modifier = Modifier
+                .fillMaxHeight()
+                .animateContentSize()
+        ) {
+            items(locationUiState.locations.toCountries()) {
+                CountryComponent(
+                    country = it,
+                    isSelectedLocation = isSelectedLocation,
+                    onLocationSelected = onLocationSelected
+                )
             }
         }
     }
