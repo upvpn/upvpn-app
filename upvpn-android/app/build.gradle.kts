@@ -19,16 +19,16 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "app.upvpn.upvpn"
-    compileSdk = 34
+    compileSdk = 35
 
     ndkVersion = "26.1.10909125"
 
     defaultConfig {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 12
-        versionName = "u5"
+        targetSdk = 35
+        versionCode = 14
+        versionName = "u6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
