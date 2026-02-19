@@ -6,9 +6,11 @@ import app.upvpn.upvpn.data.db.VPNDatabase
 import app.upvpn.upvpn.network.AuthInterceptor
 import app.upvpn.upvpn.network.VPNApiService
 import app.upvpn.upvpn.notification.VPNNotificationManager
+import app.upvpn.upvpn.review.InAppReviewManager
+import app.upvpn.upvpn.review.InAppReviewManagerImpl
 import app.upvpn.upvpn.service.client.VPNServiceConnectionManager
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
+import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.runBlocking
@@ -25,6 +27,7 @@ interface AppContainer {
     val planRepository: PlanRepository
     val serviceConnectionManager: VPNServiceConnectionManager
     val vpnNotificationManager: VPNNotificationManager
+    val inAppReviewManager: InAppReviewManager
     fun init()
 }
 
@@ -91,5 +94,9 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
 
     override val vpnNotificationManager: VPNNotificationManager by lazy {
         VPNNotificationManager(context)
+    }
+
+    override val inAppReviewManager: InAppReviewManager by lazy {
+        InAppReviewManagerImpl(context)
     }
 }

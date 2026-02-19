@@ -32,7 +32,8 @@ object VPNAppViewModelProvider {
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as VPNApplication)
             HomeViewModel(
                 application.container.serviceConnectionManager,
-                application.container.vpnRepository
+                application.container.vpnRepository,
+                application.container.inAppReviewManager
             )
         }
 

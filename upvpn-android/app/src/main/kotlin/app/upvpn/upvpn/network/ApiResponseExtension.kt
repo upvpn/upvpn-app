@@ -6,6 +6,7 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.retrofit.errorBody
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.IOException
@@ -39,13 +40,13 @@ fun <T> ApiResponse<T>.toResult(): Result<T, ApiError> {
         }
 
         is ApiResponse.Failure.Exception -> {
-            this.exception.printStackTrace()
+            this.throwable.printStackTrace()
 
-            val apiError = when (this.exception) {
+            val apiError = when (this.throwable) {
                 is ConnectException -> clientException("Connection Error. Please try again.")
                 is SSLException -> clientException("SSL Connection Error. Please try again.")
                 is IOException -> clientException("Network issue. Please try again.")
-                else -> clientException(exception.message ?: "Failed. Please try again.")
+                else -> clientException(throwable.message ?: "Failed. Please try again.")
             }
 
             Err(apiError)

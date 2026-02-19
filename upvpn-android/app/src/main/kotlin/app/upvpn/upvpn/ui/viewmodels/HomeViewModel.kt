@@ -1,11 +1,14 @@
 package app.upvpn.upvpn.ui.viewmodels
 
+import android.app.Activity
+import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.upvpn.upvpn.data.VPNRepository
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.VPNNotification
+import app.upvpn.upvpn.review.InAppReviewManager
 import app.upvpn.upvpn.service.VPNState
 import app.upvpn.upvpn.service.client.VPNServiceConnectionManager
 import app.upvpn.upvpn.service.client.WgConfigKV
@@ -26,6 +29,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val serviceConnectionManager: VPNServiceConnectionManager,
     private val vpnRepository: VPNRepository,
+    private val inAppReviewManager: InAppReviewManager,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
     private val tag = "HomeViewModel"
@@ -39,6 +43,12 @@ class HomeViewModel(
     private val _wgConfig = MutableStateFlow(null as WgConfigKV?)
     val wgConfig = _wgConfig.asStateFlow()
 
+    private val _shouldRequestReview = MutableStateFlow(false)
+    val shouldRequestReview = _shouldRequestReview.asStateFlow()
+
+    // Tracks when VPN connected (SystemClock.elapsedRealtime() value from VPNState.Connected)
+    private var connectedStartTime: Long? = null
+
     init {
         getUpdates()
     }
@@ -50,9 +60,12 @@ class HomeViewModel(
                 .filterNotNull()
                 .flatMapLatest { vpnServiceClient ->
                     vpnServiceClient.vpnManager.vpnStateFlow
-                }.collect {
-                    when (it) {
-                        is VPNState -> _uiState.update { value -> value.copy(vpnUiState = it.toVPNUiState()) }
+                }.collect { vpnState ->
+                    when (vpnState) {
+                        is VPNState -> {
+                            _uiState.update { value -> value.copy(vpnUiState = vpnState.toVPNUiState()) }
+                            checkForReviewOpportunity(vpnState)
+                        }
                         else -> Unit
                     }
                 }
@@ -79,6 +92,32 @@ class HomeViewModel(
                     _wgConfig.update { newWgConfig }
                 }
         }
+    }
+
+    private fun checkForReviewOpportunity(vpnState: VPNState) {
+        when (vpnState) {
+            is VPNState.Connected -> connectedStartTime = vpnState.time
+            is VPNState.Disconnected -> {
+                val startTime = connectedStartTime
+                connectedStartTime = null
+                if (startTime != null) {
+                    val durationMs = SystemClock.elapsedRealtime() - startTime
+                    if (inAppReviewManager.canRequestReview(durationMs)) {
+                        inAppReviewManager.recordReviewRequested()
+                        _shouldRequestReview.update { true }
+                    }
+                }
+            }
+            else -> Unit
+        }
+    }
+
+    fun ackReviewRequest() {
+        _shouldRequestReview.update { false }
+    }
+
+    fun launchReviewFlow(activity: Activity) {
+        inAppReviewManager.launchReviewFlow(activity)
     }
 
     fun connectPreVpnPermission(selectedLocation: Location?) {

@@ -19,7 +19,7 @@ abstract class VPNDatabase : RoomDatabase() {
         fun getDatabase(context: Context): VPNDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, VPNDatabase::class.java, "upvpn")
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration(dropAllTables = false)
                     .enableMultiInstanceInvalidation()
                     .build()
                     .also { Instance = it }
