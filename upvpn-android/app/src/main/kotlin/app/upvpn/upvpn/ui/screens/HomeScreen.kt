@@ -712,7 +712,7 @@ fun RecentLocationsCard(
                                 location = recentLocations[recentLocations.size - it - 1],
                                 isSelectedLocation = isSelectedLocation,
                                 onLocationSelected = onLocationSelected,
-                                modifier = Modifier.animateItemPlacement()
+                                modifier = Modifier.animateItem()
                             )
                         }
                     }

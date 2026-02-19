@@ -8,7 +8,7 @@ import app.upvpn.upvpn.network.VPNApiService
 import app.upvpn.upvpn.notification.VPNNotificationManager
 import app.upvpn.upvpn.service.client.VPNServiceConnectionManager
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
+import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.runBlocking
