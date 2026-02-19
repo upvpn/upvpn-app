@@ -1,6 +1,7 @@
 package app.upvpn.upvpn.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +28,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,6 +78,9 @@ fun SettingsScreen(
                         signedInEmail,
                         navigateTo,
                     )
+                }
+                item {
+                    ShareCard()
                 }
                 item {
                     AboutCard()
@@ -179,6 +185,34 @@ fun AccountCard(
                     modifier = Modifier.size(15.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ShareCard() {
+    val context = LocalContext.current
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, "Checkout this cool VPN app https://UpVPN.app")
+                    }
+                    context.startActivity(Intent.createChooser(intent, null))
+                }
+                .padding(horizontal = 15.dp)
+        ) {
+            Text(text = "Share", modifier = Modifier.padding(vertical = 10.dp))
+            Icon(
+                Icons.Default.Share,
+                contentDescription = "Share",
+                modifier = Modifier.size(20.dp)
+            )
         }
     }
 }
