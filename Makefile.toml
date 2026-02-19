@@ -325,7 +325,7 @@ cat upvpn-packages/upvpn-oss-licenses-footer.hbs >> upvpn-packages/upvpn-oss-lic
 workspace = false
 script = '''
 git clone git@github.com:WireGuard/wireguard-tools.git upvpn-android/app/tunnel/wireguard-tools
-cd upvpn-android/app/tunnel/wireguard-tools && git checkout b4f6b4f229d291daf7c35c6f1e7f4841cc6d69bc && cd -
+cd upvpn-android/app/tunnel/wireguard-tools && git checkout e2ecaaa739144997ccff89d6ad6ec81698ea6ced && cd -
 git clone git@github.com:termux/termux-elf-cleaner.git upvpn-android/app/tunnel/elf-cleaner
 cd upvpn-android/app/tunnel/elf-cleaner && git checkout 7efc05090675ec6161b7def862728086a26c3b1f && cd -
 '''

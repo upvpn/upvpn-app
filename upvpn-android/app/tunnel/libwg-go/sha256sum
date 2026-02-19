@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "$(uname)" == "Darwin" ]]; then
+    exec gsha256sum "$@"
+else
+    exec sha256sum "$@"
+fi

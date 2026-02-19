@@ -21,7 +21,7 @@ android {
     namespace = "app.upvpn.upvpn"
     compileSdk = 35
 
-    ndkVersion = "26.1.10909125"
+    ndkVersion = "29.0.14206865"
 
     defaultConfig {
         applicationId = "app.upvpn.upvpn"
@@ -61,6 +61,7 @@ android {
                 cmake {
                     targets("libwg-go.so")
                     arguments("-DGRADLE_USER_HOME=${project.gradle.gradleUserHomeDir}")
+                    arguments("-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON")
                 }
             }
         }
@@ -70,7 +71,7 @@ android {
             versionNameSuffix = ".debug"
             val baseUrl = gradleLocalProperties(rootDir, providers).getProperty(
                 "baseUrl",
-                "https://upvpn.dev"
+                "\"https://upvpn.dev\""
             )
             buildConfigField(
                 "String",
