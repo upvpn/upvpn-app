@@ -182,6 +182,10 @@ dependencies {
     implementation("com.android.billingclient:billing:$billingVersion")
     implementation("com.android.billingclient:billing-ktx:$billingVersion")
 
+    // In-App Review (production flavor only)
+    "productionImplementation"("com.google.android.play:review:2.0.2")
+    "productionImplementation"("com.google.android.play:review-ktx:2.0.2")
+
 
     // for java.time
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
