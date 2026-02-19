@@ -1,13 +1,15 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
-    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.10"
+    id("com.google.devtools.ksp") version "2.3.6"
     id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.10"
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -121,18 +123,17 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.fromTarget("17")
+        }
     }
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -143,7 +144,7 @@ android {
 
 dependencies {
     val navVersion = "2.8.3"
-    val roomVersion = "2.6.1"
+    val roomVersion = "2.8.4"
     val sandwichVersion = "1.3.9"
     val billingVersion = "7.1.1"
 
@@ -170,13 +171,9 @@ dependencies {
     implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.18")
 
     implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
-    // To use Kotlin Symbol Processing (KSP)
+    // Kotlin Symbol Processing (KSP) for Room
     ksp("androidx.room:room-compiler:$roomVersion")
-
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$roomVersion")
 
     // Network response
     implementation("com.github.skydoves:sandwich:$sandwichVersion")
