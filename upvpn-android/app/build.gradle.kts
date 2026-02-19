@@ -73,7 +73,7 @@ android {
             versionNameSuffix = ".debug"
             val baseUrl = gradleLocalProperties(rootDir, providers).getProperty(
                 "baseUrl",
-                "\"https://upvpn.dev\""
+                "\"https://upvpn.app\""
             )
             buildConfigField(
                 "String",
