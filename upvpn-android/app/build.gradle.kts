@@ -19,14 +19,14 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "app.upvpn.upvpn"
-    compileSdk = 35
+    compileSdk = 36
 
     ndkVersion = "29.0.14206865"
 
     defaultConfig {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 15
         versionName = "u6"
 
