@@ -179,16 +179,16 @@ fun PlanScreen(planState: PlanState, refresh: () -> Unit, navigateUp: () -> Unit
                                 ) {
                                     PrepaidPlans(
                                         prepaidProducts.value,
+                                        selectedProduct.value,
                                         billingViewModel::setSelectedProduct,
-                                        billingViewModel::isSelectedProduct,
                                     )
                                 }
 
                                 if (yearlyProduct.value != null && planState.isYearlyPlan().not()) {
                                     YearlyPlan(
                                         yearlyProduct.value!!,
+                                        selectedProduct.value,
                                         billingViewModel::setSelectedProduct,
-                                        billingViewModel::isSelectedProduct,
                                     )
                                 }
 
@@ -293,13 +293,13 @@ fun PriceCapsule(
 ) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
             .border(
-                width = if (isSelected) 2.dp else 1.dp,
-                color = if (isSelected) Color(0xFF007AFF) else Color(0xFFE5E5EA),
+                width = 2.dp,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
                 shape = RoundedCornerShape(16.dp)
             )
-            .background(Color.White)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surface)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
@@ -309,7 +309,7 @@ fun PriceCapsule(
             style = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color(0xFF007AFF)
+                color = MaterialTheme.colorScheme.primary
             )
         )
     }
@@ -318,8 +318,8 @@ fun PriceCapsule(
 @Composable
 fun PrepaidPlans(
     prepaidProducts: List<ProductInfo>,
+    selectedProduct: ProductInfo?,
     setSelectedProduct: (ProductInfo) -> Unit,
-    isSelectedProduct: (ProductInfo) -> Boolean
 ) {
     Card(
         modifier = Modifier
@@ -351,7 +351,7 @@ fun PrepaidPlans(
                             Row(horizontalArrangement = Arrangement.Center) {
                                 PriceCapsule(
                                     prepaidProduct.formattedPrice,
-                                    isSelected = isSelectedProduct(prepaidProduct),
+                                    isSelected = selectedProduct?.productId == prepaidProduct.productId,
                                     onClick = { setSelectedProduct(prepaidProduct) })
                             }
                         }
@@ -365,8 +365,8 @@ fun PrepaidPlans(
 @Composable
 fun YearlyPlan(
     yearlyProduct: ProductInfo,
+    selectedProduct: ProductInfo?,
     setSelectedProduct: (ProductInfo) -> Unit,
-    isSelectedProduct: (ProductInfo) -> Boolean
 ) {
     Card(
         modifier = Modifier
@@ -390,7 +390,7 @@ fun YearlyPlan(
             }
             PriceCapsule(
                 "${yearlyProduct.formattedPrice}/year",
-                isSelected = isSelectedProduct(yearlyProduct),
+                isSelected = selectedProduct?.productId == yearlyProduct.productId,
                 onClick = { setSelectedProduct(yearlyProduct) })
         }
     }
