@@ -24,7 +24,7 @@ struct SettingsView: View {
 
             }
 
-            if #available(iOS 16, macOS 13, tvOS 16, *) {
+            if #available(iOS 16, ipadOS 16, macOS 13, *) {
                 Section("Share") {
                     ShareLink(
                         item: URL(string: "https://UpVPN.app")!,
