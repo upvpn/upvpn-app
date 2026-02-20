@@ -31,7 +31,7 @@ struct ContentView: View {
         }
         #if os(iOS) || os(macOS)
         .background {
-            if #available(iOS 17, macOS 13, *) {
+            if #available(iOS 17, macOS 14, *) {
                 ReviewRequestView(shouldRequest: $reviewManager.shouldRequestReview)
             }
         }

@@ -7,7 +7,7 @@
 import SwiftUI
 import StoreKit
 
-@available(iOS 17, macOS 13, *)
+@available(iOS 17, macOS 14, *)
 struct ReviewRequestView: View {
     @Environment(\.requestReview) private var requestReview
     @Binding var shouldRequest: Bool
