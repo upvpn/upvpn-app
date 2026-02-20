@@ -11,6 +11,7 @@ import WireGuardKit
 @MainActor
 class TunnelObserver: ObservableObject {
     @MainActor @Published var tunnelStatus: TunnelStatus = TunnelStatus.loading
+    @MainActor @Published var lastTunnelStatus: TunnelStatus? = nil
     @MainActor @Published var lastError: String? = nil
     @MainActor @Published var runtimeConfig: TunnelConfiguration? = nil
 
@@ -23,6 +24,7 @@ class TunnelObserver: ObservableObject {
                     for await tunnelStatus in await tunnelManager.$tunnelStatus.values {
                         if Task.isCancelled { break }
                         await MainActor.run {
+                            self.lastTunnelStatus = self.tunnelStatus
                             self.tunnelStatus = tunnelStatus
                         }
                     }
