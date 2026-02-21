@@ -117,7 +117,7 @@ struct MainViewContent26: View {
                 SettingsView()
                     .toolbar {
                         Button(action: { showAccountSheet.toggle() }) {
-                            Label("Close", systemImage: "close")
+                            Label("Close", systemImage: "xmark.circle")
                         }
                     }
             }
@@ -126,21 +126,24 @@ struct MainViewContent26: View {
 }
 
 @available(macOS 26, *)
-struct ToolbarView26: View {
+struct ToolbarView26: ToolbarContent {
     @Binding var showInspector: Bool
     @Binding var showAccountSheet: Bool
 
-    var body: some View {
-        Button(action: { showAccountSheet.toggle() }) {
-            Label("Account", systemImage: "person")
+    var body: some ToolbarContent {
+        ToolbarItem {
+            Button(action: { showAccountSheet.toggle() }) {
+                Label("Account", systemImage: "person")
+            }
+            .help("Account")
         }
-        .help("Account")
 
-        Button(action: { showInspector.toggle() }) {
-            Label("WireGuard Configuration", systemImage: "sidebar.right")
+        ToolbarItem {
+            Button(action: { showInspector.toggle() }) {
+                Label("WireGuard Configuration", systemImage: "sidebar.right")
+            }
+            .help("WireGuard Configuration")
         }
-        .help("WireGuard Configuration")
-
     }
 }
 
