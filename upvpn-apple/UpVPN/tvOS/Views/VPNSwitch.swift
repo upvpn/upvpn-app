@@ -39,7 +39,6 @@ struct VPNSwitch: View {
         }
         .disabled(!tunnelStatus.isDisconnectedOrConnected())
         .background(Color.clear)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
         .frame( maxWidth: .infinity)
     }
 }
