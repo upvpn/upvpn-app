@@ -188,8 +188,8 @@ struct InspectorModifier: ViewModifier {
     @Binding var showInspector: Bool
 
     func body(content: Content) -> some View {
-        if #available(iOS 17, *) {
-            content
+        if #available(iOS 17, *), UIDevice.current.userInterfaceIdiom == .pad  {
+                content
                 .inspector(isPresented: $showInspector) {
                     RuntimeConfigurationView()
                 }
