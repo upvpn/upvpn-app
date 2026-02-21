@@ -23,7 +23,11 @@ struct ContentView: View {
             case .checkingLocal:
                 WelcomeView()
             case .notSignedIn, .signingIn:
+                #if os(tvOS)
+                LoginView()
+                #else
                 AuthView()
+                #endif
             case .signedIn, .signingOut:
                 MainView()
             }

@@ -11,23 +11,42 @@ struct HelpView: View {
     var body: some View {
             Group {
                 VStack {
-                    Text("""
-Have questions about **product** or **pricing**?
+                    Text("**What are color indicators?**")
+                    Divider()
+                    HStack {
+                        Circle()
+                            .fill(Location.WARM_COLOR)
+                            .frame(width: 12, height: 12)
+                        Text("Connect quickly to available servers")
 
-Visit FAQ at https://upvpn.app/faq/
+                    }
+                    HStack {
+                        Circle()
+                            .fill(Location.COLD_COLOR)
+                            .frame(width: 12, height: 12)
+                        Text("Create and connect to a new server")
 
-Or send us a message at **support@upvpn.app** and we'll be happy to assist!
-""")
+                    }
+
+                    Text("**Questions about product or pricing?**").padding(.top)
+                    Divider()
+                    Text(
+                        """
+                        Visit FAQ: https://UpVPN.app/faq/
+
+                        Or email us at [support@upvpn.app](mailto:support@upvpn.app) and we'll be happy to assist!
+                        """
+                    )
 
                     Spacer()
                     Text("""
-Acknowledgements: https://upvpn.app/oss/apple/
+Acknowledgements: https://UpVPN.app/oss/apple/
 """).font(.caption).padding()
 
                 }
             }
             .padding()
-            .multilineTextAlignment(.leading)
+            .multilineTextAlignment(.center)
             .navigationTitle("Help")
             .frame(maxWidth: .infinity)
         }
