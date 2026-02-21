@@ -68,6 +68,12 @@
 		A33E307B2C97E4A7001C0E89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A33E307A2C97E4A7001C0E89 /* LaunchScreen.storyboard */; };
 		A33E307C2C992171001C0E89 /* CardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A323FAF62C5963CD00CF9D84 /* CardContainer.swift */; };
 		A33E307D2C9925A4001C0E89 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */; };
+		A33F31022F4831DC00036E3E /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F31012F4831DC00036E3E /* ReviewManager.swift */; };
+		A33F31032F4831DC00036E3E /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F31012F4831DC00036E3E /* ReviewManager.swift */; };
+		A33F31042F4831DC00036E3E /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F31012F4831DC00036E3E /* ReviewManager.swift */; };
+		A33F31062F48320000036E3E /* ReviewRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F31052F48320000036E3E /* ReviewRequestView.swift */; };
+		A33F31072F48320000036E3E /* ReviewRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F31052F48320000036E3E /* ReviewRequestView.swift */; };
+		A33F31082F48320000036E3E /* ReviewRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F31052F48320000036E3E /* ReviewRequestView.swift */; };
 		A3422DBC2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */; };
 		A3422DBD2C2E448E00A3D867 /* TunnelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */; };
 		A3422DC82C3562B700A3D867 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3422DC72C3562B700A3D867 /* Location.swift */; };
@@ -458,6 +464,8 @@
 		A33E30742C973FE9001C0E89 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
 		A33E30762C97D528001C0E89 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A33E307A2C97E4A7001C0E89 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A33F31012F4831DC00036E3E /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
+		A33F31052F48320000036E3E /* ReviewRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestView.swift; sourceTree = "<group>"; };
 		A3422DBB2C2E448E00A3D867 /* TunnelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelViewModel.swift; sourceTree = "<group>"; };
 		A3422DC72C3562B700A3D867 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		A3422DCD2C3879FD00A3D867 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -832,6 +840,7 @@
 				A323FAF62C5963CD00CF9D84 /* CardContainer.swift */,
 				A347A8222C59B80500FEF961 /* StatsCard.swift */,
 				A347A8292C61A38C00FEF961 /* HelpView.swift */,
+				A33F31052F48320000036E3E /* ReviewRequestView.swift */,
 				A3A9F0F42C6E934300AF1490 /* RuntimeConfigurationView.swift */,
 				A3FABF9A2C6B4D3D004753D1 /* Plan */,
 				A3A9F0F72C6FE58300AF1490 /* AccountView.swift */,
@@ -925,6 +934,7 @@
 				A36565FD2C545F5200C2E748 /* Views */,
 				A350DED82C25141200BA1BA6 /* UpVPNApp.swift */,
 				A350DEDA2C25141200BA1BA6 /* ContentView.swift */,
+				A33F31012F4831DC00036E3E /* ReviewManager.swift */,
 				A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */,
 			);
 			path = App;
@@ -1333,8 +1343,10 @@
 				A361CA762C94E6A600EB2CA3 /* Location.swift in Sources */,
 				A379AB132C951CBA00BC55AA /* Response.swift in Sources */,
 				A379AB152C951CC400BC55AA /* NETunnelProviderSessionExtension.swift in Sources */,
+				A33F31042F4831DC00036E3E /* ReviewManager.swift in Sources */,
 				A33E306D2C971BE8001C0E89 /* PriceCapsule.swift in Sources */,
 				A361CA772C94E6A600EB2CA3 /* Types.swift in Sources */,
+				A33F31082F48320000036E3E /* ReviewRequestView.swift in Sources */,
 				A33E307C2C992171001C0E89 /* CardContainer.swift in Sources */,
 				A33E30672C96B210001C0E89 /* HomeCard.swift in Sources */,
 				A379AAF02C950E4800BC55AA /* LocationsMapView.swift in Sources */,
@@ -1426,6 +1438,7 @@
 				A30FE9692CB598B400AE6FD1 /* EmailCodeView.swift in Sources */,
 				A350DED92C25141200BA1BA6 /* UpVPNApp.swift in Sources */,
 				A30FE9652CB585DA00AE6FD1 /* PasswordField.swift in Sources */,
+				A33F31062F48320000036E3E /* ReviewRequestView.swift in Sources */,
 				A3422DD92C387A8100A3D867 /* VPNState.swift in Sources */,
 				A323FAF12C58637A00CF9D84 /* Color+Extension.swift in Sources */,
 				A347A8262C6129CC00FEF961 /* PlanManagement.swift in Sources */,
@@ -1438,6 +1451,7 @@
 				A323FAE52C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */,
 				A347A8232C59B80500FEF961 /* StatsCard.swift in Sources */,
 				A3A9F0F52C6E934300AF1490 /* RuntimeConfigurationView.swift in Sources */,
+				A33F31022F4831DC00036E3E /* ReviewManager.swift in Sources */,
 				A391D9A72C4979080008D23F /* DataRepository.swift in Sources */,
 				A3A9F1042C70249700AF1490 /* UIUtils.swift in Sources */,
 				A380AA9A2C6308CF007E09A1 /* PlanRepository.swift in Sources */,
@@ -1497,6 +1511,7 @@
 				A33336BF2C475E2C004D8C8E /* Keychain.swift in Sources */,
 				A36566522C56E75600C2E748 /* LocationView.swift in Sources */,
 				A3FABF902C6B2507004753D1 /* PrepaidPlansView.swift in Sources */,
+				A33F31072F48320000036E3E /* ReviewRequestView.swift in Sources */,
 				A36566002C545F8F00C2E748 /* MainView.swift in Sources */,
 				A3E352DB2C2E30B6008D0E30 /* TunnelManager.swift in Sources */,
 				A3A7637C2C5225E00088D5F5 /* LocationViewModel.swift in Sources */,
@@ -1516,6 +1531,7 @@
 				A3FABF9D2C6B4F02004753D1 /* PlanView.swift in Sources */,
 				A3A21D8B2C87362E00600C2C /* LocationsMapView.swift in Sources */,
 				A323FAE62C57FD4C00CF9D84 /* ElapsedTimeView.swift in Sources */,
+				A33F31032F4831DC00036E3E /* ReviewManager.swift in Sources */,
 				A347A8242C59B80500FEF961 /* StatsCard.swift in Sources */,
 				A3A9F0F62C6E934300AF1490 /* RuntimeConfigurationView.swift in Sources */,
 				A391D9A82C4979080008D23F /* DataRepository.swift in Sources */,

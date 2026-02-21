@@ -10,21 +10,43 @@ import SwiftUI
 struct HelpView: View {
     var body: some View {
         VStack(alignment: .leading) {
-            Text("""
-Have questions about **product** or **pricing**?
 
-Visit [FAQ](https://upvpn.app/faq/)
+            Text("**What are color indicators?**")
+            Divider()
+            HStack {
+                Circle()
+                    .fill(Location.WARM_COLOR)
+                    .frame(width: 12, height: 12)
+                Text("Connect quickly to available servers")
 
-Or email us at [support@upvpn.app](mailto:support@upvpn.app) and we'll be happy to assist!
-""")
+            }
+            HStack {
+                Circle()
+                    .fill(Location.COLD_COLOR)
+                    .frame(width: 12, height: 12)
+                Text("Create and connect to a new server")
 
-                Spacer()
-                Text("""
-To delete your account, visit the [account page on the dashboard](https://upvpn.app/dashboard/account)
+            }
+
+            Text("**Questions about product or pricing?**").padding(.top)
+            Divider()
+            Text(
+                """
+                Visit [FAQ](https://upvpn.app/faq/)
+
+                Or email us at [support@upvpn.app](mailto:support@upvpn.app) and we'll be happy to assist!
+                """
+            )
+
+            Spacer()
+            Text(
+                """
+                To delete your account, visit the [account page on the dashboard](https://upvpn.app/dashboard/account)
 
 
-[Acknowledgements](https://upvpn.app/oss/apple/)
-""").font(.caption)
+                [Acknowledgements](https://upvpn.app/oss/apple/)
+                """
+            ).font(.caption)
         }
         .multilineTextAlignment(.leading)
         .textSelection(.enabled)

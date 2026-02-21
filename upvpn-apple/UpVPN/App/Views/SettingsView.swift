@@ -23,6 +23,18 @@ struct SettingsView: View {
                 }
 
             }
+            #if !os(tvOS)
+            if #available(iOS 16, macOS 13, *) {
+                Section("Share") {
+                    ShareLink(
+                        item: URL(string: "https://UpVPN.app")!,
+                        message: Text("Check out this cool VPN app! https://UpVPN.app")
+                    ) {
+                        Label("Share UpVPN", systemImage: "square.and.arrow.up")
+                    }
+                }
+            }
+            #endif
 
             Section("Version") {
                VersionView()

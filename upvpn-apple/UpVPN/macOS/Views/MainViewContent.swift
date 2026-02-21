@@ -33,10 +33,9 @@ struct MainViewContent12: View {
             .toolbar {
                 Button {
                     showSettings.toggle()
-                }
-                 label: {
+                } label: {
                     Label("Account", systemImage: "person")
-                 }
+                }
 
                 Button {
                     showInspector.toggle()
@@ -83,6 +82,71 @@ struct MainViewContent12: View {
     }
 }
 
+@available(macOS 26, *)
+struct MainViewContent26: View {
+    @State private var showInspector: Bool = false
+    @State private var showAccountSheet: Bool = false
+
+    var body: some View {
+        NavigationSplitView {
+            LocationsView()
+                .frame(maxWidth: .infinity)
+                .navigationSplitViewColumnWidth(
+                    min: 310,
+                    ideal: 325,
+                    max: .infinity
+                )
+        } detail: {
+            HomeView(onStatsTap: { showInspector.toggle() })
+                .navigationSplitViewColumnWidth(min: 400, ideal: 400, max: 400)
+                .toolbar {
+                    ToolbarView26(
+                        showInspector: $showInspector,
+                        showAccountSheet: $showAccountSheet
+                    )
+                }
+        }
+        .navigationSplitViewStyle(.balanced)
+        .inspector(isPresented: $showInspector) {
+            RuntimeConfigurationView()
+                .inspectorColumnWidth(min: 400, ideal: 400, max: 400)
+
+        }
+        .sheet(isPresented: $showAccountSheet) {
+            NavigationStack {
+                SettingsView()
+                    .toolbar {
+                        Button(action: { showAccountSheet.toggle() }) {
+                            Label("Close", systemImage: "xmark.circle")
+                        }
+                    }
+            }
+        }
+    }
+}
+
+@available(macOS 26, *)
+struct ToolbarView26: ToolbarContent {
+    @Binding var showInspector: Bool
+    @Binding var showAccountSheet: Bool
+
+    var body: some ToolbarContent {
+        ToolbarItem {
+            Button(action: { showAccountSheet.toggle() }) {
+                Label("Account", systemImage: "person")
+            }
+            .help("Account")
+        }
+
+        ToolbarItem {
+            Button(action: { showInspector.toggle() }) {
+                Label("WireGuard Configuration", systemImage: "sidebar.right")
+            }
+            .help("WireGuard Configuration")
+        }
+    }
+}
+
 @available(macOS 14, *)
 struct MainViewContent14: View {
     @State private var showInspector: Bool = false
@@ -93,15 +157,22 @@ struct MainViewContent14: View {
             NavigationSplitView {
                 LocationsView()
                     .frame(maxWidth: .infinity)
-                    .navigationSplitViewColumnWidth(min: 310, ideal: 325, max: .infinity)
-            }
-            detail: {
+                    .navigationSplitViewColumnWidth(
+                        min: 310,
+                        ideal: 325,
+                        max: .infinity
+                    )
+            } detail: {
                 HomeView(onStatsTap: { showInspector.toggle() })
-                    .navigationSplitViewColumnWidth(min: 400, ideal: 400, max: .infinity)
+                    .navigationSplitViewColumnWidth(
+                        min: 400,
+                        ideal: 400,
+                        max: .infinity
+                    )
             }
             .navigationSplitViewStyle(.balanced)
             .toolbar {
-               ToolbarView(showInspector: $showInspector)
+                ToolbarView(showInspector: $showInspector)
             }
             // .inspector available only in macOS14+
             .inspector(isPresented: $showInspector) {
@@ -114,7 +185,7 @@ struct MainViewContent14: View {
 }
 
 @available(macOS, introduced: 13, obsoleted: 14)
-struct MainViewContent13 : View {
+struct MainViewContent13: View {
 
     @State private var showInspector: Bool = false
 
@@ -123,9 +194,12 @@ struct MainViewContent13 : View {
             NavigationSplitView {
                 LocationsView()
                     .frame(maxWidth: .infinity)
-                    .navigationSplitViewColumnWidth(min: 310, ideal: 325, max: .infinity)
-            }
-            detail: {
+                    .navigationSplitViewColumnWidth(
+                        min: 310,
+                        ideal: 325,
+                        max: .infinity
+                    )
+            } detail: {
                 if showInspector {
                     HStack {
                         HomeView(onStatsTap: { showInspector.toggle() })
@@ -134,10 +208,18 @@ struct MainViewContent13 : View {
                         RuntimeConfigurationView()
                             .frame(minWidth: 400)
                     }
-                    .navigationSplitViewColumnWidth(min: 700, ideal: 800, max: .infinity)
+                    .navigationSplitViewColumnWidth(
+                        min: 700,
+                        ideal: 800,
+                        max: .infinity
+                    )
                 } else {
                     HomeView(onStatsTap: { showInspector.toggle() })
-                        .navigationSplitViewColumnWidth(min: 400, ideal: 400, max: .infinity)
+                        .navigationSplitViewColumnWidth(
+                            min: 400,
+                            ideal: 400,
+                            max: .infinity
+                        )
                 }
             }
 
@@ -168,9 +250,11 @@ struct ToolbarView: View {
     }
 }
 
-struct MainViewContent : View {
+struct MainViewContent: View {
     var body: some View {
-        if #available(macOS 14, *) {
+        if #available(macOS 26, *) {
+            MainViewContent26()
+        } else if #available(macOS 14, *) {
             MainViewContent14()
         } else if #available(macOS 13, *) {
             MainViewContent13()
