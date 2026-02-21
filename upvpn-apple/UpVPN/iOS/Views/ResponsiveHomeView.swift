@@ -72,13 +72,16 @@ struct ResponsiveHomeView: View {
                 HStack(spacing: 0) {
                     HomeView(onStatsTap: { showMapOrConfig = MapOrConfig.config })
                         .frame(maxWidth: 500)
-                    
+
                     RuntimeConfigMapView(showMapOrConfig: $showMapOrConfig,
                                          mapModifier: LandscapeMapModifier(),
                                          configModifier: LandscapeRuntimeConfigModifier(),
                                          pickerModifier: LandscapePickerModifier())
                         .background(Color.uSystemGroupedBackground)
                 }
+                .modifier(MapOrConfigOnTunnelStatusChange(
+                    tunnelStatus: tunnelViewModel.tunnelObserver.tunnelStatus,
+                    showMapOrConfig: $showMapOrConfig))
             case .padPortrait:
                 VStack(spacing: 0) {
                     HStack(spacing: 0) {
@@ -144,6 +147,9 @@ struct ResponsiveHomeView: View {
                                          pickerModifier: PortraitPickerModifier())
                         .background(Color.uSystemGroupedBackground)
                 }
+                .modifier(MapOrConfigOnTunnelStatusChange(
+                    tunnelStatus: tunnelViewModel.tunnelObserver.tunnelStatus,
+                    showMapOrConfig: $showMapOrConfig))
             }
         }
         .frame(minWidth: 350)
@@ -194,6 +200,23 @@ struct PortraitPickerModifier: ViewModifier {
         content
             .padding()
 
+    }
+}
+
+struct MapOrConfigOnTunnelStatusChange: ViewModifier {
+    var tunnelStatus: TunnelStatus
+    @Binding var showMapOrConfig: MapOrConfig
+
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: tunnelStatus) { newStatus in
+                switch newStatus {
+                case .connected, .disconnecting:
+                    showMapOrConfig = .config
+                default:
+                    showMapOrConfig = .map
+                }
+            }
     }
 }
 

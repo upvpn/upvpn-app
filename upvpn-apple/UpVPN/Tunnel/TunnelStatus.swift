@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TunnelStatus {
+enum TunnelStatus: Equatable {
     case loading
     case disconnected
     case requesting(Location)
