@@ -161,8 +161,8 @@ script = '''
 #!/usr/bin/env bash
 root_dir=$(pwd)
 mkdir -p ${root_dir}/.cargo
-cp ${root_dir}/upvpn-packages/cargo-config.toml ${root_dir}/.cargo/config
-sd __REPO_ROOT__ "${root_dir}" ${root_dir}/.cargo/config
+cp ${root_dir}/upvpn-packages/cargo-config.toml ${root_dir}/.cargo/config.toml
+sd __REPO_ROOT__ "${root_dir}" ${root_dir}/.cargo/config.toml
 '''
 
 [tasks.ui]
