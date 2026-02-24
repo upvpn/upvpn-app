@@ -9,7 +9,7 @@ homepage = "https://upvpn.app"
 repository = "https://github.com/upvpn/upvpn-app"
 
 [dependencies]
-clap = "4.4.10"
+clap = { version = "4.4.10", features = ["derive"] }
 async-trait = "0.1.74"
 futures = "0.3.29"
 hyper = "0.14.27"
