@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import { info } from "tauri-plugin-log-api";
+import { info } from "@tauri-apps/plugin-log";
 import { handleError } from "../lib/util";
 import { UiError } from "../lib/types";
 import useAuthStatus from "../hooks/useAuthStatus";

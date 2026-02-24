@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use futures::future::abortable;
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter};
 use tokio::sync::oneshot;
 use tokio_stream::StreamExt;
 use upvpn_types::notification::Notification;
@@ -52,11 +52,11 @@ impl EventForwarder {
                                             upvpn_controller::proto::daemon_event::Event::VpnStatus(vpn_status) => {
                                                 let vpn_status: upvpn_types::vpn_session::VpnStatus = vpn_status.into();
                                                 update_app_state(app_handle.clone(), vpn_status.clone()).await;
-                                                let _ = app_handle.emit_all("vpn_status", vpn_status);
+                                                let _ = app_handle.emit("vpn_status", vpn_status);
                                             },
                                             upvpn_controller::proto::daemon_event::Event::Notification(notification) => {
                                                 if let Ok(notification) = Notification::try_from(notification) {
-                                                    let _ = app_handle.emit_all("notification", notification);
+                                                    let _ = app_handle.emit("notification", notification);
                                                 }
                                             },
                                         }

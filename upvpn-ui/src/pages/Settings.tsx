@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router";
 import Spinner from "../components/Spinner";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import VpnStatusContext, {
   VpnStatusContextInterface,
 } from "../context/VpnStatusContext";

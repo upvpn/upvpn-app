@@ -1,5 +1,4 @@
-use tauri::api::notification::Notification;
-use upvpn_config::config;
+use tauri_plugin_notification::NotificationExt;
 
 #[tauri::command]
 pub async fn send_desktop_notification(
@@ -7,10 +6,11 @@ pub async fn send_desktop_notification(
     title: String,
     body: String,
 ) -> Result<(), String> {
-    Notification::new(&app_handle.config().tauri.bundle.identifier)
+    app_handle
+        .notification()
+        .builder()
         .title(title)
-        .body(body.as_str())
-        .icon(config().icon_path())
+        .body(&body)
         .show()
         .map_err(|e| {
             log::error!("failed to send desktop notification: {body}: {e}");

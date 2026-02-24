@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useState } from "react";
 import { UiError, Location } from "../lib/types";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { handleError } from "../lib/util";
 import { useNavigate } from "react-router-dom";
 

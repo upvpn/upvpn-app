@@ -1,24 +1,23 @@
 use std::path::PathBuf;
 
-use tauri::{
-    api::{path::desktop_dir, shell},
-    AppHandle, Manager,
-};
+use tauri::{AppHandle, Manager};
+use tauri_plugin_opener::OpenerExt;
 use upvpn_config::config;
 
 use crate::error::Error;
 
 pub fn copy_to_desktop_and_open(app_handle: &AppHandle, src: PathBuf) {
-    if let Some(dir) = desktop_dir() {
+    let desktop = app_handle.path().desktop_dir().ok();
+    if let Some(dir) = desktop {
         let filename = src.file_name().unwrap();
         let new_path = dir.join(filename);
         if std::fs::copy(&src, &new_path).is_ok() {
-            let _ = shell::open(&app_handle.shell_scope(), new_path.to_str().unwrap(), None);
+            let _ = app_handle.opener().open_path(new_path.to_str().unwrap(), None::<&str>);
         } else {
-            let _ = shell::open(&app_handle.shell_scope(), src.to_str().unwrap(), None);
+            let _ = app_handle.opener().open_path(src.to_str().unwrap(), None::<&str>);
         }
     } else {
-        let _ = shell::open(&app_handle.shell_scope(), src.to_str().unwrap(), None);
+        let _ = app_handle.opener().open_path(src.to_str().unwrap(), None::<&str>);
     }
 }
 

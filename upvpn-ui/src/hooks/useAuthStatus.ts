@@ -1,4 +1,4 @@
-import { invoke } from '@tauri-apps/api'
+import { invoke } from '@tauri-apps/api/core'
 import React, { useEffect, useState } from 'react';
 import { isOffline } from '../lib/util';
 import { UiError } from '../lib/types';
