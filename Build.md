@@ -28,18 +28,24 @@ git config --global url."https://github.com/openssl/openssl.git".insteadOf "git:
 ### Linux
 
 ```
-apt install build-essential \
+sudo apt install libwebkit2gtk-4.1-dev \
+    build-essential \
+    curl \
+    wget \
+    file \
+    libssl-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev \
     pkg-config \
     libgtk-3-dev \
     libssl-dev \
     libsoup2.4-dev \
     libjavascriptcoregtk-4.0-dev \
-    libwebkit2gtk-4.0-dev \
+    libnss3-tools \
     libmnl-dev \
     libnftnl-dev \
     protobuf-compiler \
-    zip \
-
+    zip
 ```
 
 Install protoc on x86_64/amd64 machines
