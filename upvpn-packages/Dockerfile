@@ -122,4 +122,7 @@ RUN curl -Lo go.tgz https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz && 
 ENV PATH=/usr/local/go/bin:$PATH
 
 
+# === Git configuration ===
+RUN git config --global url."https://github.com/openssl/openssl.git".insteadOf "git://git.openssl.org/openssl.git"
+
 WORKDIR /build
