@@ -28,7 +28,7 @@ assets = [
     ["../upvpn-assets/icons/128x128@2x.png", "usr/share/icons/hicolor/256x256/apps/upvpn.png", "644"],
     ["../upvpn-assets/icons/icon.png", "usr/share/icons/hicolor/512x512/apps/upvpn.png", "644"],
 ]
-depends = "libwebkit2gtk-4.0-37 (>= 2.21.1), libgtk-3-0 (>= 3.21.4), libayatana-appindicator3-1"
+depends = "libwebkit2gtk-4.1-0, libgtk-3-0 (>= 3.21.4), libayatana-appindicator3-1"
 maintainer-scripts = "linux/debian/maintainer-scripts/"
 systemd-units = { unit-name = "upvpn-daemon", enable = true, start= true, restart-after-upgrade = false, stop-on-upgrade = true, unit-scripts = "linux/unit-scripts"}
 
@@ -51,7 +51,7 @@ assets = [
 # RPM PACKAGING
 #
 [package.metadata.generate-rpm.requires]
-"webkit2gtk4.0" = ">= 2.38.5"
+"webkit2gtk4.1" = ">= 2.38.5"
 "libappindicator-gtk3" = ">= 12.10.1"
 
 [package.metadata.generate-rpm]
