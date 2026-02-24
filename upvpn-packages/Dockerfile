@@ -17,6 +17,18 @@
 #
 # And add -e TARGETS="aarch64-unknown-linux-gnu" to build for ARM64
 
+# === Stage 1: arm64 WebKit sysroot ===
+# libwebkit2gtk-4.1-dev and its :arm64 variant conflict in Debian 12 multi-arch (they cannot
+# be co-installed). Work around by installing webkit natively on arm64 and copying the
+# compiled libraries into the final amd64 image.
+FROM --platform=linux/arm64 debian@sha256:98f4b71de414932439ac6ac690d7060df1f27161073c5036a7553723881bffbe AS arm64-webkit-sysroot
+
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    libwebkit2gtk-4.1-dev \
+    libjavascriptcoregtk-4.1-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# === Stage 2: main builder image (amd64) ===
 # Debian 12 (bookworm-slim) - provides GLib >= 2.70 and libwebkit2gtk-4.1 required by Tauri v2
 FROM debian@sha256:98f4b71de414932439ac6ac690d7060df1f27161073c5036a7553723881bffbe
 
@@ -51,10 +63,13 @@ RUN dpkg --add-architecture arm64 && apt-get update -y && apt-get install -y \
     libmnl-dev \
     libssl-dev:arm64 \
     libgtk-3-dev:arm64 \
-    libwebkit2gtk-4.1-dev:arm64 \
     # For cross-compiling/linting towards Windows
     gcc-mingw-w64-x86-64 \
     && rm -rf /var/lib/apt/lists/*
+
+# arm64 webkit libs cannot be co-installed with the amd64 variant (Debian 12 multi-arch
+# conflict). Copy them from the arm64-webkit-sysroot stage instead.
+COPY --from=arm64-webkit-sysroot /usr/lib/aarch64-linux-gnu/ /usr/lib/aarch64-linux-gnu/
 
 RUN curl -Lo protoc-3.19.1-linux-x86_64.zip \
     https://github.com/protocolbuffers/protobuf/releases/download/v3.19.1/protoc-3.19.1-linux-x86_64.zip  && \
