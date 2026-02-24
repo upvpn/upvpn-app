@@ -13,6 +13,18 @@ cargo install ripgrep
 cargo install cargo-about
 ```
 
+### Setup Git
+
+For crates used via git rep
+```
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
+```
+
+For OpenSSL
+```
+git config --global url."https://github.com/openssl/openssl.git".insteadOf "git://git.openssl.org/openssl.git"
+```
+
 ### Linux
 
 ```
