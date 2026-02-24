@@ -17,9 +17,8 @@
 #
 # And add -e TARGETS="aarch64-unknown-linux-gnu" to build for ARM64
 
-# Debian 10 is the oldest supported distro. It has the oldest glibc that we support
-# This checksum points to a 10.13-slim image.
-FROM debian@sha256:557ee531b81ce380d012d83b7bb56211572e5d6088d3e21a3caef7d7ed7f718b
+# Debian 12 (bookworm-slim) - provides GLib >= 2.70 and libwebkit2gtk-4.1 required by Tauri v2
+FROM debian@sha256:98f4b71de414932439ac6ac690d7060df1f27161073c5036a7553723881bffbe
 
 LABEL org.opencontainers.image.source=https://github.com/upvpn/upvpn-app
 LABEL org.opencontainers.image.description="upvpn app Linux build container"
@@ -34,11 +33,7 @@ ENV GOLANG_VERSION=1.18.5 \
 
 # === Install/set up the image ===
 
-RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
-    sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list && \
-    sed -i '/buster-updates/d' /etc/apt/sources.list && \
-    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check && \
-    dpkg --add-architecture arm64 && apt-get update -y && apt-get install -y \
+RUN dpkg --add-architecture arm64 && apt-get update -y && apt-get install -y \
     git \
     curl \
     gcc gcc-aarch64-linux-gnu \
@@ -48,15 +43,15 @@ RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /
     # Tauri / TLS / GTK
     libgtk-3-dev \
     libssl-dev \
-    libsoup2.4-dev \
-    libjavascriptcoregtk-4.0-dev \
-    libwebkit2gtk-4.0-dev \
+    libsoup-3.0-dev \
+    libjavascriptcoregtk-4.1-dev \
+    libwebkit2gtk-4.1-dev \
     libnftnl-dev \
     zip \
     libmnl-dev \
     libssl-dev:arm64 \
     libgtk-3-dev:arm64 \
-    libwebkit2gtk-4.0-dev:arm64 \
+    libwebkit2gtk-4.1-dev:arm64 \
     # For cross-compiling/linting towards Windows
     gcc-mingw-w64-x86-64 \
     && rm -rf /var/lib/apt/lists/*
