@@ -135,5 +135,6 @@ This step uses builder Docker image with tag in `upvpn-packages/tag.txt`. The fi
 cargo make linux
 
 # For target platform
+cargo make -e TARGET=x86_64-unknown-linux-gnu linux
 cargo make -e TARGET=aarch64-unknown-linux-gnu linux
 ```
