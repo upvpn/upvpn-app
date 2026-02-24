@@ -15,7 +15,7 @@ cargo install cargo-about
 
 ### Setup Git
 
-For crates used via git rep
+For crates used via git repo
 ```
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 ```
