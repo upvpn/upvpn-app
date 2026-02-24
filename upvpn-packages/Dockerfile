@@ -113,8 +113,8 @@ RUN cargo install cargo-make && \
 # === Volta for npm + node ===
 
 ENV PATH=/root/.volta/bin:$PATH
-ENV NODE_VERSION=18.13.0
-ENV NPM_VERSION=8.19.3
+ENV NODE_VERSION=20.18.0
+ENV NPM_VERSION=10.8.2
 
 RUN curl https://get.volta.sh | bash && \
     volta install node@${NODE_VERSION} && \
