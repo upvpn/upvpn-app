@@ -72,13 +72,8 @@ fn main() {
             {
                 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
 
-                let quit_item = MenuItem::with_id(
-                    app,
-                    "macos_quit",
-                    "Quit",
-                    true,
-                    Some("CmdOrCtrl+Q"),
-                )?;
+                let quit_item =
+                    MenuItem::with_id(app, "macos_quit", "Quit", true, Some("CmdOrCtrl+Q"))?;
                 let submenu = Submenu::with_id_and_items(
                     app,
                     "upvpn_menu",

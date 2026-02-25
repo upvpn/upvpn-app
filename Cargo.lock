@@ -8785,6 +8785,7 @@ name = "upvpn-ui"
 version = "0.1.0"
 dependencies = [
  "futures",
+ "gtk",
  "log",
  "semver",
  "serde",

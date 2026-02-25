@@ -60,6 +60,13 @@ pub fn toggle_window_visibility(app_handle: AppHandle) {
         if new_window_visible {
             let _ = window.show();
             let _ = window.set_focus();
+            #[cfg(target_os = "linux")]
+            {
+                use gtk::prelude::GtkWindowExt;
+                if let Ok(gtk_window) = window.gtk_window() {
+                    gtk_window.present();
+                }
+            }
         } else {
             let _ = window.hide();
         }
