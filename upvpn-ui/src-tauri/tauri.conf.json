@@ -48,7 +48,7 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 610,
         "resizable": false,
         "title": "UpVPN",
         "width": 360,
