@@ -58,16 +58,6 @@ pub fn toggle_window_visibility(app_handle: AppHandle) {
         state.window_visible = new_window_visible;
 
         if new_window_visible {
-            // On Linux, window decorations (minimize/close buttons) stop responding
-            // after hide() + show().
-            #[cfg(target_os = "linux")]
-            {
-                // close and minimize buttons stop working after hide() + show()
-                // https://github.com/tauri-apps/tauri/issues/13440
-                // WORKAROUND: toggle resizable property
-                let _ = window.set_resizable(true);
-                let _ = window.set_resizable(false);
-            }
             let _ = window.show();
             let _ = window.set_focus();
         } else {

@@ -115,8 +115,19 @@ fn main() {
                     let app_handle = window.app_handle().clone();
                     toggle_window_visibility(app_handle);
                 }
+                tauri::WindowEvent::Focused(true) => {
+                    // On Linux, window decorations (minimize/close buttons) stop responding after hide() + show().
+                    #[cfg(target_os = "linux")]
+                    {
+                        // close and minimize buttons stop working after hide() + show()
+                        // https://github.com/tauri-apps/tauri/issues/13440
+                        // WORKAROUND: toggle resizable property
+                        let _ = window.set_resizable(true);
+                        let _ = window.set_resizable(false);
+                    }
+                }
                 _ => {}
-            }
+            };
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
