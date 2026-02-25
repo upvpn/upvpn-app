@@ -6,6 +6,7 @@
 mod commands;
 mod error;
 mod event_forwarder;
+mod gnome;
 mod state;
 mod system_tray;
 
@@ -113,7 +114,11 @@ fn main() {
                 tauri::WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
                     let app_handle = window.app_handle().clone();
-                    toggle_window_visibility(app_handle);
+                    if gnome::is_gnome() {
+                        let _ = window.minimize();
+                    } else {
+                        toggle_window_visibility(app_handle);
+                    }
                 }
                 tauri::WindowEvent::Focused(true) => {
                     // On Linux, window decorations (minimize/close buttons) stop responding after hide() + show().
