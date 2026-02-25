@@ -7,6 +7,7 @@ import LocationContext, {
 import { toast } from "react-hot-toast";
 import { handleEnterKey } from "../lib/util";
 import LocationWarmColdIcon from "./LocationWarmColdIcon";
+import { MdCheckCircle } from "react-icons/md";
 
 type Props = {
   location: Location;
@@ -45,14 +46,10 @@ function City({ location, enabled }: Props) {
         <div className="font-bold">{location.city}</div>
       </div>
       <div className="flex flex-row gap-2 items-center">
+        {selected && selected.code === location.code && (
+          <MdCheckCircle className="text-green-500" size={18} />
+        )}
         <LocationWarmColdIcon location={location} arrow={false} />
-        <input
-          type="radio"
-          className="radio"
-          checked={(selected && selected.code === location.code) || false}
-          onChange={() => {}}
-          disabled={enabled ? false : true}
-        />
       </div>
     </div>
   );
