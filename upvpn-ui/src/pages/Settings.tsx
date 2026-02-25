@@ -16,6 +16,7 @@ type Props = {};
 
 function Settings({}: Props) {
   const [signingOut, setSigningOut] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [appVersion, setAppVersion] = useState("");
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
@@ -32,7 +33,11 @@ function Settings({}: Props) {
       toast.error!("Cannot sign out when VPN session is in progress");
       return;
     }
+    setShowConfirm(true);
+  };
 
+  const confirmSignOut = () => {
+    setShowConfirm(false);
     setSigningOut(true);
     const signOut = async () => {
       try {
@@ -145,6 +150,27 @@ function Settings({}: Props) {
             >
               Version: {appVersion}
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={`modal${showConfirm ? " modal-open" : ""}`}>
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Sign Out</h3>
+          <p className="py-4">Are you sure you want to sign out?</p>
+          <div className="modal-action">
+            <button
+              className="btn"
+              onClick={() => setShowConfirm(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-error"
+              onClick={confirmSignOut}
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </div>
