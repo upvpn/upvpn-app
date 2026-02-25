@@ -6,7 +6,7 @@ import { info } from "@tauri-apps/plugin-log";
 import { handleError } from "../lib/util";
 import { UiError } from "../lib/types";
 import useAuthStatus from "../hooks/useAuthStatus";
-import { ReactComponent as Logo } from "../assets/upvpn.svg";
+import LogoIcon from "../components/LogoIcon";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const SignIn = () => {
   return (
     <div className="min-h-screen bg-base-200 select-none">
       <div className="hero-content flex-col lg:flex-row-reverse">
-        <Logo className="w-12 h-12" />
+        <LogoIcon />
         <div className="text-center lg:text-left">
           <h2 className="text-5xl">UpVPN</h2>
           <p className="py-4 font-bold">A Modern Serverless VPN</p>

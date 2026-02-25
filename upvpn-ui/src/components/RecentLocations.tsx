@@ -1,7 +1,7 @@
 import React from "react";
 import City from "./City";
 import { Location } from "../lib/types";
-import { ReactComponent as Logo } from "../assets/upvpn.svg";
+import LogoIcon from "./LogoIcon";
 
 type Props = {
   locations: Location[];
@@ -13,7 +13,7 @@ const RecentLocations = ({ locations, disabled }: Props) => {
     return (
       <div className="card bg-base-300 h-40">
         <div className="flex flex-col h-full w-full items-center justify-center">
-          <Logo className="w-12 h-12" />
+          <LogoIcon />
         </div>
       </div>
     );
