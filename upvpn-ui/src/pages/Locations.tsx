@@ -71,36 +71,31 @@ const Locations = (props: Props) => {
   return (
     <Layout activeLocation={true}>
       <div>
-        <Navbar header="Select location" />
+        <Navbar header="Locations" />
 
-        <div className="flex flex-col mx-2 items-center">
-          <div className="input-group px-1">
-            <button
-              className="btn btn-square no-animation hover:cursor-auto"
-              tabIndex={-1}
+        <div className="flex flex-col mx-4 items-center">
+          <div className="flex items-center w-full px-4 gap-2 border border-base-content/20 rounded-lg h-12 bg-base-100 transition-all duration-200 focus-within:ring-1 focus-within:outline-none hover:ring-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 shrink-0 opacity-50"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
             <input
               type="text"
               autoCorrect="off"
               autoCapitalize="none"
               autoFocus={true}
-              placeholder="Search location"
-              className="input input-bordered focus:ring-1 focus:outline-none hover:ring-1 w-full font-semibold"
+              placeholder="Search"
+              className="flex-1 bg-transparent outline-none focus:outline-none font-semibold text-sm"
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
