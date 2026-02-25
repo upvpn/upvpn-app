@@ -58,10 +58,10 @@ pub fn toggle_window_visibility(app_handle: AppHandle) {
         state.window_visible = new_window_visible;
 
         if new_window_visible {
-            window.show();
-            window.set_focus();
+            let _ = window.show();
+            let _ = window.set_focus();
         } else {
-            window.hide();
+            let _ = window.hide();
         }
 
         update_tray_menu(&app_handle, &state.vpn_status, new_window_visible);
