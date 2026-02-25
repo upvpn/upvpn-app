@@ -58,16 +58,19 @@ pub fn toggle_window_visibility(app_handle: AppHandle) {
         state.window_visible = new_window_visible;
 
         if new_window_visible {
-            let _ = window.show();
-            let _ = window.set_focus();
             // On Linux, window decorations (minimize/close buttons) stop responding
-            // after hide() + show(). Toggling always-on-top forces the window manager
-            // to re-process the window and restores decoration event handling.
+            // after hide() + show().
             #[cfg(target_os = "linux")]
             {
-                let _ = window.set_always_on_top(true);
-                let _ = window.set_always_on_top(false);
+                let _ = window.set_decorations(true);
+                if let Ok(gtk_window) = window.gtk_window() {
+                    use gtk::traits::GtkWindowExt;
+                    gtk_window.set_decorated(true);
+                    gtk_window.set_deletable(true);
+                }
             }
+            let _ = window.show();
+            let _ = window.set_focus();
         } else {
             let _ = window.hide();
         }
