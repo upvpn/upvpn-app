@@ -57,6 +57,7 @@ fn main() {
             tauri_plugin_log::Builder::default()
                 .level_for("h2", LevelFilter::Info)
                 .level_for("tower", LevelFilter::Info)
+                .level_for("zbus", LevelFilter::Warn)
                 .level(LevelFilter::Debug)
                 .targets([
                     Target::new(TargetKind::LogDir { file_name: None }),
