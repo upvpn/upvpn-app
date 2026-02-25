@@ -4,8 +4,11 @@ import Navbar from "../components/Navbar";
 import { invoke } from "@tauri-apps/api/core";
 import { MdCircle, MdOpenInNew } from "react-icons/md";
 import { handleEnterKey } from "../lib/util";
+import { type as getOsType } from "@tauri-apps/plugin-os";
 
 function Help() {
+  const isLinux = getOsType() === "linux";
+
   const showOSSLicenses = () => {
     invoke("open_license");
   };
@@ -36,6 +39,28 @@ function Help() {
             </div>
           </div>
 
+          {/* System Tray - Linux only */}
+          {isLinux && (
+            <div>
+              <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
+                System Tray
+              </div>
+              <div className="bg-base-100 rounded-box p-4 text-sm leading-relaxed">
+                <p>
+                  Install the {" "}
+                  <a
+                    href="https://extensions.gnome.org/extension/615/appindicator-support/"
+                    target="_blank"
+                    className="link"
+                  >
+                    AppIndicator
+                  </a>{" "}
+                   extension on GNOME to use system tray.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* FAQ / Support */}
           <div>
             <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
@@ -47,10 +72,10 @@ function Help() {
                 <a href="https://upvpn.app/faq/" target="_blank" className="link">
                   FAQ
                 </a>
+                {" "}
+                or email us at support@upvpn.app and we'll be happy to assist!
               </p>
-              <p className="mt-2">
-                Or email us at support@upvpn.app and we'll be happy to assist!
-              </p>
+
             </div>
           </div>
 
