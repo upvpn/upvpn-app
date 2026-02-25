@@ -58,9 +58,10 @@ pub fn toggle_window_visibility(app_handle: AppHandle) {
         state.window_visible = new_window_visible;
 
         if new_window_visible {
-            window.show().unwrap();
+            window.show();
+            window.set_focus();
         } else {
-            window.hide().unwrap();
+            window.hide();
         }
 
         update_tray_menu(&app_handle, &state.vpn_status, new_window_visible);
@@ -92,11 +93,7 @@ fn show_disconnect(vpn_status: &VpnStatus) -> bool {
     }
 }
 
-fn update_tray_menu(
-    app_handle: &AppHandle,
-    vpn_status: &Option<VpnStatus>,
-    window_visible: bool,
-) {
+fn update_tray_menu(app_handle: &AppHandle, vpn_status: &Option<VpnStatus>, window_visible: bool) {
     if let Some(tray) = app_handle.tray_by_id("upvpn") {
         let menu_result = build_tray_menu(app_handle, vpn_status, window_visible);
         if let Ok(menu) = menu_result {
@@ -132,13 +129,7 @@ fn build_tray_menu(
                     MenuItem::with_id(app, "disconnect", "Disconnect", true, None::<&str>)?;
                 Menu::with_items(
                     app,
-                    &[
-                        &status_item,
-                        &disconnect,
-                        &separator,
-                        &hide_or_show,
-                        &quit,
-                    ],
+                    &[&status_item, &disconnect, &separator, &hide_or_show, &quit],
                 )
             } else {
                 Menu::with_items(app, &[&status_item, &separator, &hide_or_show, &quit])

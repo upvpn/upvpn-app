@@ -50,7 +50,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": false,
-        "title": "UpVPN",
+        "title": "upvpn",
         "width": 360,
         "useHttpsScheme": true
       }
