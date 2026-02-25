@@ -57,7 +57,7 @@ const SignIn = () => {
         <LogoIcon />
         <div className="text-center lg:text-left">
           <h2 className="text-5xl">UpVPN</h2>
-          <p className="py-4 font-bold">A Modern Serverless VPN</p>
+          <p className="py-4 font-bold text-base-content/50">A Modern Serverless VPN</p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="p-4">
