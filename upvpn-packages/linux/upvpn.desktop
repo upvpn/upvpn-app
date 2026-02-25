@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=upvpn
+Name=UpVPN
 Comment=A Modern Serverless VPN
 Exec=/opt/upvpn/upvpn
 Terminal=false
