@@ -96,11 +96,18 @@ const SignIn = () => {
                 />
                 <label className="label">
                   <a
-                    href={import.meta.env.UPVPN_URL}
+                    href={`${import.meta.env.UPVPN_URL}/sign-up`}
                     target="_blank"
                     className="label-text-alt link link-hover"
                   >
-                    Need an account?
+                    Need an account
+                  </a>
+                  <a
+                    href={`${import.meta.env.UPVPN_URL}/forgot-password`}
+                    target="_blank"
+                    className="label-text-alt link link-hover"
+                  >
+                    Forgot password
                   </a>
                 </label>
               </div>
