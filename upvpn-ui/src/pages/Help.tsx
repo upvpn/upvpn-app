@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import Navbar from "../components/Navbar";
 import { invoke } from "@tauri-apps/api/core";
-import { MdCircle, MdOpenInNew } from "react-icons/md";
+import { MdCircle } from "react-icons/md";
 import { handleEnterKey } from "../lib/util";
 import { type as getOsType } from "@tauri-apps/plugin-os";
 
@@ -79,23 +79,17 @@ function Help() {
             </div>
           </div>
 
-          {/* Logs */}
-          <ul className="menu bg-base-100 p-1 gap-1 rounded-box">
-            <li onClick={showLogFile}>
-              <div
-                className="flex flex-row justify-between"
-                tabIndex={0}
-                onKeyDown={handleEnterKey(showLogFile)}
-              >
-                <span>View Logs</span>
-                <MdOpenInNew size="1.5em" />
-              </div>
-            </li>
-          </ul>
-
-          {/* Acknowledgements at bottom */}
+          {/* Bottom links */}
           <div className="flex-1" />
-          <div className="pb-2 text-center">
+          <div className="pb-2 px-4 flex flex-row justify-between">
+            <span
+              className="text-xs text-base-content/50 cursor-pointer hover:text-base-content/80"
+              onClick={showLogFile}
+              tabIndex={0}
+              onKeyDown={handleEnterKey(showLogFile)}
+            >
+              View logs
+            </span>
             <span
               className="text-xs text-base-content/50 cursor-pointer hover:text-base-content/80"
               onClick={showOSSLicenses}
