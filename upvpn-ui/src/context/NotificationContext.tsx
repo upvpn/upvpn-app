@@ -1,10 +1,10 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { UiError, Notification } from "../lib/types";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useNavigate } from "react-router-dom";
 import { handleError } from "../lib/util";
-import { info } from "tauri-plugin-log-api";
+import { info } from "@tauri-apps/plugin-log";
 
 export interface NotificationContextInterface {
   notificationLoading: boolean;

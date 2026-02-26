@@ -18,5 +18,5 @@ chrono = { version = "0.4.31", features = ["serde"] }
 uuid = { version = "1.3.1", features = ["serde", "v4"] }
 thiserror = "1.0"
 serde_yaml = "0.9"
-ts-rs = { git = "https://github.com/Aleph-Alpha/ts-rs", rev = "b4ba8b81fd8833296e99285eae7608864c52e51e", features = ["serde-compat", "chrono-impl", "uuid-impl", "format"] }
+ts-rs = { git = "https://github.com/Aleph-Alpha/ts-rs", rev = "b4ba8b81fd8833296e99285eae7608864c52e51e", features = ["serde-compat", "chrono-impl", "uuid-impl"] }
 

@@ -8,7 +8,7 @@ type Props = {
 
 const NotificationList = ({ notifications }: Props) => {
   return (
-    <div className="stack max-h-40 items-center w-full overflow-scroll-y">
+    <div className="stack min-h-40 h-full items-center w-full overflow-scroll-y">
       {notifications.map((notification) => {
         return (
           <NotificationDiv key={notification.id} notification={notification} />

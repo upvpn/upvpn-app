@@ -25,25 +25,25 @@ function Layout(props: Props) {
   }, []);
 
   return (
-    <div>
-      <div className="h-[calc(100vh-64px)] overflow-y-auto scroll-smooth">
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 min-h-0 overflow-y-auto scroll-smooth">
         {props.children}
       </div>
-      <div className="btm-nav bg-base-200">
+      <div className="flex flex-row justify-around items-center w-full h-16 bg-base-200 flex-shrink-0">
         <button
-          className={`text-info ${props.activeLocation ? "active" : ""}`}
+          className={`flex flex-col items-center justify-center h-full flex-1 text-info ${props.activeLocation ? "border-t-2 border-current bg-base-100" : ""}`}
           onClick={() => navigate("/locations")}
         >
           <MdOutlineLocationOn size="1.5em" />
         </button>
         <button
-          className={`text-info ${props.activeHome ? "active" : ""}`}
+          className={`flex flex-col items-center justify-center h-full flex-1 text-info ${props.activeHome ? "border-t-2 border-current bg-base-100" : ""}`}
           onClick={() => navigate("/")}
         >
           <MdOutlineHome size="1.5em" />
         </button>
         <button
-          className={`text-info ${props.activeSettings ? "active" : ""}`}
+          className={`flex flex-col items-center justify-center h-full flex-1 text-info ${props.activeSettings ? "border-t-2 border-current bg-base-100" : ""}`}
           onClick={() => navigate("/settings")}
         >
           <MdOutlineManageAccounts size="1.5em" />

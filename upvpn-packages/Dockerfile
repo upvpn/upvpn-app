@@ -17,9 +17,20 @@
 #
 # And add -e TARGETS="aarch64-unknown-linux-gnu" to build for ARM64
 
-# Debian 10 is the oldest supported distro. It has the oldest glibc that we support
-# This checksum points to a 10.13-slim image.
-FROM debian@sha256:557ee531b81ce380d012d83b7bb56211572e5d6088d3e21a3caef7d7ed7f718b
+# === Stage 1: arm64 WebKit sysroot ===
+# libwebkit2gtk-4.1-dev and its :arm64 variant conflict in Debian 12 multi-arch (they cannot
+# be co-installed). Work around by installing webkit natively on arm64 and copying the
+# compiled libraries into the final amd64 image.
+FROM --platform=linux/arm64 debian@sha256:98f4b71de414932439ac6ac690d7060df1f27161073c5036a7553723881bffbe AS arm64-webkit-sysroot
+
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    libwebkit2gtk-4.1-dev \
+    libjavascriptcoregtk-4.1-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# === Stage 2: main builder image (amd64) ===
+# Debian 12 (bookworm-slim) - provides GLib >= 2.70 and libwebkit2gtk-4.1 required by Tauri v2
+FROM debian@sha256:98f4b71de414932439ac6ac690d7060df1f27161073c5036a7553723881bffbe
 
 LABEL org.opencontainers.image.source=https://github.com/upvpn/upvpn-app
 LABEL org.opencontainers.image.description="upvpn app Linux build container"
@@ -44,18 +55,21 @@ RUN dpkg --add-architecture arm64 && apt-get update -y && apt-get install -y \
     # Tauri / TLS / GTK
     libgtk-3-dev \
     libssl-dev \
-    libsoup2.4-dev \
-    libjavascriptcoregtk-4.0-dev \
-    libwebkit2gtk-4.0-dev \
+    libsoup-3.0-dev \
+    libjavascriptcoregtk-4.1-dev \
+    libwebkit2gtk-4.1-dev \
     libnftnl-dev \
     zip \
     libmnl-dev \
     libssl-dev:arm64 \
     libgtk-3-dev:arm64 \
-    libwebkit2gtk-4.0-dev:arm64 \
     # For cross-compiling/linting towards Windows
     gcc-mingw-w64-x86-64 \
     && rm -rf /var/lib/apt/lists/*
+
+# arm64 webkit libs cannot be co-installed with the amd64 variant (Debian 12 multi-arch
+# conflict). Copy them from the arm64-webkit-sysroot stage instead.
+COPY --from=arm64-webkit-sysroot /usr/lib/aarch64-linux-gnu/ /usr/lib/aarch64-linux-gnu/
 
 RUN curl -Lo protoc-3.19.1-linux-x86_64.zip \
     https://github.com/protocolbuffers/protobuf/releases/download/v3.19.1/protoc-3.19.1-linux-x86_64.zip  && \
@@ -69,7 +83,7 @@ RUN curl -Lo protoc-3.19.1-linux-x86_64.zip \
 # plus x86_64-pc-windows-gnu for Windows cross-compilation/linting
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
     sh -s -- -y \
-    --default-toolchain stable \
+    --default-toolchain 1.88 \
     --profile minimal \
     --component clippy \
     --target aarch64-unknown-linux-gnu \
@@ -99,8 +113,8 @@ RUN cargo install cargo-make && \
 # === Volta for npm + node ===
 
 ENV PATH=/root/.volta/bin:$PATH
-ENV NODE_VERSION=18.13.0
-ENV NPM_VERSION=8.19.3
+ENV NODE_VERSION=20.18.0
+ENV NPM_VERSION=10.8.2
 
 RUN curl https://get.volta.sh | bash && \
     volta install node@${NODE_VERSION} && \
@@ -117,5 +131,8 @@ RUN curl -Lo go.tgz https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz && 
     rm go.tgz
 ENV PATH=/usr/local/go/bin:$PATH
 
+
+# === Git configuration ===
+RUN git config --global url."https://github.com/openssl/openssl.git".insteadOf "git://git.openssl.org/openssl.git"
 
 WORKDIR /build

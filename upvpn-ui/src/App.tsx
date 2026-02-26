@@ -8,6 +8,7 @@ import Locations from "./pages/Locations";
 import { LocationProvider } from "./context/LocationContext";
 import { VpnStatusProvider } from "./context/VpnStatusContext";
 import Settings from "./pages/Settings";
+import Help from "./pages/Help";
 import { NotificationProvider } from "./context/NotificationContext";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/help" element={<Help />} />
               </Route>
               <Route path="/daemon-offline" element={<DaemonOffline />} />
               <Route path="/sign-in" element={<SignIn />} />

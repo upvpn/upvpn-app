@@ -11,7 +11,12 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.10",
-    "@tauri-apps/api": "^1.2.0",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-clipboard-manager": "^2.3.2",
+    "@tauri-apps/plugin-fs": "^2.4.5",
+    "@tauri-apps/plugin-notification": "^2.3.3",
+    "@tauri-apps/plugin-os": "^2.3.2",
+    "@tauri-apps/plugin-shell": "^2.3.5",
     "daisyui": "^2.51.5",
     "luxon": "^3.3.0",
     "react": "^18.2.0",
@@ -20,11 +25,11 @@
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.10.0",
-    "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log",
+    "@tauri-apps/plugin-log": "^2",
     "vite-plugin-svgr": "^2.4.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.2.3",
+    "@tauri-apps/cli": "^2.10.0",
     "@types/luxon": "^3.2.0",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.32",

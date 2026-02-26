@@ -2,6 +2,7 @@ accepted = [
     "Apache-2.0",
     "MIT",
     "GPL-3.0",
+    "GPL-2.0",
     "MPL-2.0",
     "ISC",
     "BSD-3-Clause",
@@ -11,6 +12,8 @@ accepted = [
     "OpenSSL",
     "NOASSERTION",
     "Apache-2.0 WITH LLVM-exception",
+    "BSL-1.0",
+    "Zlib",
 ]
 
 workarounds = [

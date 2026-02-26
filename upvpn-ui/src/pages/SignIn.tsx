@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import { info } from "tauri-plugin-log-api";
+import { info } from "@tauri-apps/plugin-log";
 import { handleError } from "../lib/util";
 import { UiError } from "../lib/types";
 import useAuthStatus from "../hooks/useAuthStatus";
-import { ReactComponent as Logo } from "../assets/upvpn.svg";
+import LogoIcon from "../components/LogoIcon";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -54,10 +54,10 @@ const SignIn = () => {
   return (
     <div className="min-h-screen bg-base-200 select-none">
       <div className="hero-content flex-col lg:flex-row-reverse">
-        <Logo className="w-12 h-12" />
+        <LogoIcon />
         <div className="text-center lg:text-left">
           <h2 className="text-5xl">UpVPN</h2>
-          <p className="py-4 font-bold">A Modern Serverless VPN</p>
+          <p className="py-4 font-bold text-base-content/50">A Modern Serverless VPN</p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="p-4">
@@ -96,11 +96,18 @@ const SignIn = () => {
                 />
                 <label className="label">
                   <a
-                    href={import.meta.env.UPVPN_URL}
+                    href={`${import.meta.env.UPVPN_URL}/sign-up`}
                     target="_blank"
                     className="label-text-alt link link-hover"
                   >
-                    Need an account?
+                    Need an account
+                  </a>
+                  <a
+                    href={`${import.meta.env.UPVPN_URL}/forgot-password`}
+                    target="_blank"
+                    className="label-text-alt link link-hover"
+                  >
+                    Forgot password
                   </a>
                 </label>
               </div>

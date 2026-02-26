@@ -1,68 +1,71 @@
 use tauri::{
-    AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,
-    SystemTrayMenuItem,
+    menu::{Menu, MenuItem, PredefinedMenuItem},
+    tray::TrayIconBuilder,
+    AppHandle, Manager,
 };
 use upvpn_types::vpn_session::VpnStatus;
 
 use crate::{commands, state::AppState};
 
-fn create_default_system_tray_menu(window_visible: bool) -> SystemTrayMenu {
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+fn build_default_tray_menu(
+    app: &impl Manager<tauri::Wry>,
+    window_visible: bool,
+) -> tauri::Result<Menu<tauri::Wry>> {
     let hide_or_show_title = if window_visible { "Hide" } else { "Show" };
-    let hide_or_show = CustomMenuItem::new("hide_or_show".to_string(), hide_or_show_title);
-    SystemTrayMenu::new().add_item(hide_or_show).add_item(quit)
+    let hide_or_show =
+        MenuItem::with_id(app, "hide_or_show", hide_or_show_title, true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+    Menu::with_items(app, &[&hide_or_show, &quit])
 }
 
-pub fn create_default_system_tray() -> SystemTray {
-    SystemTray::new()
-        .with_id("upvpn")
-        .with_menu(create_default_system_tray_menu(true))
+pub fn create_tray_icon(app: &tauri::App) -> tauri::Result<()> {
+    let menu = build_default_tray_menu(app, true)?;
+
+    TrayIconBuilder::with_id("upvpn")
+        .icon(app.default_window_icon().cloned().unwrap())
+        .menu(&menu)
+        .on_menu_event(|app, event| match event.id().as_ref() {
+            "hide_or_show" => {
+                toggle_window_visibility(app.clone());
+            }
+            "disconnect" => {
+                tauri::async_runtime::spawn(async {
+                    let _ = commands::vpn_session::disconnect().await;
+                });
+            }
+            "quit" => {
+                let app = app.clone();
+                tauri::async_runtime::spawn(async move {
+                    let _ = commands::vpn_session::disconnect().await;
+                    app.exit(0);
+                });
+            }
+            _ => {}
+        })
+        .build(app)?;
+
+    Ok(())
 }
 
 pub fn toggle_window_visibility(app_handle: AppHandle) {
-    let window = app_handle.get_window("main").unwrap();
-    let item_handle = app_handle.tray_handle().try_get_item("hide_or_show");
-    let state: tauri::State<'_, AppState> = app_handle.state();
+    let window = app_handle.get_webview_window("main").unwrap();
+    let app_handle_clone = app_handle.clone();
+    let state: tauri::State<'_, AppState> = app_handle_clone.state();
 
     tauri::async_runtime::block_on(async move {
         let mut state = state.lock().await;
         let new_window_visible = !state.window_visible;
         state.window_visible = new_window_visible;
 
-        let new_title = match new_window_visible {
-            true => {
-                window.show().unwrap();
-                "Hide"
-            }
-            false => {
-                window.hide().unwrap();
-                "Show"
-            }
-        };
-
-        if let Some(item_handle) = item_handle {
-            item_handle.set_title(new_title).unwrap();
+        if new_window_visible {
+            let _ = window.show();
+            let _ = window.set_focus();
+        } else {
+            let _ = window.hide();
         }
-    })
-}
 
-pub fn handle_system_tray_event(app: &AppHandle, event: SystemTrayEvent) {
-    match event {
-        SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-            "hide_or_show" => {
-                toggle_window_visibility(app.app_handle());
-            }
-            "disconnect" => {
-                let _ = tauri::async_runtime::block_on(commands::vpn_session::disconnect());
-            }
-            "quit" => {
-                let _ = tauri::async_runtime::block_on(commands::vpn_session::disconnect());
-                app.exit(0)
-            }
-            _ => {}
-        },
-        _ => {}
-    }
+        update_tray_menu(&app_handle, &state.vpn_status, new_window_visible);
+    })
 }
 
 fn get_vpn_status_title(vpn_status: &VpnStatus) -> String {
@@ -90,36 +93,49 @@ fn show_disconnect(vpn_status: &VpnStatus) -> bool {
     }
 }
 
-fn create_system_tray_menu_internal(
-    vpn_status: &VpnStatus,
-    window_visible: bool,
-) -> SystemTrayMenu {
-    let mut tray_menu = SystemTrayMenu::new()
-        .add_item(CustomMenuItem::new("vpn_status", get_vpn_status_title(vpn_status)).disabled());
-
-    if show_disconnect(vpn_status) {
-        tray_menu = tray_menu.add_item(CustomMenuItem::new("disconnect", "Disconnect"));
+fn update_tray_menu(app_handle: &AppHandle, vpn_status: &Option<VpnStatus>, window_visible: bool) {
+    if let Some(tray) = app_handle.tray_by_id("upvpn") {
+        let menu_result = build_tray_menu(app_handle, vpn_status, window_visible);
+        if let Ok(menu) = menu_result {
+            let _ = tray.set_menu(Some(menu));
+        }
     }
-
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-
-    let hide_or_show_title = if window_visible { "Hide" } else { "Show" };
-
-    let hide_or_show = CustomMenuItem::new("hide_or_show".to_string(), hide_or_show_title);
-
-    tray_menu = tray_menu
-        .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(hide_or_show)
-        .add_item(quit);
-
-    tray_menu
 }
 
-fn create_system_tray_menu(vpn_status: &Option<VpnStatus>, window_visible: bool) -> SystemTrayMenu {
-    if let Some(vpn_status) = vpn_status {
-        create_system_tray_menu_internal(vpn_status, window_visible)
-    } else {
-        create_default_system_tray_menu(window_visible)
+fn build_tray_menu(
+    app: &AppHandle,
+    vpn_status: &Option<VpnStatus>,
+    window_visible: bool,
+) -> tauri::Result<Menu<tauri::Wry>> {
+    let hide_or_show_title = if window_visible { "Hide" } else { "Show" };
+
+    match vpn_status {
+        Some(vpn_status) => {
+            let status_item = MenuItem::with_id(
+                app,
+                "vpn_status",
+                get_vpn_status_title(vpn_status),
+                false,
+                None::<&str>,
+            )?;
+
+            let hide_or_show =
+                MenuItem::with_id(app, "hide_or_show", hide_or_show_title, true, None::<&str>)?;
+            let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+            let separator = PredefinedMenuItem::separator(app)?;
+
+            if show_disconnect(vpn_status) {
+                let disconnect =
+                    MenuItem::with_id(app, "disconnect", "Disconnect", true, None::<&str>)?;
+                Menu::with_items(
+                    app,
+                    &[&status_item, &disconnect, &separator, &hide_or_show, &quit],
+                )
+            } else {
+                Menu::with_items(app, &[&status_item, &separator, &hide_or_show, &quit])
+            }
+        }
+        None => build_default_tray_menu(app, window_visible),
     }
 }
 
@@ -127,7 +143,6 @@ pub async fn update_system_tray(app_handle: AppHandle) {
     tauri::async_runtime::spawn(async move {
         let state: tauri::State<'_, AppState> = app_handle.state();
         let state = state.lock().await;
-        let new_system_tray_menu = create_system_tray_menu(&state.vpn_status, state.window_visible);
-        let _ = app_handle.tray_handle().set_menu(new_system_tray_menu);
+        update_tray_menu(&app_handle, &state.vpn_status, state.window_visible);
     });
 }

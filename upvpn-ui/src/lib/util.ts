@@ -1,10 +1,10 @@
 import { NavigateFunction } from "react-router-dom";
 import { VpnStatus, Location, UiError, Code } from "./types";
 import toast from "react-hot-toast";
-import { error as logError, info } from "tauri-plugin-log-api";
-import { type } from '@tauri-apps/api/os';
-import { invoke } from "@tauri-apps/api";
-import { isPermissionGranted, requestPermission } from "@tauri-apps/api/notification";
+import { error as logError, info } from "@tauri-apps/plugin-log";
+import { type } from '@tauri-apps/plugin-os';
+import { invoke } from "@tauri-apps/api/core";
+import { isPermissionGranted, requestPermission } from "@tauri-apps/plugin-notification";
 import { KeyboardEvent } from "react";
 
 export function getLocationFromVpnStatus(status: VpnStatus, locations: Location[]): Location | undefined {
@@ -107,13 +107,13 @@ export const handleError = (error: UiError, navigate: NavigateFunction, isSignIn
 export const send_desktop_notification = async (message: string): Promise<boolean> => {
     const osType = await type();
     switch (osType) {
-        case "Linux":
+        case "linux":
             await invoke("send_desktop_notification", {
                 title: "upvpn",
                 body: message,
             })
             return true;
-        case "Darwin":
+        case "macos":
             let permissionGranted = await isPermissionGranted();
             info(`permissionGranted: ${permissionGranted}`);
             if (!permissionGranted) {
@@ -129,7 +129,7 @@ export const send_desktop_notification = async (message: string): Promise<boolea
                 return true;
             }
             break;
-        case "Windows_NT":
+        case "windows":
             break;
         default:
             break;

@@ -161,8 +161,8 @@ script = '''
 #!/usr/bin/env bash
 root_dir=$(pwd)
 mkdir -p ${root_dir}/.cargo
-cp ${root_dir}/upvpn-packages/cargo-config.toml ${root_dir}/.cargo/config
-sd __REPO_ROOT__ "${root_dir}" ${root_dir}/.cargo/config
+cp ${root_dir}/upvpn-packages/cargo-config.toml ${root_dir}/.cargo/config.toml
+sd __REPO_ROOT__ "${root_dir}" ${root_dir}/.cargo/config.toml
 '''
 
 [tasks.ui]
@@ -306,6 +306,8 @@ script_runner = "sh"
 script = '''
 #!/usr/bin/env bash
 set -eu
+export NVM_DIR="${HOME}/.nvm"
+[ -d "${NVM_DIR}/versions/node" ] && export PATH="$(ls -d ${NVM_DIR}/versions/node/*/bin | sort -V | tail -1):${PATH}" || true
 cargo about generate upvpn-packages/upvpn-oss-licenses-rust.hbs > upvpn-packages/upvpn-oss-licenses-rust.html
 sd "(talpid-[\w-]+|tunnel-obfuscation) (\d+.\d+.\d+)" '$1 $2   Copyright (C) Mullvad VPN AB, GPL-3.0' upvpn-packages/upvpn-oss-licenses-rust.html
 sd "https://crates.io/crates//(talpid-\w+|tunnel-obfuscation)" 'https://github.com/mullvad/mullvadvpn-app/tree/main/$1' upvpn-packages/upvpn-oss-licenses-rust.html

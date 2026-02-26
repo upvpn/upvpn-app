@@ -6,6 +6,7 @@
 mod commands;
 mod error;
 mod event_forwarder;
+mod gnome;
 mod state;
 mod system_tray;
 
@@ -19,44 +20,21 @@ use commands::version::{current_app_version, update_available};
 use commands::vpn_session::{connect, disconnect, get_vpn_status};
 use log::LevelFilter;
 use state::AppState;
-use system_tray::{create_default_system_tray, handle_system_tray_event, toggle_window_visibility};
+use system_tray::{create_tray_icon, toggle_window_visibility};
 use tauri::Manager;
-use tauri_plugin_log::LogTarget;
+use tauri_plugin_log::{Target, TargetKind};
 use upvpn_config::config;
 
 fn main() {
     let _config = config();
 
-    #[cfg(target_os = "linux")]
-    let builder = tauri::Builder::default();
-    #[cfg(target_os = "macos")]
-    let mut builder = tauri::Builder::default();
-    #[cfg(target_os = "windows")]
-    let builder = tauri::Builder::default();
-
-    #[cfg(target_os = "macos")]
-    {
-        use tauri::CustomMenuItem;
-        use tauri::Menu;
-        use tauri::MenuItem;
-        use tauri::Submenu;
-
-        let quit_item = CustomMenuItem::new("macos_quit", "Quit").accelerator("Cmd+Q");
-        let menu = Menu::new().add_submenu(Submenu::new(
-            "UpVPN",
-            Menu::new()
-                .add_native_item(MenuItem::Copy)
-                .add_native_item(MenuItem::Paste)
-                .add_native_item(MenuItem::SelectAll)
-                .add_native_item(MenuItem::Cut)
-                .add_native_item(MenuItem::Separator)
-                .add_native_item(MenuItem::CloseWindow)
-                .add_item(quit_item),
-        ));
-        builder = builder.menu(menu);
-    }
-
-    builder
+    tauri::Builder::default()
+        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_clipboard_manager::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_opener::init())
         .manage(AppState::default())
         .invoke_handler(tauri::generate_handler![
             is_daemon_online,
@@ -80,32 +58,82 @@ fn main() {
             tauri_plugin_log::Builder::default()
                 .level_for("h2", LevelFilter::Info)
                 .level_for("tower", LevelFilter::Info)
+                .level_for("zbus", LevelFilter::Warn)
                 .level(LevelFilter::Debug)
-                .targets([LogTarget::LogDir, LogTarget::Stdout, LogTarget::Webview])
+                .targets([
+                    Target::new(TargetKind::LogDir { file_name: None }),
+                    Target::new(TargetKind::Stdout),
+                    Target::new(TargetKind::Webview),
+                ])
                 .build(),
         )
         .plugin(tauri_plugin_single_instance::init(|_, _, _| {}))
-        .system_tray(create_default_system_tray())
-        .on_system_tray_event(handle_system_tray_event)
-        .on_window_event(|event| {
-            match event.event() {
+        .setup(|app| {
+            #[cfg(target_os = "macos")]
+            {
+                use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
+
+                let quit_item =
+                    MenuItem::with_id(app, "macos_quit", "Quit", true, Some("CmdOrCtrl+Q"))?;
+                let submenu = Submenu::with_id_and_items(
+                    app,
+                    "upvpn_menu",
+                    "UpVPN",
+                    true,
+                    &[
+                        &PredefinedMenuItem::copy(app, None)?,
+                        &PredefinedMenuItem::paste(app, None)?,
+                        &PredefinedMenuItem::select_all(app, None)?,
+                        &PredefinedMenuItem::cut(app, None)?,
+                        &PredefinedMenuItem::separator(app)?,
+                        &PredefinedMenuItem::close_window(app, None)?,
+                        &quit_item,
+                    ],
+                )?;
+                let menu = Menu::with_items(app, &[&submenu])?;
+                app.set_menu(menu)?;
+
+                app.on_menu_event(|app_handle, event| {
+                    if event.id().as_ref() == "macos_quit" {
+                        let app_handle = app_handle.clone();
+                        tauri::async_runtime::spawn(async move {
+                            let _ = commands::vpn_session::disconnect().await;
+                            app_handle.exit(0);
+                        });
+                    }
+                });
+            }
+
+            create_tray_icon(app)?;
+
+            Ok(())
+        })
+        .on_window_event(|window, event| {
+            match event {
                 // Run frontend in the background
                 tauri::WindowEvent::CloseRequested { api, .. } => {
                     api.prevent_close();
-                    let app_handle = event.window().app_handle();
-                    toggle_window_visibility(app_handle);
+                    let app_handle = window.app_handle().clone();
+                    if gnome::is_gnome() {
+                        let _ = window.minimize();
+                    } else {
+                        toggle_window_visibility(app_handle);
+                    }
+                }
+                tauri::WindowEvent::Focused(true) => {
+                    // On Linux, window decorations (minimize/close buttons) stop responding after hide() + show().
+                    #[cfg(target_os = "linux")]
+                    {
+                        // close and minimize buttons stop working after hide() + show()
+                        // https://github.com/tauri-apps/tauri/issues/13440
+                        // WORKAROUND: toggle resizable property
+                        let _ = window.set_resizable(true);
+                        let _ = window.set_resizable(false);
+                    }
                 }
                 _ => {}
-            }
+            };
         })
-        .on_menu_event(|event| match event.menu_item_id() {
-            "macos_quit" => {
-                let _ = tauri::async_runtime::block_on(commands::vpn_session::disconnect());
-                event.window().app_handle().exit(0);
-            }
-            _ => {}
-        })
-        .setup(|_app| Ok(()))
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

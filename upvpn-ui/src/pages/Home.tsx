@@ -276,7 +276,7 @@ function Home({}: Props) {
 
   return (
     <Layout activeHome={true}>
-      <div>
+      <div className="flex flex-col h-full">
         <div className="mx-3 mt-3">
           <div className="card bg-base-300">
             <div className="card-body items-center text-center py-6">
@@ -306,17 +306,17 @@ function Home({}: Props) {
             </div>
           </div>
         </div>
-        <div className="mx-3 mt-3">
+        <div className="mx-3 mt-3 mb-3 flex-1 min-h-0">
           <div
             className={
               notifications.length > 0 && !notificationLoading
-                ? "block"
+                ? "block h-full"
                 : "hidden"
             }
           >
             {<NotificationList notifications={notifications} />}
           </div>
-          <div className={notifications.length == 0 ? "block" : "hidden"}>
+          <div className={notifications.length == 0 ? "block h-full" : "hidden"}>
             <RecentLocations
               locations={filteredRecentLocations}
               disabled={recentLocationsDisabled}

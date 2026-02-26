@@ -13,21 +13,39 @@ cargo install ripgrep
 cargo install cargo-about
 ```
 
+### Setup Git
+
+For crates used via git repo
+```
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
+```
+
+For OpenSSL
+```
+git config --global url."https://github.com/openssl/openssl.git".insteadOf "git://git.openssl.org/openssl.git"
+```
+
 ### Linux
 
 ```
-apt install build-essential \
+sudo apt install libwebkit2gtk-4.1-dev \
+    build-essential \
+    curl \
+    wget \
+    file \
+    libssl-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev \
     pkg-config \
     libgtk-3-dev \
     libssl-dev \
     libsoup2.4-dev \
     libjavascriptcoregtk-4.0-dev \
-    libwebkit2gtk-4.0-dev \
+    libnss3-tools \
     libmnl-dev \
     libnftnl-dev \
     protobuf-compiler \
-    zip \
-
+    zip
 ```
 
 Install protoc on x86_64/amd64 machines
@@ -117,5 +135,6 @@ This step uses builder Docker image with tag in `upvpn-packages/tag.txt`. The fi
 cargo make linux
 
 # For target platform
+cargo make -e TARGET=x86_64-unknown-linux-gnu linux
 cargo make -e TARGET=aarch64-unknown-linux-gnu linux
 ```

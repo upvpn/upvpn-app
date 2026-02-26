@@ -13,8 +13,8 @@ import VpnStatusReducer, {
   VpnStatusState,
 } from "./VpnStatusReducer";
 import { listen } from "@tauri-apps/api/event";
-import { invoke } from "@tauri-apps/api";
-import { info } from "tauri-plugin-log-api";
+import { invoke } from "@tauri-apps/api/core";
+import { info } from "@tauri-apps/plugin-log";
 import { useNavigate } from "react-router-dom";
 import { handleError } from "../lib/util";
 
