@@ -11,7 +11,7 @@ type Props = {
 const RecentLocations = ({ locations, disabled }: Props) => {
   if (locations.length == 0) {
     return (
-      <div className="card bg-base-300 h-40">
+      <div className="card bg-base-300 h-full min-h-40">
         <div className="flex flex-col h-full w-full items-center justify-center">
           <LogoIcon />
         </div>
@@ -28,7 +28,7 @@ const RecentLocations = ({ locations, disabled }: Props) => {
   });
 
   return (
-    <div className="card  bg-base-300 h-40 overflow-y-auto">
+    <div className="card bg-base-300 h-full min-h-40 overflow-y-auto">
       <ul className="menu my-2 p-2 rounded-box">
         <li className="menu-title">
           <div>Recent Locations</div>
