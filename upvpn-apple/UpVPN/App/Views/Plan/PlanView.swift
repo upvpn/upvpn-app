@@ -16,6 +16,7 @@ struct PlanView: View {
     var isPurchasing: Bool = false
 
     @State var selectedProduct: Product? = nil
+    @State private var isEligibleForFreeTrial: Bool = false
 
     var body: some View {
         List {
@@ -39,6 +40,17 @@ struct PlanView: View {
             }
 
             if case .PayAsYouGo = userPlan {
+                if let yearlyProduct = yearlyProduct {
+                    Section {
+                        YearlyPlanView(yearlyProduct: yearlyProduct,
+                                       selectedProduct: selectedProduct,
+                                       isEligibleForFreeTrial: isEligibleForFreeTrial,
+                                       setSelectedProduct: { product in
+                            self.selectedProduct = product
+                        })
+                    }
+                }
+
                 Section {
                     PrepaidPlansView(prepaidProducts: prepaidProducts,
                                      selectedProduct: selectedProduct,
@@ -46,21 +58,17 @@ struct PlanView: View {
                         self.selectedProduct = product
                     })
                 }
-
-
-                if let yearlyProduct = yearlyProduct {
-                    Section {
-                        YearlyPlanView(yearlyProduct: yearlyProduct,
-                                       selectedProduct: selectedProduct,
-                                       setSelectedProduct: { product in
-                            self.selectedProduct = product
-                        })
-                    }
-                }
             }
         }
         .safeAreaInset(edge: .bottom) {
-            PurchaseButton(selectedProduct: selectedProduct, isPurchasing: isPurchasing, purchaseProduct: purchaseProduct)
+            PurchaseButton(selectedProduct: selectedProduct, isEligibleForFreeTrial: isEligibleForFreeTrial, isPurchasing: isPurchasing, purchaseProduct: purchaseProduct)
+        }
+        .task(id: yearlyProduct?.id) {
+            if let subscription = yearlyProduct?.subscription {
+                isEligibleForFreeTrial = await subscription.isEligibleForIntroOffer
+            } else {
+                isEligibleForFreeTrial = false
+            }
         }
     }
 }
