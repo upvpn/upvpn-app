@@ -17,7 +17,8 @@ object VPNAppViewModelProvider {
                 (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as VPNApplication)
             AuthViewModel(
                 application.container.serviceConnectionManager,
-                application.container.vpnRepository
+                application.container.vpnRepository,
+                application.container.googleSignInManager
             )
         }
 

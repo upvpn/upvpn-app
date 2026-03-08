@@ -3,6 +3,7 @@ package app.upvpn.upvpn.network
 import app.upvpn.upvpn.model.Accepted
 import app.upvpn.upvpn.model.AddDeviceRequest
 import app.upvpn.upvpn.model.AddDeviceResponse
+import app.upvpn.upvpn.model.SsoAddDeviceRequest
 import app.upvpn.upvpn.model.EndSessionApi
 import app.upvpn.upvpn.model.Ended
 import app.upvpn.upvpn.model.Location
@@ -20,6 +21,9 @@ import retrofit2.http.POST
 interface VPNApiService {
     @POST("devices")
     suspend fun addDevice(@Body request: AddDeviceRequest): ApiResponse<AddDeviceResponse>
+
+    @POST("sso/devices")
+    suspend fun ssoAddDevice(@Body request: SsoAddDeviceRequest): ApiResponse<AddDeviceResponse>
 
     @POST("sign-out")
     suspend fun signOut(): ApiResponse<Unit>

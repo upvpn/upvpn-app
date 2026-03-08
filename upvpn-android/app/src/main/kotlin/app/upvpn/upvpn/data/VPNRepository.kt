@@ -12,6 +12,8 @@ import app.upvpn.upvpn.data.db.toModelLocation
 import app.upvpn.upvpn.model.AddDeviceRequest
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.OnlyEmail
+import app.upvpn.upvpn.model.SsoAddDeviceRequest
+import app.upvpn.upvpn.model.SsoCredentials
 import app.upvpn.upvpn.model.UserCredentials
 import app.upvpn.upvpn.model.UserCredentialsWithCode
 import app.upvpn.upvpn.network.VPNApiService
@@ -30,6 +32,7 @@ interface VPNRepository {
     suspend fun initDevice()
     suspend fun isAuthenticated(): String?
     suspend fun addDevice(userCredentials: UserCredentials): Result<String, String>
+    suspend fun ssoAddDevice(email: String, ssoCredentials: SsoCredentials): Result<String, String>
     suspend fun signOut(): Result<Unit, String>
     suspend fun signUp(request: UserCredentialsWithCode): Result<Unit, String>
     suspend fun requestCode(request: OnlyEmail): Result<Unit, String>
@@ -90,6 +93,29 @@ class DefaultVPNRepository(
                 device.copy(ipv4Address = it.deviceAddresses.ipv4Address.hostAddress)
             vpnDatabase.withTransaction {
                 val user = User(email = userCredentials.email, token = it.token)
+                vpnDatabase.userDao().insert(user)
+                vpnDatabase.deviceDao().update(updatedDevice)
+            }
+        }
+
+        return addDeviceResponse.map { it.token }
+    }
+
+    override suspend fun ssoAddDevice(
+        email: String,
+        ssoCredentials: SsoCredentials
+    ): Result<String, String> {
+        initDevice()
+        val device = vpnDatabase.deviceDao().getDevice()!!
+        val request = SsoAddDeviceRequest(ssoCredentials, device.toDeviceInfo())
+        val addDeviceResponse =
+            vpnApiService.ssoAddDevice(request).toResult().mapError { e -> e.message }
+
+        addDeviceResponse.onSuccess {
+            val updatedDevice =
+                device.copy(ipv4Address = it.deviceAddresses.ipv4Address.hostAddress)
+            vpnDatabase.withTransaction {
+                val user = User(email = email, token = it.token)
                 vpnDatabase.userDao().insert(user)
                 vpnDatabase.deviceDao().update(updatedDevice)
             }

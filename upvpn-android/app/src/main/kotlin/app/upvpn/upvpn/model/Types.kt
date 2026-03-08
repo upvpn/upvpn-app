@@ -248,3 +248,9 @@ fun UserPlan.forDisplay(): String {
         is UserPlan.AnnualSubscription -> "Yearly plan"
     }
 }
+
+@Serializable
+data class SsoCredentials(val provider: String, val idToken: String)
+
+@Serializable
+data class SsoAddDeviceRequest(val ssoCredentials: SsoCredentials, val deviceInfo: DeviceInfo)
