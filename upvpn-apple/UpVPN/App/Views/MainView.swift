@@ -89,7 +89,7 @@ struct MainView: View {
             if #available(iOS 16, macOS 13, *) {
                 PlanManagement()
                     .presentationDragIndicator(.visible)
-                    .presentationDetents([.fraction(0.2), .medium, .large])
+                    .presentationDetents([.large])
 
             } else {
                 PlanManagement()

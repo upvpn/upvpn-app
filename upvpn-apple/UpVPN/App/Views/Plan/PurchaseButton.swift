@@ -18,7 +18,7 @@ private func productHeading(_ product: Product) -> String {
     }
 }
 
-private func buttonTitle(_ product: Product) -> String {
+private func buttonTitle(_ product: Product, _ isEligibleForFreeTrial: Bool) -> String {
     if product.id.starts(with: "prepaid") {
         let centsSplit = product.id.splitToArray(separator: ".").reversed()
         let centsString = centsSplit.first
@@ -37,6 +37,11 @@ private func buttonTitle(_ product: Product) -> String {
 
         return "Add \(displayPrice) to balance"
     } else if product.id.starts(with: "subscription") {
+        if isEligibleForFreeTrial,
+           let offer = product.subscription?.introductoryOffer,
+           offer.paymentMode == .freeTrial {
+            return "Start Free Trial"
+        }
         return "Upgrade"
     } else {
         return "Buy Now"
@@ -45,6 +50,7 @@ private func buttonTitle(_ product: Product) -> String {
 
 struct PurchaseButton: View {
     var selectedProduct: Product? = nil
+    var isEligibleForFreeTrial: Bool = false
     var isPurchasing: Bool = false
     var purchaseProduct: (Product) -> Void
 
@@ -66,7 +72,7 @@ struct PurchaseButton: View {
                         .padding(.vertical, 5)
                         .frame(maxWidth: .infinity)
                 } else {
-                    Text(selectedProduct == nil ? "Buy Now" : buttonTitle(selectedProduct!))
+                    Text(selectedProduct == nil ? "Buy Now" : buttonTitle(selectedProduct!, isEligibleForFreeTrial))
                         .fontWeight(.semibold)
                         .padding(.vertical, 5)
                         .frame(maxWidth: .infinity)
