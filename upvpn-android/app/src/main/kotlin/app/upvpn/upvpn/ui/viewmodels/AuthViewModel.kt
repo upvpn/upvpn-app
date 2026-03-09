@@ -1,11 +1,15 @@
 package app.upvpn.upvpn.ui.viewmodels
 
+import android.app.Activity
 import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.upvpn.upvpn.auth.GoogleSignInManager
+import app.upvpn.upvpn.auth.GoogleSignInResult
 import app.upvpn.upvpn.data.VPNRepository
 import app.upvpn.upvpn.model.OnlyEmail
+import app.upvpn.upvpn.model.SsoCredentials
 import app.upvpn.upvpn.model.UserCredentials
 import app.upvpn.upvpn.model.UserCredentialsWithCode
 import app.upvpn.upvpn.service.client.VPNServiceConnectionManager
@@ -27,6 +31,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(
     private val serviceConnectionManager: VPNServiceConnectionManager,
     private val vpnRepository: VPNRepository,
+    private val googleSignInManager: GoogleSignInManager,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -38,6 +43,9 @@ class AuthViewModel(
     val signOutUiState: StateFlow<SignOutUiState> = _signOutUiState.asStateFlow()
 
     init {
+        _uiState.update { value ->
+            value.copy(isGoogleSignInAvailable = googleSignInManager.isAvailable)
+        }
         viewModelScope.launch(dispatcher) {
             val userEmail = vpnRepository.isAuthenticated()
             if (userEmail != null) {
@@ -188,6 +196,75 @@ class AuthViewModel(
         }
     }
 
+    fun clearGoogleSignInError() {
+        _uiState.update { value -> value.copy(googleSignInError = null) }
+    }
+
+    fun onGoogleSignInBottomSheet(activity: Activity) {
+        if (_uiState.value.isGoogleSignInSubmitting) return
+        viewModelScope.launch(dispatcher) {
+            _uiState.update { it.copy(isGoogleSignInSubmitting = true) }
+            val result = googleSignInManager.signInWithBottomSheet(activity)
+            handleGoogleSignInResult(result)
+        }
+    }
+
+    fun onGoogleSignInButton(activity: Activity) {
+        if (_uiState.value.isGoogleSignInSubmitting) return
+        viewModelScope.launch(dispatcher) {
+            _uiState.update { it.copy(isGoogleSignInSubmitting = true) }
+            val result = googleSignInManager.signInWithButton(activity)
+            handleGoogleSignInResult(result)
+        }
+    }
+
+    private suspend fun handleGoogleSignInResult(result: GoogleSignInResult) {
+        when (result) {
+            is GoogleSignInResult.Success -> {
+                val ssoCredentials = SsoCredentials(
+                    provider = "google",
+                    idToken = result.idToken
+                )
+                val apiResult = vpnRepository.ssoAddDevice(result.email, ssoCredentials)
+                apiResult.fold(
+                    success = {
+                        _uiState.update { value ->
+                            value.copy(
+                                signInState = SignInState.SignedIn(result.email),
+                                isGoogleSignInSubmitting = false
+                            )
+                        }
+                        _signOutUiState.update { value ->
+                            value.copy(signOutState = SignOutState.NotSignedOut)
+                        }
+                    },
+                    failure = { error ->
+                        _uiState.update {
+                            it.copy(
+                                isGoogleSignInSubmitting = false,
+                                googleSignInError = error
+                            )
+                        }
+                    }
+                )
+            }
+
+            is GoogleSignInResult.Error -> {
+                _uiState.update {
+                    it.copy(
+                        isGoogleSignInSubmitting = false,
+                        googleSignInError = result.message
+                    )
+                }
+            }
+
+            is GoogleSignInResult.Cancelled,
+            is GoogleSignInResult.NotAvailable -> {
+                _uiState.update { it.copy(isGoogleSignInSubmitting = false) }
+            }
+        }
+    }
+
     fun onSignOutClick() {
         _signOutUiState.update { value -> value.copy(signOutState = SignOutState.SigningOut) }
 
@@ -195,6 +272,7 @@ class AuthViewModel(
             // TODO: this could be more robust by waiting for disconnect and then signing out
             serviceConnectionManager.vpnManager()?.disconnect()
             delay(300)
+            googleSignInManager.clearCredentialState()
             val result = vpnRepository.signOut()
 
             result.fold(

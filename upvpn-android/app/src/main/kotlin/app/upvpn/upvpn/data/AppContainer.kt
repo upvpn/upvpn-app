@@ -5,6 +5,8 @@ import app.upvpn.upvpn.BuildConfig
 import app.upvpn.upvpn.data.db.VPNDatabase
 import app.upvpn.upvpn.network.AuthInterceptor
 import app.upvpn.upvpn.network.VPNApiService
+import app.upvpn.upvpn.auth.GoogleSignInManager
+import app.upvpn.upvpn.auth.GoogleSignInManagerImpl
 import app.upvpn.upvpn.notification.VPNNotificationManager
 import app.upvpn.upvpn.review.InAppReviewManager
 import app.upvpn.upvpn.review.InAppReviewManagerImpl
@@ -28,6 +30,7 @@ interface AppContainer {
     val serviceConnectionManager: VPNServiceConnectionManager
     val vpnNotificationManager: VPNNotificationManager
     val inAppReviewManager: InAppReviewManager
+    val googleSignInManager: GoogleSignInManager
     fun init()
 }
 
@@ -98,5 +101,9 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
 
     override val inAppReviewManager: InAppReviewManager by lazy {
         InAppReviewManagerImpl(context)
+    }
+
+    override val googleSignInManager: GoogleSignInManager by lazy {
+        GoogleSignInManagerImpl(context)
     }
 }

@@ -1,6 +1,10 @@
 package app.upvpn.upvpn.ui.screens
 
+import android.app.Activity
 import android.util.Patterns
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,6 +26,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,8 +40,12 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -46,6 +56,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.upvpn.upvpn.R
 import app.upvpn.upvpn.ui.components.AuthFooter
 import app.upvpn.upvpn.ui.components.EmailCodeField
 import app.upvpn.upvpn.ui.components.Logo
@@ -70,7 +81,10 @@ fun SignInScreenNotSignedIn() {
             showSnackBar = {},
             setAuthAction = {},
             onSignUpCodeChange = {},
-            onRequestSignUpCode = {})
+            onRequestSignUpCode = {},
+            onGoogleSignInBottomSheet = {},
+            onGoogleSignInButton = {},
+        )
     }
 }
 
@@ -86,11 +100,21 @@ fun SignInScreen(
     setAuthAction: (AuthAction) -> Unit,
     onSignUpCodeChange: (String) -> Unit,
     onRequestSignUpCode: () -> Unit,
+    onGoogleSignInBottomSheet: (Activity) -> Unit,
+    onGoogleSignInButton: (Activity) -> Unit,
 ) {
     when (authUIState.signInState) {
         is SignInState.SignedIn -> Brand()
         is SignInState.CheckingLocal -> Brand()
         else -> {
+            // Auto-trigger bottom sheet for returning users
+            if (authUIState.isGoogleSignInAvailable) {
+                val context = LocalContext.current
+                LaunchedEffect(Unit) {
+                    (context as? Activity)?.let { onGoogleSignInBottomSheet(it) }
+                }
+            }
+
             if (windowSize.widthSizeClass == WindowWidthSizeClass.Compact && windowSize.heightSizeClass == WindowHeightSizeClass.Compact) {
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -110,6 +134,7 @@ fun SignInScreen(
                         setAuthAction = setAuthAction,
                         onSignUpCodeChange = onSignUpCodeChange,
                         onRequestSignUpCode = onRequestSignUpCode,
+                        onGoogleSignInButton = onGoogleSignInButton,
                     )
                 }
             } else {
@@ -132,6 +157,7 @@ fun SignInScreen(
                         setAuthAction,
                         onSignUpCodeChange,
                         onRequestSignUpCode,
+                        onGoogleSignInButton,
                     )
                 }
             }
@@ -175,6 +201,7 @@ fun SignInCard(
     setAuthAction: (AuthAction) -> Unit,
     onSignUpCodeChange: (String) -> Unit,
     onRequestSignUpCode: () -> Unit,
+    onGoogleSignInButton: (Activity) -> Unit,
 ) {
 
     Column(
@@ -292,6 +319,47 @@ fun SignInCard(
                 )
             } else {
                 Text(text = (if (authUIState.authAction == AuthAction.SignUp) "SIGN UP" else "SIGN IN"))
+            }
+        }
+
+        if (authUIState.isGoogleSignInAvailable) {
+            Spacer(modifier = Modifier.height(15.dp))
+
+            // "or" divider
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                HorizontalDivider()
+                Text(
+                    text = "or",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(horizontal = 12.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            // Google sign-in button
+            val context = LocalContext.current
+            if (authUIState.isGoogleSignInSubmitting) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(40.dp)
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.btn_google_signin),
+                    contentDescription = "Continue with Google",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(40.dp)
+                        .clickable {
+                            (context as? Activity)?.let { onGoogleSignInButton(it) }
+                        }
+                )
             }
         }
 

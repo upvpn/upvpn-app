@@ -178,6 +178,19 @@ fun VPNApp(
         )
     }
 
+    uiState.value.googleSignInError?.let { errorMessage ->
+        AlertDialog(
+            onDismissRequest = { authViewModel.clearGoogleSignInError() },
+            title = { Text("Sign In") },
+            text = { Text(errorMessage) },
+            confirmButton = {
+                TextButton(onClick = { authViewModel.clearGoogleSignInError() }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
     uiState.value.signUpError?.let { errorMessage ->
         AlertDialog(
             onDismissRequest = { authViewModel.clearSignUpError() },
@@ -237,6 +250,8 @@ fun VPNApp(
                 authViewModel::setAuthAction,
                 authViewModel::onSignUpCodeChange,
                 authViewModel::onRequestSignUpCode,
+                authViewModel::onGoogleSignInBottomSheet,
+                authViewModel::onGoogleSignInButton,
             )
         }
         composable(route = VPNScreen.Home.name) {

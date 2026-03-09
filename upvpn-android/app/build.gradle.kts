@@ -29,8 +29,8 @@ android {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
         targetSdk = 36
-        versionCode = 16
-        versionName = "u7"
+        versionCode = 17
+        versionName = "u8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -80,6 +80,15 @@ android {
                 "UPVPN_BASE_URL",
                 baseUrl
             )
+            val googleClientId = gradleLocalProperties(rootDir, providers).getProperty(
+                "googleClientId",
+                "\"\""
+            )
+            buildConfigField(
+                "String",
+                "GOOGLE_CLIENT_ID",
+                googleClientId
+            )
 
             externalNativeBuild {
                 cmake {
@@ -94,6 +103,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "UPVPN_BASE_URL", "\"https://upvpn.app\"")
+            buildConfigField("String", "GOOGLE_CLIENT_ID", "\"829217973088-5a9m1s8t3c1pqdl5mq5qab6770m7ogqm.apps.googleusercontent.com\"")
 
             signingConfig = signingConfigs.getByName("release")
 
@@ -185,6 +195,11 @@ dependencies {
     // In-App Review (production flavor only)
     "productionImplementation"("com.google.android.play:review:2.0.2")
     "productionImplementation"("com.google.android.play:review-ktx:2.0.2")
+
+    // Credential Manager for Google Sign-In (production flavor only)
+    "productionImplementation"("androidx.credentials:credentials:1.6.0-rc02")
+    "productionImplementation"("androidx.credentials:credentials-play-services-auth:1.6.0-rc02")
+    "productionImplementation"("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
 
     // for java.time

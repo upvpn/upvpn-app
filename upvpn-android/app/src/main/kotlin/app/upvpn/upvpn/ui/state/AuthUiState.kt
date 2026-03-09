@@ -12,6 +12,10 @@ data class AuthUiState(
 
     val signInError: String? = null,
     val signUpError: String? = null,
+
+    val isGoogleSignInAvailable: Boolean = false,
+    val isGoogleSignInSubmitting: Boolean = false,
+    val googleSignInError: String? = null,
 )
 
 sealed class SignInState {
