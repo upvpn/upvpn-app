@@ -25,6 +25,8 @@ protocol VPNApiService {
 
     func signUp(userCredsWithCode: UserCredentialsWithCode) async -> Result<(), ApiError>
 
+    func ssoAddDevice(request: SsoAddDeviceRequest) async -> Result<AddDeviceResponse, ApiError>
+
 }
 
 protocol PlanApiService {
@@ -53,6 +55,11 @@ class DefaultVpnApiService: VPNApiService, PlanApiService {
 
     func addDevice(request: AddDeviceRequest) async -> Result<AddDeviceResponse, ApiError> {
         return await self.client.request("devices", method: .post, body: encodeToData(request))
+            .mapError(mapClientError)
+    }
+
+    func ssoAddDevice(request: SsoAddDeviceRequest) async -> Result<AddDeviceResponse, ApiError> {
+        return await self.client.request("sso/devices", method: .post, body: encodeToData(request))
             .mapError(mapClientError)
     }
     

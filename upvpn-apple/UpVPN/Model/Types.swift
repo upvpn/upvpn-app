@@ -45,6 +45,21 @@ struct AddDeviceRequest: Codable {
     var deviceInfo: DeviceInfo
 }
 
+enum SsoProvider: String, Codable {
+    case google
+    case apple
+}
+
+struct SsoCredentials: Codable {
+    var provider: SsoProvider
+    var idToken: String
+}
+
+struct SsoAddDeviceRequest: Codable {
+    var ssoCredentials: SsoCredentials
+    var deviceInfo: DeviceInfo
+}
+
 struct DeviceAddresses: Codable {
     var ipv4Address: String
 }

@@ -38,6 +38,9 @@ class AuthViewModel: ObservableObject {
     @Published var isSigningUp: Bool = false
     @Published var authAction: AuthAction = .signIn
 
+    @Published var ssoErrorMessage: String? = nil
+    @Published var isSsoSigningIn: Bool = false
+
     private var dataRepository: DataRepository
 
     private var isDisconnected: () -> Bool
@@ -77,6 +80,10 @@ class AuthViewModel: ObservableObject {
 
     func clearSignOutError() {
         self.signOutErrorMessage = nil
+    }
+
+    func clearSsoError() {
+        self.ssoErrorMessage = nil
     }
 
 
@@ -160,6 +167,60 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+
+    func signInWithApple(idToken: String, email: String) {
+        self.clearSsoError()
+        self.isSsoSigningIn = true
+
+        let credentials = SsoCredentials(provider: .apple, idToken: idToken)
+
+        Task {
+            let result = await self.dataRepository.ssoAddDevice(email: email, ssoCredentials: credentials)
+
+            await MainActor.run {
+                switch result {
+                case .success(let device):
+                    self.setSignedIn(email: email, device: device)
+                case .failure(let dataRepoError):
+                    self.ssoErrorMessage = dataRepoError.message
+                }
+                self.isSsoSigningIn = false
+            }
+        }
+    }
+
+    #if !os(tvOS)
+    func signInWithGoogle() {
+        self.clearSsoError()
+        self.isSsoSigningIn = true
+
+        Task {
+            do {
+                let (idToken, email) = try await GoogleSignInManager.shared.signIn()
+                let credentials = SsoCredentials(provider: .google, idToken: idToken)
+                let result = await self.dataRepository.ssoAddDevice(email: email, ssoCredentials: credentials)
+
+                await MainActor.run {
+                    switch result {
+                    case .success(let device):
+                        self.setSignedIn(email: email, device: device)
+                    case .failure(let dataRepoError):
+                        self.ssoErrorMessage = dataRepoError.message
+                    }
+                    self.isSsoSigningIn = false
+                }
+            } catch {
+                await MainActor.run {
+                    // Suppress Google Sign-In errors (canceled, no account, etc.)
+                    if (error as NSError).domain != "com.google.GIDSignIn" {
+                        self.ssoErrorMessage = error.localizedDescription
+                    }
+                    self.isSsoSigningIn = false
+                }
+            }
+        }
+    }
+    #endif
 
     // note: the signout caller must call stop on tunnel (if any)
     func signOut() {

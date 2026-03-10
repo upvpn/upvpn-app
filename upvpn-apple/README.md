@@ -23,6 +23,12 @@ APP_ID_IOS = your-reverse-domain.ios
 APP_ID_MACOS = your-reverse-domain.macos
 APP_ID_TVOS = your-reverse-domain.tvos
 
+// For using Google Account
+// https://developers.google.com/identity/sign-in/ios/start-integrating
+GID_CLIENT_ID = todo
+REVERSED_GID_CLIENT_ID = todo
+GID_SERVER_CLIENT_ID = todo
+
 // Absolute Path to the directory that Xcode creates in:
 //  ~/Library/Developer/Xcode/DerivedData/UpVPN-<random>/SourcePackages
 // (This is the path to the local git checkout of the Swift package dependency for WireGuardKit.)

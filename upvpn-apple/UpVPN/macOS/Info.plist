@@ -32,5 +32,18 @@
 	<string>$(DEVELOPMENT_TEAM).group.$(APP_ID_MACOS)</string>
 	<key>app.upvpn.apple.macos.keychain_group_id</key>
 	<string>$(DEVELOPMENT_TEAM).$(APP_ID_MACOS).keychain</string>
+        <key>GIDClientID</key>
+        <string>$(GID_CLIENT_ID)</string>
+        <key>CFBundleURLTypes</key>
+        <array>
+                <dict>
+                        <key>CFBundleURLSchemes</key>
+                        <array>
+                                <string>$(REVERSED_GID_CLIENT_ID)</string>
+                        </array>
+                </dict>
+        </array>
+        <key>GIDServerClientID</key>
+        <string>$(GID_SERVER_CLIENT_ID)</string>
 </dict>
 </plist>

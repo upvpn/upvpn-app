@@ -68,6 +68,27 @@ class DataRepository {
         }
     }
 
+    func ssoAddDevice(email: String, ssoCredentials: SsoCredentials) async -> Result<Device, DataRepoError> {
+        do {
+            var device = try await DeviceStore.getOrInitializeDevice().get()
+            let deviceInfo = DeviceInfo(from: device)
+            let addDeviceResponse = try await self.vpnApiService.ssoAddDevice(
+                request: SsoAddDeviceRequest(ssoCredentials: ssoCredentials, deviceInfo: deviceInfo)
+            ).get()
+
+            device.token = addDeviceResponse.token
+            device.ipv4Address = addDeviceResponse.deviceAddresses.ipv4Address
+
+            let _ = await UserStore.saveCredentials(userCredentials: UserCredentials(email: email, password: ""))
+
+            try await DeviceStore.updateDevice(device: device).get()
+
+            return .success(device)
+        } catch {
+            return .failure(DataRepoError(message: "\(error)"))
+        }
+    }
+
     func signOut() async -> Result<(), DataRepoError> {
         do {
             // make api call
