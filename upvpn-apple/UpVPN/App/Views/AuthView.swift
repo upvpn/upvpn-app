@@ -6,14 +6,131 @@
 //
 
 import SwiftUI
+import AuthenticationServices
+#if !os(tvOS)
+import GoogleSignIn
+
+struct ContinueWithGoogleButton: View {
+    var action: () -> Void
+    var height: CGFloat = 44
+
+    // Google Blue #4285F4
+    private static let googleBlue = Color(red: 0x42/255.0, green: 0x85/255.0, blue: 0xF4/255.0)
+
+    private var logoSize: CGFloat {
+        #if os(macOS)
+        return 12
+        #else
+        return 14
+        #endif
+    }
+
+    private var fontSize: CGFloat {
+        #if os(macOS)
+        return 12
+        #else
+        return 16
+        #endif
+    }
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Image("google_logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: logoSize, height: logoSize)
+                    .padding(3)
+                    .background(Color.white)
+                    .cornerRadius(3)
+                Text("Continue with Google")
+                    .font(.system(size: fontSize, weight: .medium))
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: height)
+            .background(Self.googleBlue)
+            .foregroundColor(.white)
+            .cornerRadius(6)
+        }
+        .buttonStyle(.plain)
+    }
+}
+#endif
+
+struct SsoSectionView: View {
+    @EnvironmentObject private var authViewModel: AuthViewModel
+    @Environment(\.colorScheme) private var colorScheme
+
+    @State private var appleButtonWidth: CGFloat? = nil
+
+    private var appleButtonStyle: SignInWithAppleButton.Style {
+        colorScheme == .dark ? .white : .black
+    }
+
+    private var ssoButtonHeight: CGFloat {
+        #if os(macOS)
+        return 32
+        #else
+        return 44
+        #endif
+    }
+
+    var body: some View {
+        VStack(spacing: 16) {
+            if authViewModel.isSsoSigningIn {
+                ProgressView()
+                    .modifier(ScaleEffectModifier())
+                    .padding(.vertical, 8)
+            } else {
+                SignInWithAppleButton(.continue) { request in
+                    request.requestedScopes = [.email]
+                } onCompletion: { result in
+                    switch result {
+                    case .success(let authorization):
+                        if let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                           let identityTokenData = credential.identityToken,
+                           let idToken = String(data: identityTokenData, encoding: .utf8) {
+                            let email = credential.email ?? JWTUtils.extractEmail(fromIdToken: idToken) ?? ""
+                            authViewModel.signInWithApple(idToken: idToken, email: email)
+                        }
+                    case .failure(let error):
+                        if (error as NSError).domain != ASAuthorizationError.errorDomain {
+                            authViewModel.ssoErrorMessage = error.localizedDescription
+                        }
+                    }
+                }
+                .signInWithAppleButtonStyle(appleButtonStyle)
+                .frame(height: ssoButtonHeight)
+                .background(GeometryReader { geo in
+                    Color.clear.onAppear {
+                        appleButtonWidth = geo.size.width
+                    }
+                    .onChange(of: geo.size.width) { newWidth in
+                        appleButtonWidth = newWidth
+                    }
+                })
+                #if !os(tvOS)
+                if GoogleSignInManager.shared.isAvailable {
+                    ContinueWithGoogleButton(action: {
+                        authViewModel.signInWithGoogle()
+                    }, height: ssoButtonHeight)
+                    .frame(maxWidth: appleButtonWidth)
+                }
+                #endif
+            }
+        }
+        .disabled(authViewModel.signInState == .signingIn || authViewModel.isSigningUp || authViewModel.isSsoSigningIn)
+    }
+}
 
 struct AuthView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
 
     @State private var isSignInErrorPresented = false
     @State private var isSignUpErrorPresented = false
+    @State private var isSsoErrorPresented = false
 
-    @AppStorage("userConsent") private var userConsent: Bool = false
+    @AppStorage("userConsent") private var userConsent: Bool = true
 
     @State private var dataForUserConsentIsPresented = false
 
@@ -27,7 +144,7 @@ struct AuthView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 35) {
+            VStack(spacing: 16) {
 
                 VStack(spacing: 5) {
                     WelcomeView(showSpinnner: false)
@@ -36,6 +153,16 @@ struct AuthView: View {
 
                     Text("A Modern Serverless VPN")
                         .font(.headline.weight(.thin))
+                }
+
+                SsoSectionView()
+
+                HStack {
+                    VStack { Divider() }
+                    Text("or")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    VStack { Divider() }
                 }
 
                 Picker("", selection: $authViewModel.authAction) {
@@ -103,8 +230,7 @@ struct AuthView: View {
                     .disabled(buttonDisabled)
 
                 }
-                .disabled(authViewModel.signInState == .signingIn || authViewModel.isSigningUp)
-
+                .disabled(authViewModel.signInState == .signingIn || authViewModel.isSigningUp || authViewModel.isSsoSigningIn)
 
                 HStack {
                     Text("""
@@ -136,6 +262,13 @@ By using UpVPN.app you agree to our [Terms](https://upvpn.app/terms-of-service) 
                 }
             }
         }
+        .onReceive(authViewModel.$ssoErrorMessage) { error in
+            if let error = error {
+                if !error.isEmpty {
+                    isSsoErrorPresented = true
+                }
+            }
+        }
         .onSubmit {
             authViewModel.onSubmit(userConsent)
         }
@@ -158,6 +291,18 @@ By using UpVPN.app you agree to our [Terms](https://upvpn.app/terms-of-service) 
         ) { _ in
             Button(role: .cancel) {
                 authViewModel.clearSignUpError()
+            } label: {
+                Text("OK")
+            }
+        } message: { error in
+            Text(error)
+        }
+        .alert("Sign In",
+               isPresented: $isSsoErrorPresented,
+               presenting: authViewModel.ssoErrorMessage
+        ) { _ in
+            Button(role: .cancel) {
+                authViewModel.clearSsoError()
             } label: {
                 Text("OK")
             }

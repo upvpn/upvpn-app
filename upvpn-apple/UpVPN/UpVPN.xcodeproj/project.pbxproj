@@ -328,6 +328,16 @@
 		A3AA4B202C256F80001135FD /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A3AA4B1F2C256F80001135FD /* WireGuardKit */; };
 		A3AA4B232C257CA2001135FD /* UpVPNApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DED82C25141200BA1BA6 /* UpVPNApp.swift */; };
 		A3AA4B242C257CA2001135FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DEDA2C25141200BA1BA6 /* ContentView.swift */; };
+		A3B9629A2F5FFE24004A225D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A3B962992F5FFE24004A225D /* GoogleSignIn */; };
+		A3B9629C2F5FFE24004A225D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A3B9629B2F5FFE24004A225D /* GoogleSignInSwift */; };
+		A3B9629E2F5FFE2B004A225D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A3B9629D2F5FFE2B004A225D /* GoogleSignIn */; };
+		A3B962A02F5FFE2B004A225D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A3B9629F2F5FFE2B004A225D /* GoogleSignInSwift */; };
+		A3B962AE2F6004D5004A225D /* GoogleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B962AC2F6004D5004A225D /* GoogleSignInManager.swift */; };
+		A3B962AF2F6004D5004A225D /* GoogleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B962AC2F6004D5004A225D /* GoogleSignInManager.swift */; };
+		A3B962B02F6004D5004A225D /* GoogleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B962AC2F6004D5004A225D /* GoogleSignInManager.swift */; };
+		A3B962B22F60050B004A225D /* JWTUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B962B12F60050B004A225D /* JWTUtils.swift */; };
+		A3B962B32F60050B004A225D /* JWTUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B962B12F60050B004A225D /* JWTUtils.swift */; };
+		A3B962B42F60050B004A225D /* JWTUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B962B12F60050B004A225D /* JWTUtils.swift */; };
 		A3CD54542C7447A100B7848E /* TunnelManagerSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */; };
 		A3CD54552C7447A100B7848E /* TunnelManagerSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */; };
 		A3CD54572C76BA1D00B7848E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */; };
@@ -548,6 +558,8 @@
 		A3A9F1032C70249700AF1490 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InterfaceConfiguration+Device.swift"; sourceTree = "<group>"; };
 		A3AA4B212C257B5D001135FD /* UpVPN.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = UpVPN.entitlements; sourceTree = "<group>"; };
+		A3B962AC2F6004D5004A225D /* GoogleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInManager.swift; sourceTree = "<group>"; };
+		A3B962B12F60050B004A225D /* JWTUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTUtils.swift; sourceTree = "<group>"; };
 		A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelManagerSimulator.swift; sourceTree = "<group>"; };
 		A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A3E352D92C2E30B6008D0E30 /* TunnelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelManager.swift; sourceTree = "<group>"; };
@@ -576,6 +588,8 @@
 			files = (
 				A33336D32C47AC0E004D8C8E /* WireGuardKit in Frameworks */,
 				A365665B2C57072000C2E748 /* FlagKit in Frameworks */,
+				A3B9629E2F5FFE2B004A225D /* GoogleSignIn in Frameworks */,
+				A3B962A02F5FFE2B004A225D /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,6 +599,8 @@
 			files = (
 				A33336D52C47AC13004D8C8E /* WireGuardKit in Frameworks */,
 				A36566592C57071A00C2E748 /* FlagKit in Frameworks */,
+				A3B9629A2F5FFE24004A225D /* GoogleSignIn in Frameworks */,
+				A3B9629C2F5FFE24004A225D /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -690,6 +706,7 @@
 		A3422DD72C387A5000A3D867 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A3B962B12F60050B004A225D /* JWTUtils.swift */,
 				A3422DD82C387A8100A3D867 /* VPNState.swift */,
 				A33336B52C463394004D8C8E /* FileManager+Extension.swift */,
 				A33336BD2C475E2C004D8C8E /* Keychain.swift */,
@@ -931,6 +948,7 @@
 		A3AA4B222C257C75001135FD /* App */ = {
 			isa = PBXGroup;
 			children = (
+				A3B962AD2F6004D5004A225D /* Auth */,
 				A36565FD2C545F5200C2E748 /* Views */,
 				A350DED82C25141200BA1BA6 /* UpVPNApp.swift */,
 				A350DEDA2C25141200BA1BA6 /* ContentView.swift */,
@@ -938,6 +956,14 @@
 				A3CD54562C76BA1D00B7848E /* PrivacyInfo.xcprivacy */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		A3B962AD2F6004D5004A225D /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A3B962AC2F6004D5004A225D /* GoogleSignInManager.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		A3E352D82C2E309B008D0E30 /* Tunnel */ = {
@@ -1101,6 +1127,8 @@
 			packageProductDependencies = (
 				A33336D22C47AC0E004D8C8E /* WireGuardKit */,
 				A365665A2C57072000C2E748 /* FlagKit */,
+				A3B9629D2F5FFE2B004A225D /* GoogleSignIn */,
+				A3B9629F2F5FFE2B004A225D /* GoogleSignInSwift */,
 			);
 			productName = UpVPN;
 			productReference = A350DED52C25141200BA1BA6 /* UpVPN.app */;
@@ -1124,6 +1152,8 @@
 			packageProductDependencies = (
 				A33336D42C47AC13004D8C8E /* WireGuardKit */,
 				A36566582C57071A00C2E748 /* FlagKit */,
+				A3B962992F5FFE24004A225D /* GoogleSignIn */,
+				A3B9629B2F5FFE24004A225D /* GoogleSignInSwift */,
 			);
 			productName = UpVPNiOS;
 			productReference = A350DEEB2C25147C00BA1BA6 /* UpVPN.app */;
@@ -1243,6 +1273,7 @@
 			packageReferences = (
 				A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */,
 				A36566572C57070C00C2E748 /* XCRemoteSwiftPackageReference "FlagKit" */,
+				A3B962982F5FFDF6004A225D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = A350DED62C25141200BA1BA6 /* Products */;
 			projectDirPath = "";
@@ -1329,6 +1360,7 @@
 				A361CA7B2C94E75200EB2CA3 /* StoreKeys.swift in Sources */,
 				A379AB032C950F3400BC55AA /* KeyValueView.swift in Sources */,
 				A361CA7A2C94E72D00EB2CA3 /* Utils.swift in Sources */,
+				A3B962B42F60050B004A225D /* JWTUtils.swift in Sources */,
 				A361CA782C94E6C200EB2CA3 /* Keychain.swift in Sources */,
 				A361CA792C94E6C200EB2CA3 /* Client.swift in Sources */,
 				A361CA732C94E6A600EB2CA3 /* UserStore.swift in Sources */,
@@ -1338,6 +1370,7 @@
 				A361CA742C94E6A600EB2CA3 /* StoreError.swift in Sources */,
 				A379AAF12C950E6F00BC55AA /* ContentView.swift in Sources */,
 				A33E30692C96B8AA001C0E89 /* VPNSwitch.swift in Sources */,
+				A3B962AE2F6004D5004A225D /* GoogleSignInManager.swift in Sources */,
 				A361CA752C94E6A600EB2CA3 /* LocationStore.swift in Sources */,
 				A379AB092C950F5000BC55AA /* PlanManagement.swift in Sources */,
 				A361CA762C94E6A600EB2CA3 /* Location.swift in Sources */,
@@ -1415,6 +1448,7 @@
 				A3422E002C3F802300A3D867 /* VPNApiService.swift in Sources */,
 				A365660E2C55700200C2E748 /* SettingsView.swift in Sources */,
 				A365664E2C56C67500C2E748 /* RecentLocationsCard.swift in Sources */,
+				A3B962B02F6004D5004A225D /* GoogleSignInManager.swift in Sources */,
 				A33336CE2C47A158004D8C8E /* StoreKeys.swift in Sources */,
 				A33336C92C479D9F004D8C8E /* Device.swift in Sources */,
 				A36566082C556EFE00C2E748 /* HomeView.swift in Sources */,
@@ -1462,6 +1496,7 @@
 				A33336B62C463394004D8C8E /* FileManager+Extension.swift in Sources */,
 				A36566542C57031600C2E748 /* Location+Extension.swift in Sources */,
 				A3A9F0FE2C6FEF0100AF1490 /* VersionView.swift in Sources */,
+				A3B962B32F60050B004A225D /* JWTUtils.swift in Sources */,
 				A391D99C2C4954A00008D23F /* AuthViewModel.swift in Sources */,
 				A36565F82C52E5F900C2E748 /* TunnelConfiguration+UapiConfig.swift in Sources */,
 				A3A763732C521EF80088D5F5 /* LocationStore.swift in Sources */,
@@ -1480,6 +1515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3A7635D2C4EF5B00088D5F5 /* AppConfig.swift in Sources */,
+				A3B962B22F60050B004A225D /* JWTUtils.swift in Sources */,
 				A3CD54552C7447A100B7848E /* TunnelManagerSimulator.swift in Sources */,
 				A347A82B2C61A38C00FEF961 /* HelpView.swift in Sources */,
 				A3A9F1022C701FA700AF1490 /* KeyValueView.swift in Sources */,
@@ -1503,6 +1539,7 @@
 				A36566092C556EFE00C2E748 /* HomeView.swift in Sources */,
 				A3A9F0FC2C6FE59200AF1490 /* SignOutView.swift in Sources */,
 				A3422DE72C3DB4DE00A3D867 /* TunnelObserver.swift in Sources */,
+				A3B962AF2F6004D5004A225D /* GoogleSignInManager.swift in Sources */,
 				A391D9A02C4968130008D23F /* Types.swift in Sources */,
 				A365664C2C56C66500C2E748 /* HomeCard.swift in Sources */,
 				A3FABF8D2C6B068A004753D1 /* PlanViewModel.swift in Sources */,
@@ -1845,7 +1882,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				DEVELOPMENT_TEAM = FS2LTF7A4U;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1912,7 +1949,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				DEVELOPMENT_TEAM = FS2LTF7A4U;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2422,6 +2459,14 @@
 				revision = d6ca70c60dd92eb5c997f2092ef71577ef07040b;
 			};
 		};
+		A3B962982F5FFDF6004A225D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS/";
+			requirement = {
+				kind = exactVersion;
+				version = 9.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2469,6 +2514,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A3AA4B0C2C256CFD001135FD /* XCRemoteSwiftPackageReference "wireguard-apple" */;
 			productName = WireGuardKit;
+		};
+		A3B962992F5FFE24004A225D /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3B962982F5FFDF6004A225D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		A3B9629B2F5FFE24004A225D /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3B962982F5FFDF6004A225D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		A3B9629D2F5FFE2B004A225D /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3B962982F5FFDF6004A225D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		A3B9629F2F5FFE2B004A225D /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3B962982F5FFDF6004A225D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

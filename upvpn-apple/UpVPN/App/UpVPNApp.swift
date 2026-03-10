@@ -7,6 +7,9 @@
 
 import SwiftUI
 import NetworkExtension
+#if !os(tvOS)
+import GoogleSignIn
+#endif
 
 @main
 struct UpVPNApp: App {
@@ -42,6 +45,11 @@ struct UpVPNApp: App {
             .environmentObject(planViewModel)
             #if os(macOS)
             .frame(minHeight: 650)
+            #endif
+            #if !os(tvOS)
+            .onOpenURL { url in
+                GIDSignIn.sharedInstance.handle(url)
+            }
             #endif
     }
 
