@@ -72,10 +72,12 @@ pub struct Config {
     log_dir: PathBuf,
     // todo: non string types for grpc and rest api?
     grpc_api_host_port: String,
+    rest_api_host_port: String,
     socket_path: PathBuf,
     daemon_log_filename: String,
     allowed_endpoint_ipv4: IpAddr,
     license_file_path: Option<PathBuf>,
+    google_client_id: Option<String>,
 }
 
 impl Default for Config {
@@ -84,11 +86,15 @@ impl Default for Config {
             config_dir: CONFIG_DIR.get().unwrap().into(),
             log_dir: LOG_DIR.get().unwrap().into(),
             grpc_api_host_port: "grpcs://api.upvpn.app:44444".into(),
+            rest_api_host_port: "https://upvpn.app".into(),
             socket_path: SOCKET_PATH.get().unwrap().into(),
             daemon_log_filename: "upvpn-daemon.log".into(),
             // IP of api.upvpn.app
             allowed_endpoint_ipv4: IpAddr::V4(Ipv4Addr::new(168, 220, 80, 137)),
             license_file_path: None,
+            google_client_id: Some(
+                "829217973088-2ctli5t6skoehr97l9jnh9qg4bndmsh2.apps.googleusercontent.com".into(),
+            ),
         }
     }
 }
@@ -104,6 +110,14 @@ impl Config {
 
     pub fn grpc_api_host_port(&self) -> &str {
         &self.grpc_api_host_port
+    }
+
+    pub fn rest_api_host_port(&self) -> &str {
+        &self.rest_api_host_port
+    }
+
+    pub fn google_client_id(&self) -> Option<&str> {
+        self.google_client_id.as_deref()
     }
 
     pub fn allowed_endpoint_ipv4(&self) -> &IpAddr {

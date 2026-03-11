@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use tauri::{AppHandle, Manager};
+use tokio_util::sync::CancellationToken;
 use upvpn_types::{location::Location, vpn_session::VpnStatus};
 
 use crate::{event_forwarder::EventForwarderHandler, system_tray::update_system_tray};
@@ -13,6 +14,7 @@ pub struct UiState {
     pub locations: Vec<Location>,
     pub vpn_status: Option<VpnStatus>,
     pub window_visible: bool,
+    pub google_sign_in_cancel: Option<CancellationToken>,
 }
 
 impl Default for UiState {
@@ -22,6 +24,7 @@ impl Default for UiState {
             locations: Default::default(),
             vpn_status: None,
             window_visible: true,
+            google_sign_in_cancel: None,
         }
     }
 }

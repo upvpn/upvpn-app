@@ -20,8 +20,9 @@ impl<P: Auth> ControllerAuthLayer<P> {
     }
 }
 
-const ALLOWED_UNAUTHORIZED_PATHS: [&str; 2] = [
+const ALLOWED_UNAUTHORIZED_PATHS: [&str; 3] = [
     "/upvpn.controller.ControllerService/AccountSignIn",
+    "/upvpn.controller.ControllerService/SsoSignIn",
     "/upvpn.controller.ControllerService/IsAuthenticated",
 ];
 

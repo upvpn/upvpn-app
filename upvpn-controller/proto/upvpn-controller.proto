@@ -14,6 +14,7 @@ service ControllerService {
     // Account
     rpc IsAuthenticated(google.protobuf.Empty) returns (google.protobuf.BoolValue);
     rpc AccountSignIn(SignInRequest) returns (google.protobuf.Empty);
+    rpc SsoSignIn(SsoSignInRequest) returns (google.protobuf.Empty);
     rpc AccountSignOut(google.protobuf.Empty) returns (google.protobuf.Empty);
     rpc GetAccountInfo(google.protobuf.Empty) returns (AccountInfo);
 
@@ -36,6 +37,11 @@ service ControllerService {
 message SignInRequest {
     string email = 1;
     string password = 2;
+}
+
+message SsoSignInRequest {
+    string provider = 1;
+    string id_token = 2;
 }
 
 message AccountInfo {

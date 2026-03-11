@@ -60,6 +60,7 @@ pub enum DaemonError {
 pub enum DaemonCommand {
     IsAuthenticated(ResponseTx<bool, DaemonError>),
     AccountSignIn(ResponseTx<(), DaemonError>, UserCredentials),
+    AccountSsoSignIn(ResponseTx<(), DaemonError>, String, String),
     AccountSignOut(ResponseTx<(), DaemonError>),
     ListLocations(ResponseTx<Vec<Location>, DaemonError>),
     RecentLocations(ResponseTx<Vec<Location>, DaemonError>),
@@ -162,6 +163,9 @@ impl Display for DaemonEvent {
                 DaemonCommand::IsAuthenticated(_) => "IsAuthenticated".into(),
                 DaemonCommand::AccountSignIn(_, user_creds) => {
                     format!("AccountSignIn: {}", user_creds.email)
+                }
+                DaemonCommand::AccountSsoSignIn(_, provider, _) => {
+                    format!("AccountSsoSignIn: {provider}")
                 }
                 DaemonCommand::AccountSignOut(_) => "AccountSignOut".into(),
                 DaemonCommand::ListLocations(_) => "ListLocations".into(),
@@ -375,6 +379,9 @@ impl Daemon {
             DaemonCommand::IsAuthenticated(tx) => self.is_authenticated(tx).await,
             DaemonCommand::AccountSignIn(tx, auth_input) => {
                 self.on_account_sign_in(tx, auth_input).await
+            }
+            DaemonCommand::AccountSsoSignIn(tx, provider, id_token) => {
+                self.on_account_sso_sign_in(tx, provider, id_token).await
             }
             DaemonCommand::AccountSignOut(tx) => self.on_account_sign_out(tx).await,
             DaemonCommand::ListLocations(tx) => self.on_list_locations(tx).await,
@@ -669,6 +676,37 @@ impl Daemon {
                         .await
                         .map_err(DaemonError::DeviceError),
                     "on_account_login response",
+                )
+            });
+        }
+    }
+
+    async fn on_account_sso_sign_in(
+        &self,
+        tx: ResponseTx<(), DaemonError>,
+        provider: String,
+        id_token: String,
+    ) {
+        if let Some(location) = self.state.vpn_session_in_progress() {
+            tracing::warn!("SSO sign in attempt when vpn session in progress: {location}");
+            Self::oneshot_send(
+                tx,
+                Err(DaemonError::InvalidOpVpnSessionInProgress(format!(
+                    "cannot sign in when a vpn session is in progress (to city {})",
+                    location.city
+                ))),
+                "on_account_sso_sign_in error",
+            );
+        } else {
+            let device_handler = self.device_handler.clone();
+            tokio::spawn(async move {
+                Self::oneshot_send(
+                    tx,
+                    device_handler
+                        .sso_sign_in(provider, id_token)
+                        .await
+                        .map_err(DaemonError::DeviceError),
+                    "on_account_sso_sign_in response",
                 )
             });
         }

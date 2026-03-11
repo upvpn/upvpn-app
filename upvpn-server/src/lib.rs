@@ -17,6 +17,7 @@ pub mod proto {
 
 pub mod auth;
 pub mod conversions;
+pub mod rest;
 
 pub const REQUEST_TIMEOUT_SECS: Duration = Duration::from_secs(60);
 

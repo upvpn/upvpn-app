@@ -1,7 +1,9 @@
 use tokio::sync::{mpsc, oneshot};
 use upvpn_controller::auth::Auth;
 use upvpn_migration::sea_orm::DatabaseConnection;
+use upvpn_server::rest::ServerRestApiNoAuth;
 use upvpn_server::{ServerApi, ServerApiNoAuth};
+use upvpn_types::rest::{SsoAddDeviceRequest, SsoCredentials, SsoDeviceInfo};
 use upvpn_types::upvpn_server::{AddDeviceRequest, UserCredentials};
 
 use crate::{token_storage::TokenStorage, AckTx, ResponseTx};
@@ -26,6 +28,15 @@ impl DeviceHandler {
 
     pub async fn sign_in(&self, user_creds: UserCredentials) -> Result<(), DeviceError> {
         self.send_command(move |tx| DeviceCommand::SignIn(tx, user_creds))
+            .await
+    }
+
+    pub async fn sso_sign_in(
+        &self,
+        provider: String,
+        id_token: String,
+    ) -> Result<(), DeviceError> {
+        self.send_command(move |tx| DeviceCommand::SsoSignIn(tx, provider, id_token))
             .await
     }
 
@@ -77,6 +88,7 @@ impl Auth for DeviceHandler {
 
 pub enum DeviceCommand {
     SignIn(ResponseTx<(), DeviceError>, UserCredentials),
+    SsoSignIn(ResponseTx<(), DeviceError>, String, String),
     SignOut(ResponseTx<(), DeviceError>),
     BearerToken(ResponseTx<Option<String>, DeviceError>),
     IsAuthenticated(ResponseTx<bool, DeviceError>),
@@ -126,6 +138,9 @@ impl DeviceService {
     async fn handle_message(&mut self, msg: DeviceCommand) {
         match msg {
             DeviceCommand::SignIn(tx, user_creds) => self.handle_sign_in(tx, user_creds).await,
+            DeviceCommand::SsoSignIn(tx, provider, id_token) => {
+                self.handle_sso_sign_in(tx, provider, id_token).await
+            }
             DeviceCommand::SignOut(tx) => self.handle_sign_out(tx).await,
             DeviceCommand::BearerToken(tx) => self.handle_bearer_token(tx).await,
             DeviceCommand::IsAuthenticated(tx) => self.handle_is_authenticated(tx).await,
@@ -199,6 +214,84 @@ impl DeviceService {
             tx,
             self.handle_sign_in_inner(user_creds).await,
             "handle_sign_in",
+        );
+    }
+
+    async fn handle_sso_sign_in_inner(
+        &mut self,
+        provider: String,
+        id_token: String,
+    ) -> Result<(), DeviceError> {
+        self.device_storage
+            .init()
+            .await
+            .map_err(DeviceError::InitError)?;
+        let device_details = self.device_storage.get_device().await?.unwrap();
+
+        let device_type_str = match device_details.device_type {
+            upvpn_types::upvpn_server::DeviceType::Linux => "linux",
+            upvpn_types::upvpn_server::DeviceType::MacOS => "macos",
+            upvpn_types::upvpn_server::DeviceType::Windows => "windows",
+            upvpn_types::upvpn_server::DeviceType::IOS => "ios",
+            upvpn_types::upvpn_server::DeviceType::Android => "android",
+        };
+
+        let request = SsoAddDeviceRequest {
+            sso_credentials: SsoCredentials {
+                provider,
+                id_token,
+            },
+            device_info: SsoDeviceInfo {
+                name: device_details.name.clone(),
+                version: device_details.version.clone(),
+                arch: device_details.arch.clone(),
+                public_key: device_details.wireguard_meta.public_key().to_base64(),
+                unique_id: device_details.unique_id,
+                device_type: device_type_str.to_string(),
+            },
+        };
+
+        let response = ServerRestApiNoAuth::new()
+            .sso_add_device(&request)
+            .await
+            .map_err(|e| DeviceError::SsoRestError(e.to_string()))?;
+
+        // save token
+        self.token_storage
+            .save_token(response.token.clone())
+            .await?;
+
+        // parse ipv4 address
+        let ipv4_address: std::net::Ipv4Addr = response
+            .device_addresses
+            .ipv4_address
+            .parse()
+            .map_err(|e| DeviceError::SsoRestError(format!("invalid ipv4 address: {e}")))?;
+
+        // update device ip addresses
+        let device_details = self
+            .device_storage
+            .update_ipv4_address(device_details.unique_id, ipv4_address)
+            .await?;
+
+        tracing::info!("Successfully signed in via SSO {device_details}");
+
+        // keep this new token in memory
+        self.token = Some(response.token);
+
+        Ok(())
+    }
+
+    async fn handle_sso_sign_in(
+        &mut self,
+        tx: ResponseTx<(), DeviceError>,
+        provider: String,
+        id_token: String,
+    ) {
+        Self::oneshot_send(
+            tx,
+            self.handle_sso_sign_in_inner(provider, id_token).await,
+            "handle_sso_sign_in",
         );
     }
 

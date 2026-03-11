@@ -64,6 +64,9 @@
     "fs:default",
     "shell:default",
     "clipboard-manager:default",
-    "os:default"
+    "os:default",
+    "log:default",
+    "opener:default",
+    "opener:allow-open-url"
   ]
 }

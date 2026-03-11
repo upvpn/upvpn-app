@@ -1,6 +1,7 @@
 pub mod device;
 pub mod location;
 pub mod notification;
+pub mod rest;
 pub mod upvpn_server;
 pub mod vpn_session;
 pub mod wireguard;
