@@ -54,38 +54,11 @@ fn generate_state() -> String {
     URL_SAFE_NO_PAD.encode(state_bytes)
 }
 
-const SUCCESS_HTML: &str = r#"<!DOCTYPE html>
-<html>
-<head><title>UpVPN</title></head>
-<body style="font-family: system-ui, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f8fafc;">
-<div style="text-align: center;">
-<h1 style="color: #1e40af;">Sign-in successful!</h1>
-<p style="color: #64748b;">You can close this tab and return to the UpVPN app.</p>
-</div>
-</body>
-</html>"#;
-
-const ACCESS_DENIED_HTML: &str = r#"<!DOCTYPE html>
-<html>
-<head><title>UpVPN</title></head>
-<body style="font-family: system-ui, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f8fafc;">
-<div style="text-align: center;">
-<h1 style="color: #64748b;">Sign-in cancelled</h1>
-<p style="color: #64748b;">You can close this tab and return to the UpVPN app.</p>
-</div>
-</body>
-</html>"#;
-
-const ERROR_HTML: &str = r#"<!DOCTYPE html>
-<html>
-<head><title>UpVPN</title></head>
-<body style="font-family: system-ui, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f8fafc;">
-<div style="text-align: center;">
-<h1 style="color: #dc2626;">Sign-in failed</h1>
-<p style="color: #64748b;">Something went wrong. Please try again in the UpVPN app.</p>
-</div>
-</body>
-</html>"#;
+fn redirect_response(path: &str) -> String {
+    let base_url = upvpn_config::config().rest_api_host_port();
+    let location = format!("{base_url}{path}");
+    format!("HTTP/1.1 302 Found\r\nLocation: {location}\r\nConnection: close\r\n\r\n")
+}
 
 pub async fn google_sign_in_get_id_token(
     app_handle: AppHandle,
@@ -157,6 +130,9 @@ pub async fn google_sign_in_get_id_token(
         _ = cancel_token.cancelled() => {
             return Err(GoogleAuthError::Cancelled);
         }
+        _ = tokio::time::sleep(Duration::from_secs(300)) => {
+            return Err(GoogleAuthError::Timeout);
+        }
     };
 
     Ok(id_token)
@@ -189,15 +165,7 @@ async fn accept_callback(listener: &TcpListener) -> Result<(String, String), Goo
         let error_code = error.1.to_string();
         let is_access_denied = error_code == "access_denied";
 
-        let html = if is_access_denied {
-            ACCESS_DENIED_HTML
-        } else {
-            ERROR_HTML
-        };
-
-        let response = format!(
-            "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n{html}"
-        );
+        let response = redirect_response("/sso-failed");
         let _ = stream.write_all(response.as_bytes()).await;
         let _ = stream.shutdown().await;
 
@@ -219,10 +187,8 @@ async fn accept_callback(listener: &TcpListener) -> Result<(String, String), Goo
         .map(|(_, v)| v.to_string())
         .unwrap_or_default();
 
-    // Send success HTML response
-    let response = format!(
-        "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n{SUCCESS_HTML}"
-    );
+    // Redirect browser to server-hosted success page
+    let response = redirect_response("/sso-success");
     let _ = stream.write_all(response.as_bytes()).await;
     let _ = stream.shutdown().await;
 
