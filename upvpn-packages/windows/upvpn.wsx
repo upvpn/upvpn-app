@@ -16,7 +16,7 @@ https://github.com/mozilla-mobile/mozilla-vpn-client/blob/main/windows/installer
   xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Product
     Id="*"
-    Name="upvpn"
+    Name="UpVPN"
     Language="1033"
     Version="$(var.AppVersion)"
     Manufacturer="$(var.Manufacturer)"
@@ -25,7 +25,7 @@ https://github.com/mozilla-mobile/mozilla-vpn-client/blob/main/windows/installer
       InstallerVersion="400"
       Compressed="yes"
       InstallScope="perMachine"
-      Description="Install upvpn app for Windows"
+      Description="Install UpVPN app for Windows"
       Manufacturer="$(var.Manufacturer)"
       ReadOnly="yes" />
 
