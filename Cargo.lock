@@ -8800,7 +8800,7 @@ dependencies = [
 
 [[package]]
 name = "upvpn-packages"
-version = "0.6.0"
+version = "1.0.0"
 
 [[package]]
 name = "upvpn-server"
