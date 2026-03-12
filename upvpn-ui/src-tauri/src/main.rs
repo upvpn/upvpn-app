@@ -7,10 +7,11 @@ mod commands;
 mod error;
 mod event_forwarder;
 mod gnome;
+mod google_auth;
 mod state;
 mod system_tray;
 
-use commands::auth::{is_signed_in, sign_in, sign_out};
+use commands::auth::{cancel_google_sign_in, google_sign_in, is_signed_in, sign_in, sign_out};
 use commands::daemon_online::is_daemon_online;
 use commands::desktop_notification::send_desktop_notification;
 use commands::file_ops::{open_license, open_log_file};
@@ -41,6 +42,8 @@ fn main() {
             is_signed_in,
             sign_in,
             sign_out,
+            google_sign_in,
+            cancel_google_sign_in,
             locations,
             recent_locations,
             connect,

@@ -7,6 +7,8 @@ pub enum Error {
     DaemonIsOffline,
     #[error("Grpc code: {code}, message: {message}")]
     Grpc { code: u8, message: String },
+    #[error("Google auth error: {message}")]
+    GoogleAuthError { message: String },
 }
 
 impl From<tonic::Status> for Error {

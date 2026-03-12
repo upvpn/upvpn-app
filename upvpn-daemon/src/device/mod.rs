@@ -17,4 +17,6 @@ pub enum DeviceError {
     DbErr(#[from] DbErr),
     #[error("failed to initialize device: {0}")]
     InitError(String),
+    #[error("SSO REST error: {0}")]
+    SsoRestError(String),
 }

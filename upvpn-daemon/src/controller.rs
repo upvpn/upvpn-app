@@ -4,7 +4,7 @@ use tokio::{sync::oneshot, task::JoinHandle};
 use tokio_stream::wrappers::UnboundedReceiverStream;
 use tonic::{Request, Response, Status};
 use upvpn_controller::{
-    proto::{AccountInfo, Locations, Notifications, SignInRequest, VpnStatus},
+    proto::{AccountInfo, Locations, Notifications, SignInRequest, SsoSignInRequest, VpnStatus},
     spawn_grpc_server, ControllerError, ControllerService,
 };
 use upvpn_migration::DbErr;
@@ -148,6 +148,20 @@ impl ControllerService for ControllerServiceImpl {
             .map_err(map_daemon_error)
     }
 
+    async fn sso_sign_in(&self, req: Request<SsoSignInRequest>) -> ServiceResult<()> {
+        let (tx, rx) = oneshot::channel();
+        let inner = req.into_inner();
+        self.send_command_to_daemon(DaemonCommand::AccountSsoSignIn(
+            tx,
+            inner.provider,
+            inner.id_token,
+        ))?;
+        self.wait_for_result(rx)
+            .await?
+            .map(Response::new)
+            .map_err(map_daemon_error)
+    }
+
     async fn account_sign_out(&self, _: Request<()>) -> ServiceResult<()> {
         let (tx, rx) = oneshot::channel();
         self.send_command_to_daemon(DaemonCommand::AccountSignOut(tx))?;
@@ -282,6 +296,9 @@ fn map_daemon_error(error: DaemonError) -> Status {
             crate::device::DeviceError::DbErr(db_err) => map_db_error(db_err),
             crate::device::DeviceError::InitError(_) => {
                 Status::internal("failed to initialize device")
+            }
+            crate::device::DeviceError::SsoRestError(msg) => {
+                Status::unavailable(format!("SSO sign-in failed: {msg}"))
             }
         },
         DaemonError::VpnSessionError(vpn_session_error) => match vpn_session_error {

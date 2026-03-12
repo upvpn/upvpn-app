@@ -31,7 +31,8 @@ export interface Notification {
 
 export type UiError =
     | { type: "DaemonIsOffline" }
-    | { type: "Grpc"; code: number; message: string };
+    | { type: "Grpc"; code: number; message: string }
+    | { type: "GoogleAuthError"; message: string };
 
 export enum Code {
     Unauthenticated = 16

@@ -101,6 +101,11 @@ export const handleError = (error: UiError, navigate: NavigateFunction, isSignIn
                     toast.error(error.message)
                 }
             }
+            break;
+        case "GoogleAuthError":
+            logError(`Google auth error: ${error.message}`);
+            toast.error(error.message);
+            break;
     }
 }
 
