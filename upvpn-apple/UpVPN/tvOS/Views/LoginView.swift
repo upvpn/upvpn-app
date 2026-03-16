@@ -94,8 +94,10 @@ struct LoginView: View {
             .disabled(authViewModel.signInState == .signingIn)
 
 
-            HStack {
-                Text("By using UpVPN.app you agree to our https://upvpn.app/terms-of-service and https://upvpn.app/privacy-policy")
+            VStack {
+                Text("By using UpVPN.app you agree to our")
+                Text("https://UpVPN.app/terms-of-service and")
+                Text("https://UpVPN.app/privacy-policy")
             }
             .font(.caption)
             .multilineTextAlignment(.leading)
