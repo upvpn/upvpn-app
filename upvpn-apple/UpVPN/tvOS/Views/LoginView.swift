@@ -95,9 +95,7 @@ struct LoginView: View {
 
 
             HStack {
-                Text("""
-By using UpVPN.app you agree to our [Terms](https://upvpn.app/terms-of-service) and [Privacy Policy](https://upvpn.app/privacy-policy)
-""")
+                Text("By using UpVPN.app you agree to our https://upvpn.app/terms-of-service and https://upvpn.app/privacy-policy")
             }
             .font(.caption)
             .multilineTextAlignment(.leading)
