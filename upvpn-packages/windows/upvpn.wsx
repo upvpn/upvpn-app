@@ -130,7 +130,7 @@ https://github.com/mozilla-mobile/mozilla-vpn-client/blob/main/windows/installer
         <File Id="upvpnui.exe" Source="../../target/x86_64-pc-windows-msvc/release/upvpn-ui.exe"
           KeyPath="yes"
           Checksum="yes">
-          <Shortcut Id="upvpnShortcut" Directory="ProgramMenuFolder" Name="upvpn"
+          <Shortcut Id="upvpnShortcut" Directory="ProgramMenuFolder" Name="UpVPN"
             Description="Modern serverless and on-demand VPN." WorkingDirectory="upvpnFolder"
             Advertise="yes" />
         </File>

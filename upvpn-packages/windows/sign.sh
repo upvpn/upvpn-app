@@ -3,6 +3,21 @@
 # Copyright (C) 2023 upvpn LLC, GPL-3.0
 # Based on: Copyright (C) 2022 Mullvad VPN AB, GPL-3.0
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+function install_deps {
+    mkdir -p ${SCRIPT_DIR}/downloads
+
+    if [ ! -d "${SCRIPT_DIR}/downloads/Microsoft.ArtifactSigning.Client" ]; then
+        cd ${SCRIPT_DIR}/downloads
+        curl https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -o nuget.exe
+        ./nuget.exe install Microsoft.ArtifactSigning.Client -x
+        cd -
+    else
+        echo "Dependencies present"
+    fi
+}
+
 # Sign all binaries passed as arguments to this function
 function sign_win {
     local NUM_RETRIES=3
@@ -13,8 +28,13 @@ function sign_win {
         for i in $(seq 0 ${NUM_RETRIES}); do
             echo "Signing $binary..."
             if signtool sign \
-                -tr http://timestamp.sectigo.com -td sha256 \
-                -fd sha256 -d "upvpn app" \
+                -debug \
+                -tr http://timestamp.acs.microsoft.com \
+                -td sha256 \
+                -fd sha256 \
+                -d "UpVPN app" \
+                -dlib ${SCRIPT_DIR}/downloads/Microsoft.ArtifactSigning.Client/bin/x64/Azure.CodeSigning.Dlib.dll \
+                -dmdf "${SCRIPT_DIR}/metadata.json" \
                 -du "https://github.com/upvpn/upvpn-app#readme" \
                 "$binary"
             then
@@ -32,5 +52,6 @@ function sign_win {
 }
 
 if [[ "$SIGN" == "true" && "$(uname -s)" == "MINGW"* ]]; then
+    install_deps
     sign_win "$@"
 fi
