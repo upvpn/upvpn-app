@@ -2,6 +2,9 @@ package app.upvpn.upvpn.ui
 
 import android.app.Activity
 import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -239,20 +242,26 @@ fun VPNApp(
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = VPNScreen.Login.name) {
-            SignInScreen(
-                windowSize,
-                uiState.value,
-                authViewModel::onEmailChange,
-                authViewModel::onPasswordChange,
-                authViewModel::togglePasswordVisibility,
-                authViewModel::onSubmit,
-                showSnackBar,
-                authViewModel::setAuthAction,
-                authViewModel::onSignUpCodeChange,
-                authViewModel::onRequestSignUpCode,
-                authViewModel::onGoogleSignInBottomSheet,
-                authViewModel::onGoogleSignInButton,
-            )
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()
+            ) {
+                SignInScreen(
+                    windowSize,
+                    uiState.value,
+                    authViewModel::onEmailChange,
+                    authViewModel::onPasswordChange,
+                    authViewModel::togglePasswordVisibility,
+                    authViewModel::onSubmit,
+                    showSnackBar,
+                    authViewModel::setAuthAction,
+                    authViewModel::onSignUpCodeChange,
+                    authViewModel::onRequestSignUpCode,
+                    authViewModel::onGoogleSignInBottomSheet,
+                    authViewModel::onGoogleSignInButton,
+                )
+            }
         }
         composable(route = VPNScreen.Home.name) {
             VPNLayout(
@@ -290,7 +299,8 @@ fun VPNApp(
                 currentVPNScreen = currentVPNScreen,
                 onNavItemPressed = { screen ->
                     navController.navigate(screen.name)
-                }
+                },
+                modifier = modifier,
             ) {
                 LocationScreen(
                     uiState = locationUiState.value,
@@ -309,7 +319,8 @@ fun VPNApp(
                 currentVPNScreen = currentVPNScreen,
                 onNavItemPressed = { screen ->
                     navController.navigate(screen.name)
-                }
+                },
+                modifier = modifier,
             ) {
                 SettingsScreen(
                     isVpnSessionActivityInProgress = homeUiState.value.vpnUiState.isVpnSessionActivityInProgress(),
@@ -327,7 +338,9 @@ fun VPNApp(
                 currentVPNScreen = currentVPNScreen,
                 onNavItemPressed = { screen ->
                     navController.navigate(screen.name)
-                }) {
+                },
+                modifier = modifier,
+            ) {
 
                 HelpScreen(navigateUp = { navController.navigateUp() })
 
@@ -340,7 +353,9 @@ fun VPNApp(
                 currentVPNScreen = currentVPNScreen,
                 onNavItemPressed = { screen ->
                     navController.navigate(screen.name)
-                }) {
+                },
+                modifier = modifier,
+            ) {
 
                 PlanScreen(
                     planState = planState.value,
