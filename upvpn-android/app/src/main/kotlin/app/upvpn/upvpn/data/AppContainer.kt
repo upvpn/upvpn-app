@@ -20,6 +20,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 
 interface AppContainer {
@@ -57,6 +58,10 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
     }
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .callTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(AuthInterceptor {
             vpnDatabase.userDao().getUserSync()?.token
         })
