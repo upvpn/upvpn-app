@@ -206,13 +206,17 @@ fun ShareCard() {
                 .clickable {
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, "Checkout this cool VPN app https://UpVPN.app")
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "Check out this cool VPN app: https://UpVPN.app\n" +
+                                "Use promo code UPVPN for purchase on the web."
+                        )
                     }
                     context.startActivity(Intent.createChooser(intent, null))
                 }
                 .padding(horizontal = 15.dp)
         ) {
-            Text(text = "Share", modifier = Modifier.padding(vertical = 10.dp))
+            Text(text = "Share and Refer", modifier = Modifier.padding(vertical = 10.dp))
             Icon(
                 Icons.Default.Share,
                 contentDescription = "Share",
