@@ -173,13 +173,20 @@ fun SignInHeader() {
         modifier = Modifier.fillMaxWidth()
     ) {
         Logo()
-        Spacer(modifier = Modifier.height(5.dp))
-        Text(text = "UpVPN", fontSize = 40.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "UpVPN",
+            style = MaterialTheme.typography.displaySmall,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = (-0.5).sp
+        )
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = "A Modern Serverless VPN",
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Normal,
+            letterSpacing = 0.3.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -216,7 +223,11 @@ fun SignInCard(
                 selected = authUIState.authAction == AuthAction.SignUp,
                 shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
             ) {
-                Text("Sign Up")
+                Text(
+                    text = "Sign Up",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium
+                )
             }
 
             SegmentedButton(
@@ -224,7 +235,11 @@ fun SignInCard(
                 selected = authUIState.authAction == AuthAction.SignIn,
                 shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
             ) {
-                Text("Sign In")
+                Text(
+                    text = "Sign In",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium
+                )
             }
         }
 
@@ -318,7 +333,12 @@ fun SignInCard(
                         .align(Alignment.CenterVertically)
                 )
             } else {
-                Text(text = (if (authUIState.authAction == AuthAction.SignUp) "SIGN UP" else "SIGN IN"))
+                Text(
+                    text = if (authUIState.authAction == AuthAction.SignUp) "SIGN UP" else "SIGN IN",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 1.2.sp
+                )
             }
         }
 
@@ -332,8 +352,10 @@ fun SignInCard(
             ) {
                 HorizontalDivider()
                 Text(
-                    text = "or",
-                    style = MaterialTheme.typography.bodySmall,
+                    text = "OR",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = 1.5.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
