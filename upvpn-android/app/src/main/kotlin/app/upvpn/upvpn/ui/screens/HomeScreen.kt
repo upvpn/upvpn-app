@@ -745,15 +745,13 @@ fun AllLocationsCard(
     onLocationSelected: (Location) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(modifier = modifier) {
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            AllLocations(
-                locationUiState = locationUiState,
-                verticalCountrySpacing = 0.dp,
-                onRefresh = onRefresh,
-                isSelectedLocation = isSelectedLocation,
-                onLocationSelected = onLocationSelected
-            )
-        }
+    Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
+        AllLocations(
+            locationUiState = locationUiState,
+            verticalCountrySpacing = 16.dp,
+            onRefresh = onRefresh,
+            isSelectedLocation = isSelectedLocation,
+            onLocationSelected = onLocationSelected
+        )
     }
 }
