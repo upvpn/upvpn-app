@@ -180,7 +180,7 @@ fun AccountCard(
     navigateTo: (VPNScreen) -> Unit,
 ) {
     Text(
-        text = "ACCOUNT",
+        text = "PROFILE",
         style = MaterialTheme.typography.labelMedium,
         modifier = Modifier.padding(15.dp, 4.dp)
     )
