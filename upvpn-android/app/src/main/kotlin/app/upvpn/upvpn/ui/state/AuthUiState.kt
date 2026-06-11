@@ -14,7 +14,8 @@ data class AuthUiState(
     val signUpError: String? = null,
 
     val isGoogleSignInAvailable: Boolean = false,
-    val isGoogleSignInSubmitting: Boolean = false,
+    val isGoogleSignInBottomSheetSubmitting: Boolean = false,
+    val isGoogleSignInButtonSubmitting: Boolean = false,
     val googleSignInError: String? = null,
 )
 

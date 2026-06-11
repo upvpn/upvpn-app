@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +56,10 @@ fun LocationScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
+    // tracks pull-to-refresh UI separately from data loading state so that
+    // auto refresh on screen show doesn't display the pull-to-refresh spinner
+    var userInitiatedRefresh by remember { mutableStateOf(false) }
+
     // reload locations whenever screen show
     LaunchedEffect(lifecycleState) {
         if (lifecycleState == Lifecycle.State.RESUMED) {
@@ -60,10 +67,19 @@ fun LocationScreen(
         }
     }
 
+    LaunchedEffect(uiState.isLoading) {
+        if (!uiState.isLoading) {
+            userInitiatedRefresh = false
+        }
+    }
+
     PullToRefreshBox(
         state = state,
-        isRefreshing = uiState.isLoading,
-        onRefresh = onRefresh
+        isRefreshing = userInitiatedRefresh && uiState.isLoading,
+        onRefresh = {
+            userInitiatedRefresh = true
+            onRefresh()
+        }
     ) {
 
         AllLocationsWithSearch(
@@ -113,7 +129,7 @@ fun AllLocationsWithSearch(
 
         AllLocations(
             locationUiState = searchedLocationUiState,
-            verticalCountrySpacing = 10.dp,
+            verticalCountrySpacing = 16.dp,
             onRefresh = onRefresh,
             isSelectedLocation = isSelectedLocation,
             onLocationSelected = onLocationSelected

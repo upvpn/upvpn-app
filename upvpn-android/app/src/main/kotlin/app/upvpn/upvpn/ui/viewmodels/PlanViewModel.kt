@@ -39,11 +39,20 @@ class PlanViewModel(
 
     val planState = _planState.asStateFlow()
 
+    private var _isRefreshing = MutableStateFlow(false)
+
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     // don't fetchPlan in init because user might not yet have
     // authenticated
 
     fun fetchPlan() {
-        _planState.update { PlanState.Loading }
+        // preserve existing plan data during refresh so the screen
+        // doesn't flash a blank loading state when re-entered
+        if (_planState.value !is PlanState.Plan) {
+            _planState.update { PlanState.Loading }
+        }
+        _isRefreshing.update { true }
         viewModelScope.launch(dispatcher) {
             val result = planRepository.getUserPlan()
             result.fold(
@@ -51,9 +60,14 @@ class PlanViewModel(
                     _planState.update { PlanState.Plan(userPlan = plan) }
                 },
                 failure = { error ->
-                    _planState.update { PlanState.Error(msg = error) }
+                    // keep showing stale plan data on refresh failure;
+                    // only surface the error screen when nothing is loaded yet
+                    if (_planState.value !is PlanState.Plan) {
+                        _planState.update { PlanState.Error(msg = error) }
+                    }
                 }
             )
+            _isRefreshing.update { false }
         }
     }
 }

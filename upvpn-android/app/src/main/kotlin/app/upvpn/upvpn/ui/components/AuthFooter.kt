@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
@@ -40,7 +41,8 @@ fun AuthFooter() {
             withStyle(
                 style = SpanStyle(
                     color = MaterialTheme.colorScheme.tertiary,
-                    textDecoration = TextDecoration.Underline
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Medium
                 )
             ) {
                 withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/terms-of-service")) {
@@ -53,7 +55,8 @@ fun AuthFooter() {
             withStyle(
                 style = SpanStyle(
                     color = MaterialTheme.colorScheme.tertiary,
-                    textDecoration = TextDecoration.Underline
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Medium
                 )
             ) {
                 withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/privacy-policy")) {
@@ -63,6 +66,7 @@ fun AuthFooter() {
 
         },
         style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()

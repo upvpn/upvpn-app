@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -71,34 +72,30 @@ fun VPNLayout(
     content: @Composable() () -> Unit
 ) {
 
-    val allContents = when (windowSize.widthSizeClass == WindowWidthSizeClass.Expanded
-            && windowSize.heightSizeClass == WindowHeightSizeClass.Expanded) {
-        true -> VPNNavigationDrawerWithContent(
-            currentVPNScreen = currentVPNScreen,
-            vpnNavigationItems = allVpnNavigationItems(),
-            onNavItemPressed = onNavItemPressed,
-            modifier = modifier,
+    Box(modifier = modifier.fillMaxSize()) {
+        if (windowSize.widthSizeClass == WindowWidthSizeClass.Expanded
+            && windowSize.heightSizeClass == WindowHeightSizeClass.Expanded
         ) {
+            VPNNavigationDrawerWithContent(
+                currentVPNScreen = currentVPNScreen,
+                vpnNavigationItems = allVpnNavigationItems(),
+                onNavItemPressed = onNavItemPressed,
+            ) {
+                VPNContentWithoutDrawer(
+                    windowSize,
+                    currentVPNScreen,
+                    onNavItemPressed,
+                    content = content
+                )
+            }
+        } else {
             VPNContentWithoutDrawer(
                 windowSize,
                 currentVPNScreen,
                 onNavItemPressed,
-                modifier,
-                content
+                content = content
             )
         }
-
-        else -> VPNContentWithoutDrawer(
-            windowSize,
-            currentVPNScreen,
-            onNavItemPressed,
-            modifier,
-            content
-        )
-    }
-
-    Box(modifier = modifier) {
-        allContents
     }
 }
 
@@ -125,7 +122,11 @@ private fun VPNContentWithoutDrawer(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            Box(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .statusBarsPadding()
+            ) {
                 content()
             }
             AnimatedVisibility(visible = showRail.not() && windowSize.widthSizeClass != WindowWidthSizeClass.Expanded) {

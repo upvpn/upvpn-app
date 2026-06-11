@@ -29,8 +29,8 @@ android {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
         targetSdk = 36
-        versionCode = 17
-        versionName = "u8"
+        versionCode = 18
+        versionName = "u9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
