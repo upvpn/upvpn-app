@@ -90,6 +90,7 @@ fun VPNApp(
 
     val planVM: PlanViewModel = viewModel(factory = VPNAppViewModelProvider.Factory)
     val planState = planVM.planState.collectAsStateWithLifecycle()
+    val planIsRefreshing = planVM.isRefreshing.collectAsStateWithLifecycle()
 
     val locationVM: LocationViewModel = viewModel(factory = VPNAppViewModelProvider.Factory)
     val locationUiState = locationVM.uiState.collectAsStateWithLifecycle()
@@ -238,6 +239,7 @@ fun VPNApp(
         showPlanSheet = showPlanSheet,
         dismissPlanSheet = { showPlanSheet = false },
         planState = planState.value,
+        isRefreshing = planIsRefreshing.value,
         refresh = { planVM.fetchPlan() })
 
     NavHost(navController = navController, startDestination = startDestination) {
@@ -359,6 +361,7 @@ fun VPNApp(
 
                 PlanScreen(
                     planState = planState.value,
+                    isRefreshing = planIsRefreshing.value,
                     refresh = { planVM.fetchPlan() },
                     navigateUp = { navController.navigateUp() })
             }

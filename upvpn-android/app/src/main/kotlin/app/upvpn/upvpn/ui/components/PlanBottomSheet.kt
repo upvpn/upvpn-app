@@ -15,6 +15,7 @@ fun PlanBottomSheet(
     showPlanSheet: Boolean,
     dismissPlanSheet: () -> Unit,
     planState: PlanState,
+    isRefreshing: Boolean,
     refresh: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
@@ -27,7 +28,7 @@ fun PlanBottomSheet(
             sheetState = sheetState,
             onDismissRequest = dismissPlanSheet
         ) {
-            PlanScreen(planState, refresh, dismissPlanSheet)
+            PlanScreen(planState, isRefreshing, refresh, dismissPlanSheet)
         }
     }
 }

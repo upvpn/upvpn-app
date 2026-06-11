@@ -74,7 +74,12 @@ import app.upvpn.upvpn.util.getActivityOrNull
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlanScreen(planState: PlanState, refresh: () -> Unit, navigateUp: () -> Unit) {
+fun PlanScreen(
+    planState: PlanState,
+    isRefreshing: Boolean,
+    refresh: () -> Unit,
+    navigateUp: () -> Unit
+) {
     val context = LocalContext.current
     val billingViewModel: BillingViewModel = viewModel(factory = VPNAppViewModelProvider.Factory)
     val prepaidProducts = billingViewModel.prepaidProducts.collectAsStateWithLifecycle()
@@ -99,8 +104,8 @@ fun PlanScreen(planState: PlanState, refresh: () -> Unit, navigateUp: () -> Unit
         }
     }
 
-    LaunchedEffect(planState) {
-        if (planState !is PlanState.Loading) {
+    LaunchedEffect(isRefreshing) {
+        if (isRefreshing.not()) {
             userInitiatedRefresh = false
         }
     }
@@ -125,7 +130,7 @@ fun PlanScreen(planState: PlanState, refresh: () -> Unit, navigateUp: () -> Unit
 
     PullToRefreshBox(
         state = state,
-        isRefreshing = userInitiatedRefresh && planState is PlanState.Loading,
+        isRefreshing = userInitiatedRefresh && isRefreshing,
         onRefresh = {
             userInitiatedRefresh = true
             refresh()
