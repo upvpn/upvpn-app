@@ -19,7 +19,7 @@ fun PlanBottomSheet(
     refresh: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false,
+        skipPartiallyExpanded = true,
     )
 
     if (showPlanSheet) {
