@@ -201,18 +201,20 @@ class AuthViewModel(
     }
 
     fun onGoogleSignInBottomSheet(activity: Activity) {
-        if (_uiState.value.isGoogleSignInSubmitting) return
+        val state = _uiState.value
+        if (state.isGoogleSignInBottomSheetSubmitting || state.isGoogleSignInButtonSubmitting) return
         viewModelScope.launch(dispatcher) {
-            _uiState.update { it.copy(isGoogleSignInSubmitting = true) }
+            _uiState.update { it.copy(isGoogleSignInBottomSheetSubmitting = true) }
             val result = googleSignInManager.signInWithBottomSheet(activity)
             handleGoogleSignInResult(result)
         }
     }
 
     fun onGoogleSignInButton(activity: Activity) {
-        if (_uiState.value.isGoogleSignInSubmitting) return
+        val state = _uiState.value
+        if (state.isGoogleSignInBottomSheetSubmitting || state.isGoogleSignInButtonSubmitting) return
         viewModelScope.launch(dispatcher) {
-            _uiState.update { it.copy(isGoogleSignInSubmitting = true) }
+            _uiState.update { it.copy(isGoogleSignInButtonSubmitting = true) }
             val result = googleSignInManager.signInWithButton(activity)
             handleGoogleSignInResult(result)
         }
@@ -231,7 +233,8 @@ class AuthViewModel(
                         _uiState.update { value ->
                             value.copy(
                                 signInState = SignInState.SignedIn(result.email),
-                                isGoogleSignInSubmitting = false
+                                isGoogleSignInBottomSheetSubmitting = false,
+                                isGoogleSignInButtonSubmitting = false
                             )
                         }
                         _signOutUiState.update { value ->
@@ -241,7 +244,8 @@ class AuthViewModel(
                     failure = { error ->
                         _uiState.update {
                             it.copy(
-                                isGoogleSignInSubmitting = false,
+                                isGoogleSignInBottomSheetSubmitting = false,
+                                isGoogleSignInButtonSubmitting = false,
                                 googleSignInError = error
                             )
                         }
@@ -252,7 +256,8 @@ class AuthViewModel(
             is GoogleSignInResult.Error -> {
                 _uiState.update {
                     it.copy(
-                        isGoogleSignInSubmitting = false,
+                        isGoogleSignInBottomSheetSubmitting = false,
+                        isGoogleSignInButtonSubmitting = false,
                         googleSignInError = result.message
                     )
                 }
@@ -260,7 +265,12 @@ class AuthViewModel(
 
             is GoogleSignInResult.Cancelled,
             is GoogleSignInResult.NotAvailable -> {
-                _uiState.update { it.copy(isGoogleSignInSubmitting = false) }
+                _uiState.update {
+                    it.copy(
+                        isGoogleSignInBottomSheetSubmitting = false,
+                        isGoogleSignInButtonSubmitting = false
+                    )
+                }
             }
         }
     }

@@ -345,7 +345,7 @@ fun SignInCard(
 
             // Google sign-in button
             val context = LocalContext.current
-            if (authUIState.isGoogleSignInSubmitting) {
+            if (authUIState.isGoogleSignInButtonSubmitting) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(40.dp)
                 )
