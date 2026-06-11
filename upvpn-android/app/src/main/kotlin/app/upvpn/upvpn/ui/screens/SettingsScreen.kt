@@ -359,7 +359,7 @@ fun NotificationsCard(onPermissionResult: () -> Unit) {
     }
 
     Text(
-        text = "NOTIFICATIONS",
+        text = "NOTIFICATION",
         style = MaterialTheme.typography.labelMedium,
         modifier = Modifier.padding(15.dp, 4.dp)
     )
@@ -390,7 +390,7 @@ fun NotificationsCard(onPermissionResult: () -> Unit) {
                     .padding(horizontal = 15.dp)
             ) {
                 Text(
-                    text = "Enable Notifications",
+                    text = "Enable Notification",
                     modifier = Modifier.padding(vertical = 10.dp)
                 )
                 Icon(
