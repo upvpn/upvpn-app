@@ -37,6 +37,7 @@ import app.upvpn.upvpn.ui.screens.PlanScreen
 import app.upvpn.upvpn.ui.screens.SettingsScreen
 import app.upvpn.upvpn.ui.screens.SignInScreen
 import app.upvpn.upvpn.ui.state.SignInState
+import app.upvpn.upvpn.ui.state.VpnUiState
 import app.upvpn.upvpn.ui.state.getLocation
 import app.upvpn.upvpn.ui.state.isVpnSessionActivityInProgress
 import app.upvpn.upvpn.ui.viewmodels.AuthViewModel
@@ -266,6 +267,12 @@ fun VPNApp(
             }
         }
         composable(route = VPNScreen.Home.name) {
+            // eagerly load current plan when home is shown and vpn is idle
+            LaunchedEffect(homeUiState.value.vpnUiState is VpnUiState.Disconnected) {
+                if (homeUiState.value.vpnUiState is VpnUiState.Disconnected) {
+                    planVM.fetchPlan()
+                }
+            }
             VPNLayout(
                 windowSize = windowSize,
                 currentVPNScreen = currentVPNScreen,
