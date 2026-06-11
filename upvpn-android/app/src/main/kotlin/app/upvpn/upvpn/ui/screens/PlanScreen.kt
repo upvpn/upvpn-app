@@ -393,6 +393,7 @@ fun YearlyPlan(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp)
+            .clickable { setSelectedProduct(yearlyProduct) }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
