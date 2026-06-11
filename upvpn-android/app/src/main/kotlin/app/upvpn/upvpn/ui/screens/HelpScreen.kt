@@ -35,7 +35,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.upvpn.upvpn.BuildConfig
 import app.upvpn.upvpn.model.LOCATION_COLD_COLOR
 import app.upvpn.upvpn.model.LOCATION_WARM_COLOR
@@ -71,13 +70,13 @@ fun HelpScreen(navigateUp: () -> Unit) {
             Column {
                 Text(
                     text = "What are color indicators?",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                HorizontalDivider(modifier = Modifier.padding(top = 6.dp, bottom = 12.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -87,13 +86,14 @@ fun HelpScreen(navigateUp: () -> Unit) {
                     )
                     Text(
                         text = "Connect quickly to available servers",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -103,25 +103,27 @@ fun HelpScreen(navigateUp: () -> Unit) {
                     )
                     Text(
                         text = "Create and connect to a new server",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
                     text = "Questions about product or pricing?",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                HorizontalDivider(modifier = Modifier.padding(top = 6.dp, bottom = 12.dp))
                 Text(
                     buildAnnotatedString {
                         append("Visit ")
                         withStyle(
                             style = SpanStyle(
                                 color = MaterialTheme.colorScheme.tertiary,
-                                textDecoration = TextDecoration.Underline
+                                textDecoration = TextDecoration.Underline,
+                                fontWeight = FontWeight.Medium
                             )
                         ) {
                             withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/faq")) {
@@ -134,7 +136,8 @@ fun HelpScreen(navigateUp: () -> Unit) {
                         withStyle(
                             style = SpanStyle(
                                 color = MaterialTheme.colorScheme.tertiary,
-                                textDecoration = TextDecoration.Underline
+                                textDecoration = TextDecoration.Underline,
+                                fontWeight = FontWeight.Medium
                             )
                         ) {
                             withLink(LinkAnnotation.Url(url = "mailto:support@upvpn.app")) {
@@ -145,7 +148,8 @@ fun HelpScreen(navigateUp: () -> Unit) {
                         append(" and we'll be happy to assist!")
                     },
                     textAlign = TextAlign.Left,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -153,35 +157,36 @@ fun HelpScreen(navigateUp: () -> Unit) {
 
             Text(
                 buildAnnotatedString {
+                    append("To delete your account, visit the ")
 
-                    withStyle(style = SpanStyle(fontSize = 12.sp)) {
-
-                        append("To delete your account, visit the ")
-
-                        withStyle(
-                            style = SpanStyle(
-                                color = MaterialTheme.colorScheme.tertiary,
-                                textDecoration = TextDecoration.Underline
-                            )
-                        ) {
-                            withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/dashboard/account")) {
-                                append("account page on the dashboard")
-                            }
-                        }
-
-                        append("\n\n")
-                        withStyle(
-                            style = SpanStyle(
-                                color = MaterialTheme.colorScheme.tertiary,
-                                textDecoration = TextDecoration.Underline
-                            )
-                        ) {
-                            withLink(LinkAnnotation.Url(url = BuildConfig.UPVPN_BASE_URL + "/oss/android/latest")) {
-                                append("Acknowledgements")
-                            }
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.tertiary,
+                            textDecoration = TextDecoration.Underline,
+                            fontWeight = FontWeight.Medium
+                        )
+                    ) {
+                        withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/dashboard/account")) {
+                            append("account page on the dashboard")
                         }
                     }
-                })
+
+                    append("\n\n")
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.tertiary,
+                            textDecoration = TextDecoration.Underline,
+                            fontWeight = FontWeight.Medium
+                        )
+                    ) {
+                        withLink(LinkAnnotation.Url(url = BuildConfig.UPVPN_BASE_URL + "/oss/android/latest")) {
+                            append("Acknowledgements")
+                        }
+                    }
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
