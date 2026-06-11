@@ -129,7 +129,7 @@ fun AllLocationsWithSearch(
 
         AllLocations(
             locationUiState = searchedLocationUiState,
-            verticalCountrySpacing = 10.dp,
+            verticalCountrySpacing = 16.dp,
             onRefresh = onRefresh,
             isSelectedLocation = isSelectedLocation,
             onLocationSelected = onLocationSelected

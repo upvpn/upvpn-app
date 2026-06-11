@@ -678,42 +678,56 @@ fun RecentLocationsCard(
     wgConfigKV: WgConfigKV? = null,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Box(
         modifier = modifier
             .heightIn(400.dp, 600.dp)
             .widthIn(400.dp, 600.dp)
             .fillMaxSize()
     ) {
-        if (wgConfigKV != null) {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                StatsCard(wgConfigKV)
+        when {
+            wgConfigKV != null -> Card(modifier = Modifier.fillMaxSize()) {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    StatsCard(wgConfigKV)
+                }
             }
-        } else {
-            if (recentLocations.isEmpty()) {
+
+            recentLocations.isEmpty() -> Card(modifier = Modifier.fillMaxSize()) {
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                     Logo()
                 }
-            } else {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(5.dp),
-                    modifier = Modifier.padding(10.dp, 15.dp, 10.dp, 10.dp)
-                ) {
-                    Text(
-                        text = "Recent Locations".uppercase(),
-                        style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier.padding(12.dp, 0.dp, 0.dp, 0.dp)
-                    )
-                    LazyColumn(
-//                verticalArrangement = Arrangement.spacedBy(5.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(recentLocations.size) {
+            }
+
+            else -> Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    text = "Recent Locations".uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    letterSpacing = 0.8.sp,
+                    modifier = Modifier.padding(start = 18.dp, end = 18.dp, top = 4.dp)
+                )
+                Card(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                        items(
+                            count = recentLocations.size,
+                            key = { recentLocations[recentLocations.size - it - 1].code }
+                        ) { i ->
+                            val location = recentLocations[recentLocations.size - i - 1]
                             LocationComponent(
-                                location = recentLocations[recentLocations.size - it - 1],
+                                location = location,
                                 isSelectedLocation = isSelectedLocation,
                                 onLocationSelected = onLocationSelected,
                                 modifier = Modifier.animateItem()
                             )
+                            if (i < recentLocations.lastIndex) {
+                                HorizontalDivider(
+                                    thickness = 0.5.dp,
+                                    color = MaterialTheme.colorScheme.outlineVariant,
+                                    modifier = Modifier.padding(start = 60.dp)
+                                )
+                            }
                         }
                     }
                 }
