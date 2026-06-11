@@ -116,9 +116,6 @@ fun SettingsScreen(
                 item {
                     ShareCard()
                 }
-                item {
-                    AboutCard()
-                }
 
                 item {
                     SignOut(
@@ -126,6 +123,9 @@ fun SettingsScreen(
                         signOutState,
                         onSignOutClick
                     )
+                }
+                item {
+                    AboutCard()
                 }
 
                 if (!notificationsEnabled) {
