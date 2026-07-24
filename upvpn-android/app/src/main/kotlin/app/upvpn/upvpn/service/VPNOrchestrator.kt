@@ -182,7 +182,7 @@ class VPNOrchestrator(
 
         // on Failed status send in-app notification
         if (status is VpnSessionStatus.Failed) {
-            dispatchVpnNotification("Unavailable. Please try again or try a new location.")
+            dispatchVpnNotification("Unavailable. Please try again or choose a different location.")
         }
 
         // check for permission on every update
