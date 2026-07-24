@@ -100,7 +100,8 @@ class DefaultVpnApiService: VPNApiService, PlanApiService {
     }
     
     func endVpnSession(request: EndSessionApi) async -> Result<Ended, ApiError> {
-        return await self.client.request("end-vpn-session", method: .post, body: encodeToData(request))
+        return await self.client.request("end-vpn-session", method: .post, body: encodeToData(request),
+                                         options: RequestOptions(maxRetries: 2, retryDelay: 0.2))
             .mapError(mapClientError)
     }
 

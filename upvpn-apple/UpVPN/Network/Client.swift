@@ -71,7 +71,6 @@ class Client {
     private let defaultOptions: RequestOptions
 
     init(baseURL: URL,
-         trustAllCertificates: Bool = false,
          getAuthToken: @escaping () async -> String?,
          defaultOptions: RequestOptions = .default)  {
 
@@ -80,11 +79,8 @@ class Client {
         self.defaultOptions = defaultOptions
 
         let configuration = URLSessionConfiguration.default
-        if trustAllCertificates {
-            configuration.urlCache = nil
-            configuration.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        }
-        // defautl timeout seems to be 1min
+
+        // default timeout seems to be 1min
         configuration.timeoutIntervalForRequest = 10
 
         self.session = URLSession(configuration: configuration)
