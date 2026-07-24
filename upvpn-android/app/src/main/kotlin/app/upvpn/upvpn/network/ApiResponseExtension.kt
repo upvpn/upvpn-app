@@ -5,8 +5,10 @@ import app.upvpn.upvpn.BuildConfig
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.getError
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.retrofit.errorBody
+import kotlinx.coroutines.delay
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.IOException
@@ -58,4 +60,33 @@ fun <T> ApiResponse<T>.toResult(): Result<T, ApiError> {
     }
 
     return result
+}
+
+/**
+ * Retries [block] with exponential backoff while it fails with a transient
+ * client/network error ([ApiError.errorType] == "client_exception"). Terminal
+ * server responses (e.g. "not_found") are returned immediately without retrying,
+ * as is any success. The delay is [initialDelayMs], doubling each attempt up to
+ * [maxDelayMs], for a maximum of [maxAttempts] total calls.
+ *
+ * Retrofit/OkHttp only retry connection-level failures, not error responses, so
+ * application-level retries like this must be added explicitly.
+ */
+suspend fun <T> retryOnClientException(
+    maxAttempts: Int = 3,
+    initialDelayMs: Long = 200,
+    maxDelayMs: Long = 5000,
+    factor: Double = 2.0,
+    block: suspend () -> Result<T, ApiError>
+): Result<T, ApiError> {
+    var delayMs = initialDelayMs
+    repeat(maxAttempts - 1) {
+        val result = block()
+        if (result.getError()?.errorType != "client_exception") {
+            return result
+        }
+        delay(delayMs)
+        delayMs = (delayMs * factor).toLong().coerceAtMost(maxDelayMs)
+    }
+    return block()
 }

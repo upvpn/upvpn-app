@@ -257,7 +257,7 @@ fun ShareCard() {
                 }
                 .padding(horizontal = 15.dp)
         ) {
-            Text(text = "Share and Refer", modifier = Modifier.padding(vertical = 10.dp))
+            Text(text = "Refer friends and family", modifier = Modifier.padding(vertical = 10.dp))
             Icon(
                 Icons.Default.Share,
                 contentDescription = "Share",

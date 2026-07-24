@@ -52,7 +52,7 @@ fun LocationComponent(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(color = MaterialTheme.colorScheme.primary)
             )
-            .defaultMinSize(minHeight = 68.dp)
+            .defaultMinSize(minHeight = 76.dp)
             .padding(horizontal = 16.dp, vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp)

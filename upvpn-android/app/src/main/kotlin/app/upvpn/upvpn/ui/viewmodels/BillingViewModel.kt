@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
 import kotlin.math.min
 
 data class ProductInfo(
@@ -93,6 +94,18 @@ class BillingViewModel(
 
     private fun getRetryDelay(): Long {
         return min(1L shl retryCount, 64) * 1000
+    }
+
+    // Google Play blocks purchases when obfuscatedAccountId/obfuscatedProfileId
+    // contain PII (such as a cleartext email) and requires values to be at most
+    // 64 characters. Passing the raw email caused Play to reject the billing flow
+    // with a generic "Something went wrong on our end" error for some accounts.
+    // Send a one-way SHA-256 hash instead, as recommended by Google:
+    // https://developer.android.com/google/play/billing/developer-payload
+    // https://developer.android.com/reference/com/android/billingclient/api/BillingFlowParams.Builder#setObfuscatedProfileId(java.lang.String)
+    private fun obfuscate(value: String): String {
+        val digest = MessageDigest.getInstance("SHA-256").digest(value.toByteArray())
+        return digest.joinToString("") { "%02x".format(it) } // 64 hex chars
     }
 
     fun initializeBillingClient(context: Context) {
@@ -300,7 +313,7 @@ class BillingViewModel(
                         )
                     )
                     .setObfuscatedAccountId(it.deviceId.toString())
-                    .setObfuscatedProfileId(it.email)
+                    .setObfuscatedProfileId(obfuscate(it.email))
                     .build()
 
                 val result = billingClient?.launchBillingFlow(activity, billingFlowParams)
@@ -336,7 +349,7 @@ class BillingViewModel(
                 val billingFlowParams = BillingFlowParams.newBuilder()
                     .setProductDetailsParamsList(listOf(params.build()))
                     .setObfuscatedAccountId(it.deviceId.toString())
-                    .setObfuscatedProfileId(it.email)
+                    .setObfuscatedProfileId(obfuscate(it.email))
                     .build()
 
                 val result = billingClient?.launchBillingFlow(activity, billingFlowParams)
