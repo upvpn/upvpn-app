@@ -11,6 +11,7 @@ import app.upvpn.upvpn.model.NewSession
 import app.upvpn.upvpn.model.VpnSessionStatus
 import app.upvpn.upvpn.model.VpnSessionStatusRequest
 import app.upvpn.upvpn.network.VPNApiService
+import app.upvpn.upvpn.network.retryOnClientException
 import app.upvpn.upvpn.network.toResult
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.fold
@@ -144,7 +145,9 @@ class DefaultVPNSessionRepository(
 
             if (request != null) {
                 Log.i(tag, "Ending session for $requestId: $request \n vpnSession: $vpnSession")
-                val apiResult = vpnApiService.endVpnSession(request).toResult()
+                val apiResult = retryOnClientException {
+                    vpnApiService.endVpnSession(request).toResult()
+                }
 
                 apiResult.fold(
                     success = {
