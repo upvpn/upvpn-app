@@ -116,9 +116,7 @@ struct MainViewContent26: View {
             NavigationStack {
                 SettingsView()
                     .toolbar {
-                        Button(action: { showAccountSheet.toggle() }) {
-                            Label("Close", systemImage: "xmark.circle")
-                        }
+                        Button("Close", action: { showAccountSheet.toggle() })
                     }
             }
         }

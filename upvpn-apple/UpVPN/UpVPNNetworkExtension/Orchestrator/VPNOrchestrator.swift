@@ -279,7 +279,7 @@ actor VPNOrchestrator {
 
         if case .failed = newStatus {
             os_log("vpn session failed")
-            self.lastErrorAfterAccepted = OrchestratorError.invalid("Can't provision server. Please try again")
+            self.lastErrorAfterAccepted = OrchestratorError.invalid("Unavailable. Please try again or choose a different location.")
         }
 
         let newOrchestratorState = self.orchestratorState.newStateFromUpdate(status: newStatus, location: location)

@@ -119,7 +119,7 @@ class DefaultVPNSessionRepository : VPNSessionRepository {
         // stop watcher
         self.stopVpnSessionWatcherTask()
 
-        do {
+        do throws(any Error) {
             // make api call
             let device = try await DeviceStore.getDevice().get()
 
