@@ -41,7 +41,7 @@ struct PlanManagement: View {
             planViewModel.reloadUserPlan()
         }
         .navigationTitle("Plan")
-        .frame(minWidth: 400, minHeight: 400)
+        .frame(minWidth: 400, minHeight: 450)
         .onReceive(planViewModel.$purchaseError) { error in
             if let error = error, !error.isEmpty {
                 isPurchaseErrorPresented = true
