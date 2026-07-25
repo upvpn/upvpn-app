@@ -77,7 +77,7 @@ class LocationViewModel: ObservableObject {
                         self.locations = locations
                         if !self.locations.isEmpty && self.selected == nil {
                             self.selected = self.locations.first { location in
-                                location.city.lowercased() == "ashburn" } ?? self.locations[0]
+                                location.city.lowercased().contains("ashburn") } ?? self.locations[0]
                             self.loading = false
                         }
 
