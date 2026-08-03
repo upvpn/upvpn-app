@@ -4,7 +4,7 @@ import { MdContentCopy } from "react-icons/md";
 import Layout from "../components/Layout";
 import Navbar from "../components/Navbar";
 
-const REFERRAL_MESSAGE = "Check out this cool VPN app! https://UpVPN.app";
+const REFERRAL_MESSAGE = "Check out this cool VPN app! https://UpVPN.app - Use promo code UPVPN to unlock a discount.";
 
 function Refer() {
   const onCopy = async () => {
