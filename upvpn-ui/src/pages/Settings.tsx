@@ -7,7 +7,7 @@ import VpnStatusContext, {
   VpnStatusContextInterface,
 } from "../context/VpnStatusContext";
 import { handleEnterKey, handleError, isVpnInProgress } from "../lib/util";
-import { UiError } from "../lib/types";
+import { AccountInfo, UiError } from "../lib/types";
 import { toast } from "react-hot-toast";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight, MdOpenInNew } from "react-icons/md";
@@ -19,6 +19,7 @@ function Settings({}: Props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [appVersion, setAppVersion] = useState("");
   const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [email, setEmail] = useState("");
 
   const { vpnStatus } = useContext(
     VpnStatusContext
@@ -64,6 +65,17 @@ function Settings({}: Props) {
   }, []);
 
   useEffect(() => {
+    const fetchAccountInfo = async () => {
+      try {
+        const accountInfo = await invoke<AccountInfo>("account_info");
+        setEmail(accountInfo.email);
+      } catch (e) {}
+    };
+
+    fetchAccountInfo();
+  }, []);
+
+  useEffect(() => {
     const isUpdateAvailable = async () => {
       try {
         const isAvailable = await invoke<boolean>("update_available");
@@ -87,6 +99,25 @@ function Settings({}: Props) {
               Account
             </div>
             <ul className="menu bg-base-100 p-1 gap-1 rounded-box">
+              {email.length > 0 && (
+                <li className="pointer-events-none">
+                  <div className="flex flex-row justify-between">
+                    <span>Email</span>
+                    <span className="opacity-70">{email}</span>
+                  </div>
+                </li>
+              )}
+              <li>
+                <div
+                  className="flex flex-row justify-between"
+                  tabIndex={0}
+                  onClick={() => navigate("/plan")}
+                  onKeyDown={handleEnterKey(() => navigate("/plan"))}
+                >
+                  <span>Plan</span>
+                  <MdKeyboardArrowRight size="1.5em" />
+                </div>
+              </li>
               <li>
                 <a
                   href={`${import.meta.env.UPVPN_URL}/dashboard`}

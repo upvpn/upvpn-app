@@ -9,7 +9,9 @@ import { LocationProvider } from "./context/LocationContext";
 import { VpnStatusProvider } from "./context/VpnStatusContext";
 import Settings from "./pages/Settings";
 import Help from "./pages/Help";
+import Plan from "./pages/Plan";
 import { NotificationProvider } from "./context/NotificationContext";
+import NotificationDialog from "./components/NotificationDialog";
 
 function App() {
   return (
@@ -23,10 +25,12 @@ function App() {
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/help" element={<Help />} />
+                <Route path="/plan" element={<Plan />} />
               </Route>
               <Route path="/daemon-offline" element={<DaemonOffline />} />
               <Route path="/sign-in" element={<SignIn />} />
             </Routes>
+            <NotificationDialog />
           </NotificationProvider>
         </VpnStatusProvider>
       </LocationProvider>

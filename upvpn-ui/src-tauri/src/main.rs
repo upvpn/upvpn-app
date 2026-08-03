@@ -11,6 +11,7 @@ mod google_auth;
 mod state;
 mod system_tray;
 
+use commands::account::{account_info, checkout, user_plan};
 use commands::auth::{cancel_google_sign_in, google_sign_in, is_signed_in, sign_in, sign_out};
 use commands::daemon_online::is_daemon_online;
 use commands::desktop_notification::send_desktop_notification;
@@ -56,6 +57,9 @@ fn main() {
             send_desktop_notification,
             open_license,
             open_log_file,
+            account_info,
+            user_plan,
+            checkout,
         ])
         .plugin(
             tauri_plugin_log::Builder::default()
