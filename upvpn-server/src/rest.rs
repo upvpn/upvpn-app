@@ -6,7 +6,10 @@ use upvpn_types::rest::*;
 #[derive(Debug)]
 pub enum RestError {
     Http(reqwest::Error),
-    Api { status: u16, error: ApiErrorResponse },
+    Api {
+        status: u16,
+        error: ApiErrorResponse,
+    },
 }
 
 impl fmt::Display for RestError {
@@ -38,11 +41,10 @@ async fn handle_response<Resp: DeserializeOwned>(
     if !response.status().is_success() {
         let status = response.status().as_u16();
         let body = response.text().await.unwrap_or_default();
-        let error =
-            serde_json::from_str::<ApiErrorResponse>(&body).unwrap_or(ApiErrorResponse {
-                error_type: "unknown".into(),
-                message: body,
-            });
+        let error = serde_json::from_str::<ApiErrorResponse>(&body).unwrap_or(ApiErrorResponse {
+            error_type: "unknown".into(),
+            message: body,
+        });
         return Err(RestError::Api { status, error });
     }
 

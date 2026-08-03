@@ -115,9 +115,7 @@ pub async fn google_sign_in(
 }
 
 #[tauri::command]
-pub async fn cancel_google_sign_in(
-    state: tauri::State<'_, AppState>,
-) -> Result<(), Error> {
+pub async fn cancel_google_sign_in(state: tauri::State<'_, AppState>) -> Result<(), Error> {
     let guard = state.lock().await;
     if let Some(cancel_token) = &guard.google_sign_in_cancel {
         cancel_token.cancel();

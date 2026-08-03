@@ -1,9 +1,9 @@
 use tokio::sync::{mpsc, oneshot};
 use upvpn_controller::auth::Auth;
-use upvpn_types::account::AccountInfo;
 use upvpn_migration::sea_orm::DatabaseConnection;
 use upvpn_server::rest::ServerRestApiNoAuth;
 use upvpn_server::{ServerApi, ServerApiNoAuth};
+use upvpn_types::account::AccountInfo;
 use upvpn_types::rest::{SsoAddDeviceRequest, SsoCredentials, SsoDeviceInfo};
 use upvpn_types::upvpn_server::{AddDeviceRequest, UserCredentials};
 
@@ -32,11 +32,7 @@ impl DeviceHandler {
             .await
     }
 
-    pub async fn sso_sign_in(
-        &self,
-        provider: String,
-        id_token: String,
-    ) -> Result<(), DeviceError> {
+    pub async fn sso_sign_in(&self, provider: String, id_token: String) -> Result<(), DeviceError> {
         self.send_command(move |tx| DeviceCommand::SsoSignIn(tx, provider, id_token))
             .await
     }
@@ -272,10 +268,7 @@ impl DeviceService {
         };
 
         let request = SsoAddDeviceRequest {
-            sso_credentials: SsoCredentials {
-                provider,
-                id_token,
-            },
+            sso_credentials: SsoCredentials { provider, id_token },
             device_info: SsoDeviceInfo {
                 name: device_details.name.clone(),
                 version: device_details.version.clone(),
