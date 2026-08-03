@@ -20,7 +20,7 @@ function Refer() {
     <Layout activeSettings={true}>
       <div className="flex flex-col h-full">
         <Navbar header="Refer a Friend" />
-        <div className="mx-2 flex flex-col gap-3">
+        <div className="mx-3 flex flex-col gap-3">
           <div className="card bg-base-200 border border-base-300 shadow-sm rounded-box">
             <div className="card-body px-4 py-3">
               <div className="flex flex-row justify-between items-center gap-2">

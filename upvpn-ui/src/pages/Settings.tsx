@@ -92,7 +92,7 @@ function Settings({}: Props) {
     <Layout activeSettings={true}>
       <div className="flex flex-col h-full">
         <Navbar header="Account" />
-        <div className="mx-2 flex flex-col gap-3">
+        <div className="mx-3 flex flex-col gap-3">
           {/* Profile Section */}
           <div>
             <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">

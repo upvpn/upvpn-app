@@ -102,7 +102,7 @@ const Locations = (props: Props) => {
           {loadingLocations ? <Spinner className="w-20 h-20" /> : <></>}
         </div>
         {!loadingLocations && locations.length > 0 && filtered.length == 0 ? (
-          <div className="mx-2 my-2">
+          <div className="mx-3 my-2">
             <div className="alert">
               <div>
                 <svg
@@ -131,7 +131,7 @@ const Locations = (props: Props) => {
         ) : (
           <></>
         )}
-        <div className="mx-2">
+        <div className="mx-3">
           <LocationList enabled={listEnabled} locations={filtered} />
         </div>
       </div>

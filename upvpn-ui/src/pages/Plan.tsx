@@ -182,7 +182,7 @@ function Plan() {
 
         {!loading && !errored && userPlan !== undefined && (
           <div className="flex flex-col flex-1 min-h-0">
-            <div className="flex-1 overflow-y-auto mx-2 flex flex-col gap-3 pb-2">
+            <div className="flex-1 overflow-y-auto mx-3 flex flex-col gap-3 pb-2">
               <CurrentPlan userPlan={userPlan} />
 
               {userPlan.type === "PayAsYouGo" && (
