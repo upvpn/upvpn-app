@@ -58,7 +58,7 @@ const CurrentPlan = ({ userPlan }: CurrentPlanProps) => {
       <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
         Current Plan
       </div>
-      <div className="card bg-base-100 rounded-box">
+      <div className="card bg-base-200 border border-base-300 shadow-sm rounded-box">
         <div className="card-body px-4 py-3">
           {userPlan.type === "PayAsYouGo" && (
             <div className="flex flex-row justify-between">
@@ -140,9 +140,19 @@ function Plan() {
       return "Buy Now";
     }
     if (selected.type === "PayAsYouGo") {
-      return `Add ${dollars(selected.content)} Credit`;
+      return `Add ${dollars(selected.content)} to balance`;
     }
-    return `Buy Yearly ${dollars(YEARLY_PRICE_CENTS)}/year`;
+    return "Upgrade";
+  };
+
+  const selectionHeading = () => {
+    if (selected === undefined) {
+      return "";
+    }
+    if (selected.type === "PayAsYouGo") {
+      return "Prepaid balance never expires.";
+    }
+    return "Yearly at just $3.33/mo. Unlimited data.";
   };
 
   return (
@@ -172,19 +182,19 @@ function Plan() {
 
         {!loading && !errored && userPlan !== undefined && (
           <div className="flex flex-col flex-1 min-h-0">
-            <div className="flex-1 overflow-y-auto mx-2 flex flex-col gap-4 pb-4">
+            <div className="flex-1 overflow-y-auto mx-2 flex flex-col gap-3 pb-2">
               <CurrentPlan userPlan={userPlan} />
 
               {userPlan.type === "PayAsYouGo" && (
                 <>
-                  <div className="card bg-base-100 rounded-box">
+                  <div className="card bg-base-200 border border-base-300 shadow-sm rounded-box">
                     <div className="card-body px-4 py-3 gap-1">
                       <h2 className="font-semibold">Prepaid Credit</h2>
                       <p className="text-sm opacity-70">
                         Add to Pay-as-you-go balance
                       </p>
-                      <div className="divider my-1"></div>
-                      <div className="grid grid-cols-2 gap-4 justify-items-center py-2">
+                      <div className="divider my-0"></div>
+                      <div className="grid grid-cols-2 gap-3 justify-items-center py-1">
                         {PREPAID_AMOUNTS_CENTS.map((amountCents) => (
                           <PriceCapsule
                             key={amountCents}
@@ -206,7 +216,7 @@ function Plan() {
                   </div>
 
                   <div
-                    className="card bg-base-100 rounded-box cursor-pointer"
+                    className="card bg-base-200 border border-base-300 shadow-sm rounded-box cursor-pointer"
                     onClick={() => setSelected({ type: "AnnualSubscription" })}
                   >
                     <div className="card-body px-4 py-3">
@@ -235,6 +245,13 @@ function Plan() {
 
             {userPlan.type === "PayAsYouGo" && (
               <div className="flex flex-col gap-2 px-4 pb-4">
+                <p
+                  className={`text-sm text-center opacity-70 min-h-10 px-2 flex items-center justify-center ${
+                    selected === undefined ? "invisible" : ""
+                  }`}
+                >
+                  {selectionHeading()}
+                </p>
                 <button
                   className="btn btn-info w-full"
                   disabled={selected === undefined || purchasing}
