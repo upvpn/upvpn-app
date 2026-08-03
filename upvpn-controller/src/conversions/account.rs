@@ -6,3 +6,12 @@ impl From<crate::proto::SignInRequest> for upvpn_types::upvpn_server::UserCreden
         }
     }
 }
+
+impl From<upvpn_types::account::AccountInfo> for crate::proto::AccountInfo {
+    fn from(value: upvpn_types::account::AccountInfo) -> Self {
+        Self {
+            email: value.email.unwrap_or_default(),
+            token: value.token.unwrap_or_default(),
+        }
+    }
+}

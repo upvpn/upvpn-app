@@ -45,8 +45,10 @@ message SsoSignInRequest {
 }
 
 message AccountInfo {
+    // empty when email is unknown (signed in before app update that stores email)
     string email = 1;
-    uint32 balance = 2;
+    // device token to call server rest api
+    string token = 2;
 }
 
 message Notifications {
