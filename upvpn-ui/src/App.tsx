@@ -10,6 +10,7 @@ import { VpnStatusProvider } from "./context/VpnStatusContext";
 import Settings from "./pages/Settings";
 import Help from "./pages/Help";
 import Plan from "./pages/Plan";
+import Refer from "./pages/Refer";
 import { NotificationProvider } from "./context/NotificationContext";
 import NotificationDialog from "./components/NotificationDialog";
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/plan" element={<Plan />} />
+                <Route path="/refer" element={<Refer />} />
               </Route>
               <Route path="/daemon-offline" element={<DaemonOffline />} />
               <Route path="/sign-in" element={<SignIn />} />
