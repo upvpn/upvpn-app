@@ -30,10 +30,16 @@ const isSamePlan = (a: PurchasePlan | undefined, b: PurchasePlan): boolean => {
 type PriceCapsuleProps = {
   price: string;
   isSelected: boolean;
+  disabled: boolean;
   onClick: () => void;
 };
 
-const PriceCapsule = ({ price, isSelected, onClick }: PriceCapsuleProps) => {
+const PriceCapsule = ({
+  price,
+  isSelected,
+  disabled,
+  onClick,
+}: PriceCapsuleProps) => {
   return (
     <button
       className={`btn btn-sm rounded-full font-semibold text-info bg-base-100 hover:bg-base-100 ${
@@ -41,6 +47,7 @@ const PriceCapsule = ({ price, isSelected, onClick }: PriceCapsuleProps) => {
           ? "border-2 border-info hover:border-info"
           : "border-2 border-transparent hover:border-transparent"
       }`}
+      disabled={disabled}
       onClick={onClick}
     >
       {price}
@@ -91,6 +98,8 @@ function Plan() {
   const [errored, setErrored] = useState(false);
   const [selected, setSelected] = useState<PurchasePlan | undefined>(undefined);
   const [purchasing, setPurchasing] = useState(false);
+
+  const canPurchase = userPlan?.type === "PayAsYouGo";
 
   const loadUserPlan = async () => {
     setErrored(false);
@@ -185,65 +194,65 @@ function Plan() {
             <div className="flex-1 overflow-y-auto mx-3 flex flex-col gap-3 pb-2">
               <CurrentPlan userPlan={userPlan} />
 
-              {userPlan.type === "PayAsYouGo" && (
-                <>
-                  <div className="card bg-base-200 border border-base-300 shadow-sm rounded-box">
-                    <div className="card-body px-4 py-3 gap-1">
-                      <h2 className="font-semibold">Prepaid Credit</h2>
-                      <p className="text-sm opacity-70">
-                        Add to Pay-as-you-go balance
-                      </p>
-                      <div className="divider my-0"></div>
-                      <div className="grid grid-cols-2 gap-3 justify-items-center py-1">
-                        {PREPAID_AMOUNTS_CENTS.map((amountCents) => (
-                          <PriceCapsule
-                            key={amountCents}
-                            price={dollars(amountCents)}
-                            isSelected={isSamePlan(selected, {
-                              type: "PayAsYouGo",
-                              content: amountCents,
-                            })}
-                            onClick={() =>
-                              setSelected({
-                                type: "PayAsYouGo",
-                                content: amountCents,
-                              })
-                            }
-                          />
-                        ))}
-                      </div>
-                    </div>
+              <div className="card bg-base-200 border border-base-300 shadow-sm rounded-box">
+                <div className="card-body px-4 py-3 gap-1">
+                  <h2 className="font-semibold">Prepaid Credit</h2>
+                  <p className="text-sm opacity-70">
+                    Add to Pay-as-you-go balance
+                  </p>
+                  <div className="divider my-0"></div>
+                  <div className="grid grid-cols-2 gap-3 justify-items-center py-1">
+                    {PREPAID_AMOUNTS_CENTS.map((amountCents) => (
+                      <PriceCapsule
+                        key={amountCents}
+                        price={dollars(amountCents)}
+                        isSelected={isSamePlan(selected, {
+                          type: "PayAsYouGo",
+                          content: amountCents,
+                        })}
+                        disabled={!canPurchase}
+                        onClick={() =>
+                          setSelected({
+                            type: "PayAsYouGo",
+                            content: amountCents,
+                          })
+                        }
+                      />
+                    ))}
                   </div>
+                </div>
+              </div>
 
-                  <div
-                    className="card bg-base-200 border border-base-300 shadow-sm rounded-box cursor-pointer"
-                    onClick={() => setSelected({ type: "AnnualSubscription" })}
-                  >
-                    <div className="card-body px-4 py-3">
-                      <div className="flex flex-row justify-between items-center">
-                        <div className="flex flex-col gap-1">
-                          <h2 className="font-semibold">Yearly Plan</h2>
-                          <p className="text-sm opacity-70">
-                            Get unlimited data
-                          </p>
-                        </div>
-                        <PriceCapsule
-                          price={`${dollars(YEARLY_PRICE_CENTS)}/year`}
-                          isSelected={isSamePlan(selected, {
-                            type: "AnnualSubscription",
-                          })}
-                          onClick={() =>
-                            setSelected({ type: "AnnualSubscription" })
-                          }
-                        />
-                      </div>
+              <div
+                className={`card bg-base-200 border border-base-300 shadow-sm rounded-box ${
+                  canPurchase ? "cursor-pointer" : ""
+                }`}
+                onClick={() => {
+                  if (canPurchase) {
+                    setSelected({ type: "AnnualSubscription" });
+                  }
+                }}
+              >
+                <div className="card-body px-4 py-3">
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="flex flex-col gap-1">
+                      <h2 className="font-semibold">Yearly Plan</h2>
+                      <p className="text-sm opacity-70">Get unlimited data</p>
                     </div>
+                    <PriceCapsule
+                      price={`${dollars(YEARLY_PRICE_CENTS)}/year`}
+                      isSelected={isSamePlan(selected, {
+                        type: "AnnualSubscription",
+                      })}
+                      disabled={!canPurchase}
+                      onClick={() => setSelected({ type: "AnnualSubscription" })}
+                    />
                   </div>
-                </>
-              )}
+                </div>
+              </div>
             </div>
 
-            {userPlan.type === "PayAsYouGo" && (
+            {canPurchase && (
               <div className="flex flex-col gap-2 px-4 pb-4">
                 <p
                   className={`text-sm text-center opacity-70 min-h-10 px-2 flex items-center justify-center ${
