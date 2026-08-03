@@ -2,6 +2,7 @@
 
 pub mod prelude;
 
+pub mod account;
 pub mod device;
 pub mod recent_locations;
 pub mod token;

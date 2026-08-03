@@ -8,6 +8,9 @@ import VpnStatusContext, {
 } from "../context/VpnStatusContext";
 import { handleEnterKey, handleError, isVpnInProgress } from "../lib/util";
 import { UiError } from "../lib/types";
+import AccountContext, {
+  AccountContextInterface,
+} from "../context/AccountContext";
 import { toast } from "react-hot-toast";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight, MdOpenInNew } from "react-icons/md";
@@ -23,6 +26,10 @@ function Settings({}: Props) {
   const { vpnStatus } = useContext(
     VpnStatusContext
   ) as VpnStatusContextInterface;
+
+  const { email, emailLoaded, getAccountInfo, clearAccount } = useContext(
+    AccountContext
+  ) as AccountContextInterface;
 
   const navigate = useNavigate();
 
@@ -42,6 +49,7 @@ function Settings({}: Props) {
     const signOut = async () => {
       try {
         await invoke("sign_out");
+        clearAccount();
         navigate("/sign-in");
       } catch (e) {
         const error = e as UiError;
@@ -64,6 +72,10 @@ function Settings({}: Props) {
   }, []);
 
   useEffect(() => {
+    getAccountInfo();
+  }, []);
+
+  useEffect(() => {
     const isUpdateAvailable = async () => {
       try {
         const isAvailable = await invoke<boolean>("update_available");
@@ -80,23 +92,37 @@ function Settings({}: Props) {
     <Layout activeSettings={true}>
       <div className="flex flex-col h-full">
         <Navbar header="Account" />
-        <div className="mx-2 flex flex-col gap-4">
-          {/* Account Section */}
+        <div className="mx-3 flex flex-col gap-3">
+          {/* Profile Section */}
           <div>
             <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
-              Account
+              Profile
             </div>
-            <ul className="menu bg-base-100 p-1 gap-1 rounded-box">
+            <ul className="menu bg-base-200 border border-base-300 shadow-sm p-1 gap-1 rounded-box overflow-hidden">
+              {(email.length > 0 || !emailLoaded) && (
+                <li className="pointer-events-none">
+                  <div className="flex flex-row justify-between">
+                    <span>Email</span>
+                    {email.length > 0 ? (
+                      <span className="opacity-70 text-xs min-w-0 truncate">
+                        {email}
+                      </span>
+                    ) : (
+                      <span className="animate-pulse bg-base-300 rounded h-4 w-36"></span>
+                    )}
+                  </div>
+                </li>
+              )}
               <li>
-                <a
-                  href={`${import.meta.env.UPVPN_URL}/dashboard`}
-                  target="_blank"
+                <div
                   className="flex flex-row justify-between"
                   tabIndex={0}
+                  onClick={() => navigate("/plan")}
+                  onKeyDown={handleEnterKey(() => navigate("/plan"))}
                 >
-                  <span>Dashboard</span>
-                  <MdOpenInNew size="1.5em" />
-                </a>
+                  <span>Plan</span>
+                  <MdKeyboardArrowRight size="1.5em" />
+                </div>
               </li>
               <li>
                 <div
@@ -127,29 +153,54 @@ function Settings({}: Props) {
               </li>
             </ul>
           </div>
-        </div>
 
-        {/* Version at bottom */}
-        <div className="flex-1 mb-5">
-          <div className="flex flex-col gap-2 h-full justify-end">
-            <a
-              className={`self-center btn btn-ghost btn-wide gap-2 ${
-                updateAvailable ? "" : "hidden"
-              }`}
-              href={`${import.meta.env.UPVPN_URL}/download`}
-              target="_blank"
-            >
-              <p>Update available</p>
-              <MdOpenInNew size="1.5em" />
-            </a>
-            <div
-              className={`self-center badge badge-lg text-info ${
-                appVersion.length > 0 ? "" : "hidden"
-              }`}
-              tabIndex={0}
-            >
-              Version: {appVersion}
+          {/* Referrals Section */}
+          <div>
+            <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
+              Referrals
             </div>
+            <ul className="menu bg-base-200 border border-base-300 shadow-sm p-1 gap-1 rounded-box">
+              <li>
+                <div
+                  className="flex flex-row justify-between"
+                  tabIndex={0}
+                  onClick={() => navigate("/refer")}
+                  onKeyDown={handleEnterKey(() => navigate("/refer"))}
+                >
+                  <span>Refer a friend</span>
+                  <MdKeyboardArrowRight size="1.5em" />
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* Version Section */}
+          <div className="mb-5">
+            <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
+              Version
+            </div>
+            <ul className="menu bg-base-200 border border-base-300 shadow-sm p-1 gap-1 rounded-box">
+              <li className={updateAvailable ? "" : "pointer-events-none"}>
+                {updateAvailable ? (
+                  <a
+                    href={`${import.meta.env.UPVPN_URL}/download`}
+                    target="_blank"
+                    className="flex flex-row justify-between"
+                    tabIndex={0}
+                  >
+                    <span className="opacity-70">{appVersion}</span>
+                    <span className="flex flex-row items-center gap-2 text-info">
+                      <span>Update available</span>
+                      <MdOpenInNew size="1.5em" />
+                    </span>
+                  </a>
+                ) : (
+                  <div className="flex flex-row justify-between">
+                    <span className="opacity-70">{appVersion}</span>
+                  </div>
+                )}
+              </li>
+            </ul>
           </div>
         </div>
       </div>

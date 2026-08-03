@@ -1,3 +1,4 @@
+pub(crate) mod account;
 pub(crate) mod auth;
 pub(crate) mod daemon_online;
 pub(crate) mod desktop_notification;

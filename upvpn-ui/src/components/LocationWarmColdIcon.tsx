@@ -5,6 +5,7 @@ import VpnStatusContext, {
   VpnStatusContextInterface,
 } from "../context/VpnStatusContext";
 import { isVpnInProgress } from "../lib/util";
+import Spinner from "./Spinner";
 
 type Props = {
   location: Location;
@@ -18,6 +19,10 @@ const LocationWarmColdIcon = ({ location, arrow }: Props) => {
 
   if (isVpnInProgress(vpnStatus)) {
     if (arrow) {
+      // session is transitioning (not connected yet, or disconnecting)
+      if (vpnStatus !== undefined && vpnStatus.type !== "Connected") {
+        return <Spinner className="h-6 w-6" />;
+      }
       return <MdKeyboardArrowRight size="1.5em" />;
     } else {
       <></>;

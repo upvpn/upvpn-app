@@ -32,8 +32,22 @@ export interface Notification {
 export type UiError =
     | { type: "DaemonIsOffline" }
     | { type: "Grpc"; code: number; message: string }
-    | { type: "GoogleAuthError"; message: string };
+    | { type: "GoogleAuthError"; message: string }
+    | { type: "Rest"; status: number; message: string }
+    | { type: "Opener"; message: string };
 
 export enum Code {
     Unauthenticated = 16
 }
+
+export interface AccountInfo {
+    email: string;
+}
+
+export type UserPlan =
+    | { type: "PayAsYouGo"; content: { balance: number } }
+    | { type: "AnnualSubscription" };
+
+export type PurchasePlan =
+    | { type: "PayAsYouGo"; content: number }
+    | { type: "AnnualSubscription" };

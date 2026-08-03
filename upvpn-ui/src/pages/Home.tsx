@@ -16,7 +16,6 @@ import {
   handleEnterKey,
   isVpnInProgress,
 } from "../lib/util";
-import NotificationList from "../components/NotificationList";
 import RecentLocations from "../components/RecentLocations";
 import NotificationContext, {
   NotificationContextInterface,
@@ -52,7 +51,7 @@ function Home({}: Props) {
     VpnStatusContext
   ) as VpnStatusContextInterface;
 
-  const { notifications, getNotifications, notificationLoading } = useContext(
+  const { getNotifications } = useContext(
     NotificationContext
   ) as NotificationContextInterface;
 
@@ -307,21 +306,10 @@ function Home({}: Props) {
           </div>
         </div>
         <div className="mx-3 mt-3 mb-3 flex-1 min-h-0">
-          <div
-            className={
-              notifications.length > 0 && !notificationLoading
-                ? "block h-full"
-                : "hidden"
-            }
-          >
-            {<NotificationList notifications={notifications} />}
-          </div>
-          <div className={notifications.length == 0 ? "block h-full" : "hidden"}>
-            <RecentLocations
-              locations={filteredRecentLocations}
-              disabled={recentLocationsDisabled}
-            />
-          </div>
+          <RecentLocations
+            locations={filteredRecentLocations}
+            disabled={recentLocationsDisabled}
+          />
         </div>
       </div>
     </Layout>

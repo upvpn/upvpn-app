@@ -106,6 +106,29 @@ export const handleError = (error: UiError, navigate: NavigateFunction, isSignIn
             logError(`Google auth error: ${error.message}`);
             toast.error(error.message);
             break;
+        case "Rest":
+            logError(`status: ${error.status}, type: ${error.type}, message: ${error.message}`);
+            if (error.status === 401 && !isSignInPage) {
+                // token is no longer valid: sign out and redirect to sign in
+                try {
+                    const signOut = async () => {
+                        await invoke("sign_out");
+                    }
+
+                    signOut();
+                    navigate("/sign-in");
+                } catch (e) {
+                    logError(`error ${e} occurred when handling sign out after unauthorized`);
+                    toast.error(error.message)
+                }
+            } else {
+                toast.error(error.message);
+            }
+            break;
+        case "Opener":
+            logError(`Opener error: ${error.message}`);
+            toast.error(error.message);
+            break;
     }
 }
 

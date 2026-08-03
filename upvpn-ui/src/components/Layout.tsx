@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import {
+  MdOutlineAccountCircle,
   MdOutlineHome,
   MdOutlineLocationOn,
-  MdOutlineManageAccounts,
 } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -46,7 +46,7 @@ function Layout(props: Props) {
           className={`flex flex-col items-center justify-center h-full flex-1 text-info ${props.activeSettings ? "border-t-2 border-current bg-base-100" : ""}`}
           onClick={() => navigate("/settings")}
         >
-          <MdOutlineManageAccounts size="1.5em" />
+          <MdOutlineAccountCircle size="1.5em" />
         </button>
       </div>
     </div>

@@ -12,12 +12,18 @@ pub fn copy_to_desktop_and_open(app_handle: &AppHandle, src: PathBuf) {
         let filename = src.file_name().unwrap();
         let new_path = dir.join(filename);
         if std::fs::copy(&src, &new_path).is_ok() {
-            let _ = app_handle.opener().open_path(new_path.to_str().unwrap(), None::<&str>);
+            let _ = app_handle
+                .opener()
+                .open_path(new_path.to_str().unwrap(), None::<&str>);
         } else {
-            let _ = app_handle.opener().open_path(src.to_str().unwrap(), None::<&str>);
+            let _ = app_handle
+                .opener()
+                .open_path(src.to_str().unwrap(), None::<&str>);
         }
     } else {
-        let _ = app_handle.opener().open_path(src.to_str().unwrap(), None::<&str>);
+        let _ = app_handle
+            .opener()
+            .open_path(src.to_str().unwrap(), None::<&str>);
     }
 }
 

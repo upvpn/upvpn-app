@@ -4,6 +4,7 @@ mod m20230603_133547_create_vpn_session;
 mod m20230603_133704_create_device;
 mod m20230603_133805_create_token;
 mod m20230603_133832_create_recent_locations;
+mod m20260802_000001_create_account;
 
 pub struct Migrator;
 
@@ -15,6 +16,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20230603_133704_create_device::Migration),
             Box::new(m20230603_133805_create_token::Migration),
             Box::new(m20230603_133832_create_recent_locations::Migration),
+            Box::new(m20260802_000001_create_account::Migration),
         ]
     }
 }

@@ -11,19 +11,20 @@ type Props = {
 
 function Country({ country_code, locations, enabled }: Props) {
   return (
-    <ul className="menu bg-base-100 p-1 rounded-box">
-      <li className="menu-title">
-        <div>{locations[0].country}</div>
-      </li>
-
-      {locations.map((loc) => {
-        return (
-          <li key={loc.code}>
-            <City location={loc} enabled={enabled} />
-          </li>
-        );
-      })}
-    </ul>
+    <div>
+      <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
+        {locations[0].country}
+      </div>
+      <ul className="menu bg-base-200 border border-base-300 shadow-sm p-1 gap-1 rounded-box">
+        {locations.map((loc) => {
+          return (
+            <li key={loc.code}>
+              <City location={loc} enabled={enabled} />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
