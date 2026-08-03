@@ -32,6 +32,24 @@ impl From<reqwest::Error> for RestError {
     }
 }
 
+async fn handle_response<Resp: DeserializeOwned>(
+    response: reqwest::Response,
+) -> Result<Resp, RestError> {
+    if !response.status().is_success() {
+        let status = response.status().as_u16();
+        let body = response.text().await.unwrap_or_default();
+        let error =
+            serde_json::from_str::<ApiErrorResponse>(&body).unwrap_or(ApiErrorResponse {
+                error_type: "unknown".into(),
+                message: body,
+            });
+        return Err(RestError::Api { status, error });
+    }
+
+    let body = response.json::<Resp>().await?;
+    Ok(body)
+}
+
 pub struct ServerRestApiNoAuth {
     client: reqwest::Client,
     base_url: String,
@@ -52,21 +70,7 @@ impl ServerRestApiNoAuth {
     ) -> Result<Resp, RestError> {
         let url = format!("{}{}", self.base_url, path);
         let response = self.client.post(&url).json(request).send().await?;
-
-        if !response.status().is_success() {
-            let status = response.status().as_u16();
-            let body = response.text().await.unwrap_or_default();
-            let error = serde_json::from_str::<ApiErrorResponse>(&body).unwrap_or(
-                ApiErrorResponse {
-                    error_type: "unknown".into(),
-                    message: body,
-                },
-            );
-            return Err(RestError::Api { status, error });
-        }
-
-        let body = response.json::<Resp>().await?;
-        Ok(body)
+        handle_response(response).await
     }
 
     pub async fn exchange_token(
@@ -81,5 +85,57 @@ impl ServerRestApiNoAuth {
         request: &SsoAddDeviceRequest,
     ) -> Result<SsoAddDeviceResponse, RestError> {
         self.post("/api/v1/sso/devices", request).await
+    }
+}
+
+/// Rest API with device token as bearer token
+pub struct ServerRestApiWithAuth {
+    client: reqwest::Client,
+    base_url: String,
+    token: String,
+}
+
+impl ServerRestApiWithAuth {
+    pub fn new(token: String) -> Self {
+        Self {
+            client: reqwest::Client::new(),
+            base_url: upvpn_config::config().rest_api_host_port().to_string(),
+            token,
+        }
+    }
+
+    async fn get<Resp: DeserializeOwned>(&self, path: &str) -> Result<Resp, RestError> {
+        let url = format!("{}{}", self.base_url, path);
+        let response = self
+            .client
+            .get(&url)
+            .bearer_auth(&self.token)
+            .send()
+            .await?;
+        handle_response(response).await
+    }
+
+    async fn post<Req: serde::Serialize, Resp: DeserializeOwned>(
+        &self,
+        path: &str,
+        request: &Req,
+    ) -> Result<Resp, RestError> {
+        let url = format!("{}{}", self.base_url, path);
+        let response = self
+            .client
+            .post(&url)
+            .bearer_auth(&self.token)
+            .json(request)
+            .send()
+            .await?;
+        handle_response(response).await
+    }
+
+    pub async fn current_user_plan(&self) -> Result<UserPlan, RestError> {
+        self.get("/api/v1/plan/current").await
+    }
+
+    pub async fn checkout(&self, purchase_plan: &PurchasePlan) -> Result<CheckoutUrl, RestError> {
+        self.post("/api/v1/checkout", purchase_plan).await
     }
 }
