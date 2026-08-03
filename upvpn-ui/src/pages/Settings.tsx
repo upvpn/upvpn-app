@@ -7,7 +7,10 @@ import VpnStatusContext, {
   VpnStatusContextInterface,
 } from "../context/VpnStatusContext";
 import { handleEnterKey, handleError, isVpnInProgress } from "../lib/util";
-import { AccountInfo, UiError } from "../lib/types";
+import { UiError } from "../lib/types";
+import AccountContext, {
+  AccountContextInterface,
+} from "../context/AccountContext";
 import { toast } from "react-hot-toast";
 import Navbar from "../components/Navbar";
 import { MdKeyboardArrowRight, MdOpenInNew } from "react-icons/md";
@@ -19,11 +22,14 @@ function Settings({}: Props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [appVersion, setAppVersion] = useState("");
   const [updateAvailable, setUpdateAvailable] = useState(false);
-  const [email, setEmail] = useState("");
 
   const { vpnStatus } = useContext(
     VpnStatusContext
   ) as VpnStatusContextInterface;
+
+  const { email, emailLoaded, getAccountInfo, clearAccount } = useContext(
+    AccountContext
+  ) as AccountContextInterface;
 
   const navigate = useNavigate();
 
@@ -43,6 +49,7 @@ function Settings({}: Props) {
     const signOut = async () => {
       try {
         await invoke("sign_out");
+        clearAccount();
         navigate("/sign-in");
       } catch (e) {
         const error = e as UiError;
@@ -65,14 +72,7 @@ function Settings({}: Props) {
   }, []);
 
   useEffect(() => {
-    const fetchAccountInfo = async () => {
-      try {
-        const accountInfo = await invoke<AccountInfo>("account_info");
-        setEmail(accountInfo.email);
-      } catch (e) {}
-    };
-
-    fetchAccountInfo();
+    getAccountInfo();
   }, []);
 
   useEffect(() => {
@@ -99,13 +99,17 @@ function Settings({}: Props) {
               Profile
             </div>
             <ul className="menu bg-base-200 border border-base-300 shadow-sm p-1 gap-1 rounded-box overflow-hidden">
-              {email.length > 0 && (
+              {(email.length > 0 || !emailLoaded) && (
                 <li className="pointer-events-none">
                   <div className="flex flex-row justify-between">
                     <span>Email</span>
-                    <span className="opacity-70 whitespace-nowrap text-xs">
-                      {email}
-                    </span>
+                    {email.length > 0 ? (
+                      <span className="opacity-70 whitespace-nowrap text-xs">
+                        {email}
+                      </span>
+                    ) : (
+                      <span className="animate-pulse bg-base-300 rounded h-4 w-36"></span>
+                    )}
                   </div>
                 </li>
               )}
