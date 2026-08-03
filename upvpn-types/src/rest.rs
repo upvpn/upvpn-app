@@ -86,6 +86,13 @@ pub enum PurchasePlan {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct CheckoutRequest {
+    pub purchase_plan: PurchasePlan,
+    pub desktop: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CheckoutUrl {
     pub url: String,
 }

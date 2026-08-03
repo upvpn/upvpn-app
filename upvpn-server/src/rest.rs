@@ -136,6 +136,10 @@ impl ServerRestApiWithAuth {
     }
 
     pub async fn checkout(&self, purchase_plan: &PurchasePlan) -> Result<CheckoutUrl, RestError> {
-        self.post("/api/v1/checkout", purchase_plan).await
+        let checkout_request = CheckoutRequest {
+            purchase_plan: purchase_plan.clone(),
+            desktop: true,
+        };
+        self.post("/api/v1/checkout", &checkout_request).await
     }
 }
