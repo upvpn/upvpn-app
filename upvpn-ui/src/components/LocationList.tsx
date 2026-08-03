@@ -30,7 +30,7 @@ function LocationList({ locations, enabled }: Props) {
   });
 
   return (
-    <div className="flex flex-col my-2 gap-2 w-full">
+    <div className="flex flex-col my-2 gap-3 w-full">
       {...countryComponents}
     </div>
   );
