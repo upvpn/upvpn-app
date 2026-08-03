@@ -290,8 +290,9 @@ impl VpnSessionStorage {
                         Some(VpnStatus::Disconnected),
                         Some(Notification {
                             id: format!("failed-{}", session_info.request_id),
-                            message: "Server could not be provisioned, please try again later"
-                                .into(),
+                            message:
+                                "Unavailable. Please try again or choose a different location."
+                                    .into(),
                             notification_type:
                                 upvpn_types::notification::NotificationType::ServerFailed,
                             timestamp: Utc::now(),
