@@ -173,29 +173,34 @@ function Settings({}: Props) {
               </li>
             </ul>
           </div>
-        </div>
 
-        {/* Version at bottom */}
-        <div className="flex-1 mb-5">
-          <div className="flex flex-col gap-2 h-full justify-end">
-            <a
-              className={`self-center btn btn-ghost btn-wide gap-2 ${
-                updateAvailable ? "" : "hidden"
-              }`}
-              href={`${import.meta.env.UPVPN_URL}/download`}
-              target="_blank"
-            >
-              <p>Update available</p>
-              <MdOpenInNew size="1.5em" />
-            </a>
-            <div
-              className={`self-center badge badge-lg text-info ${
-                appVersion.length > 0 ? "" : "hidden"
-              }`}
-              tabIndex={0}
-            >
-              Version: {appVersion}
+          {/* Version Section */}
+          <div className="mb-5">
+            <div className="text-xs font-semibold text-base-content/50 uppercase tracking-wider px-4 pb-1">
+              Version
             </div>
+            <ul className="menu bg-base-200 border border-base-300 shadow-sm p-1 gap-1 rounded-box">
+              <li className={updateAvailable ? "" : "pointer-events-none"}>
+                {updateAvailable ? (
+                  <a
+                    href={`${import.meta.env.UPVPN_URL}/download`}
+                    target="_blank"
+                    className="flex flex-row justify-between"
+                    tabIndex={0}
+                  >
+                    <span className="opacity-70">{appVersion}</span>
+                    <span className="flex flex-row items-center gap-2 text-info">
+                      <span>Update available</span>
+                      <MdOpenInNew size="1.5em" />
+                    </span>
+                  </a>
+                ) : (
+                  <div className="flex flex-row justify-between">
+                    <span className="opacity-70">{appVersion}</span>
+                  </div>
+                )}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
