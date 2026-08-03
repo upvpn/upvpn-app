@@ -8749,6 +8749,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "backoff",
+ "base64 0.22.1",
  "chrono",
  "clap 4.4.10",
  "futures",
@@ -8758,6 +8759,7 @@ dependencies = [
  "libc",
  "nix 0.26.2",
  "sea-orm",
+ "serde_json",
  "talpid-core",
  "talpid-platform-metadata",
  "talpid-types",
@@ -8800,7 +8802,7 @@ dependencies = [
 
 [[package]]
 name = "upvpn-packages"
-version = "1.0.0"
+version = "1.1.0"
 
 [[package]]
 name = "upvpn-server"
