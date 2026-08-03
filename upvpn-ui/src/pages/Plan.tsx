@@ -14,7 +14,8 @@ const PREPAID_AMOUNTS_CENTS = [499, 999, 1499, 2499];
 const YEARLY_PRICE_CENTS = 3999;
 
 const dollars = (cents: number): string => {
-  return `$${(cents / 100).toFixed(2)}`;
+  const sign = cents < 0 ? "-" : "";
+  return `${sign}$${(Math.abs(cents) / 100).toFixed(2)}`;
 };
 
 const isSamePlan = (a: PurchasePlan | undefined, b: PurchasePlan): boolean => {
