@@ -18,7 +18,7 @@ function Help() {
   };
 
   return (
-    <Layout activeSettings={true}>
+    <Layout>
       <div className="flex flex-col h-full">
         <Navbar header="Help" />
         <div className="mx-2 flex flex-col gap-4 overflow-y-auto pb-4 flex-1">

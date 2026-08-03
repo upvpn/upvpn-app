@@ -18,7 +18,7 @@ function Refer() {
   };
 
   return (
-    <Layout activeSettings={true}>
+    <Layout>
       <div className="flex flex-col h-full">
         <Navbar header="Refer a Friend" />
         <div className="mx-3 flex flex-col gap-3">
