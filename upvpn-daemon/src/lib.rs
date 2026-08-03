@@ -4,6 +4,7 @@ use talpid_core::tunnel_state_machine;
 use talpid_types::net::{AllowedEndpoint, Endpoint};
 use tokio::sync::oneshot;
 
+pub mod account_storage;
 pub mod cleanup;
 pub mod controller;
 pub mod daemon;

@@ -1,12 +1,13 @@
 use tokio::sync::{mpsc, oneshot};
 use upvpn_controller::auth::Auth;
+use upvpn_types::account::AccountInfo;
 use upvpn_migration::sea_orm::DatabaseConnection;
 use upvpn_server::rest::ServerRestApiNoAuth;
 use upvpn_server::{ServerApi, ServerApiNoAuth};
 use upvpn_types::rest::{SsoAddDeviceRequest, SsoCredentials, SsoDeviceInfo};
 use upvpn_types::upvpn_server::{AddDeviceRequest, UserCredentials};
 
-use crate::{token_storage::TokenStorage, AckTx, ResponseTx};
+use crate::{account_storage::AccountStorage, token_storage::TokenStorage, AckTx, ResponseTx};
 
 use super::{storage::DeviceStorage, DeviceError};
 
@@ -42,6 +43,11 @@ impl DeviceHandler {
 
     pub async fn sign_out(&self) -> Result<(), DeviceError> {
         self.send_command(move |tx| DeviceCommand::SignOut(tx))
+            .await
+    }
+
+    pub async fn account_info(&self) -> Result<AccountInfo, DeviceError> {
+        self.send_command(move |tx| DeviceCommand::AccountInfo(tx))
             .await
     }
 
@@ -91,6 +97,7 @@ pub enum DeviceCommand {
     SsoSignIn(ResponseTx<(), DeviceError>, String, String),
     SignOut(ResponseTx<(), DeviceError>),
     BearerToken(ResponseTx<Option<String>, DeviceError>),
+    AccountInfo(ResponseTx<AccountInfo, DeviceError>),
     IsAuthenticated(ResponseTx<bool, DeviceError>),
     Shutdown(AckTx),
     LatestAppVersion(ResponseTx<String, DeviceError>),
@@ -98,9 +105,11 @@ pub enum DeviceCommand {
 
 pub struct DeviceService {
     token: Option<String>,
+    email: Option<String>,
     rx: mpsc::UnboundedReceiver<DeviceCommand>,
     device_storage: DeviceStorage,
     token_storage: TokenStorage,
+    account_storage: AccountStorage,
 }
 
 impl DeviceService {
@@ -109,13 +118,17 @@ impl DeviceService {
         rx: mpsc::UnboundedReceiver<DeviceCommand>,
     ) -> Result<Self, DeviceError> {
         let device_storage = DeviceStorage::new(db.clone());
-        let token_storage = TokenStorage::new(db);
+        let token_storage = TokenStorage::new(db.clone());
+        let account_storage = AccountStorage::new(db);
         let token = token_storage.get_token().await?;
+        let email = account_storage.get_email().await?;
         Ok(Self {
             token,
+            email,
             rx,
             device_storage,
             token_storage,
+            account_storage,
         })
     }
 
@@ -143,6 +156,7 @@ impl DeviceService {
             }
             DeviceCommand::SignOut(tx) => self.handle_sign_out(tx).await,
             DeviceCommand::BearerToken(tx) => self.handle_bearer_token(tx).await,
+            DeviceCommand::AccountInfo(tx) => self.handle_account_info(tx).await,
             DeviceCommand::IsAuthenticated(tx) => self.handle_is_authenticated(tx).await,
             DeviceCommand::Shutdown(_) => {}
             DeviceCommand::LatestAppVersion(tx) => self.handle_latest_app_version(tx).await,
@@ -175,6 +189,8 @@ impl DeviceService {
             .map_err(DeviceError::InitError)?;
         let device_details = self.device_storage.get_device().await?.unwrap();
 
+        let email = user_creds.email.clone();
+
         let add_device_request = AddDeviceRequest {
             user_creds,
             device_info: device_details.clone().into(),
@@ -187,6 +203,10 @@ impl DeviceService {
         self.token_storage
             .save_token(add_device_response.token.clone())
             .await?;
+
+        // save account email
+        self.account_storage.save_email(email.clone()).await?;
+        self.email = Some(email);
 
         // update device ip addresses
         let device_details = self
@@ -215,6 +235,21 @@ impl DeviceService {
             self.handle_sign_in_inner(user_creds).await,
             "handle_sign_in",
         );
+    }
+
+    // id_token is verified by the server; locally only the email claim is
+    // read from its payload to know which account signed in
+    fn email_from_id_token(id_token: &str) -> Option<String> {
+        use base64::Engine;
+        let payload = id_token.split('.').nth(1)?;
+        let decoded = base64::engine::general_purpose::URL_SAFE_NO_PAD
+            .decode(payload)
+            .ok()?;
+        let claims: serde_json::Value = serde_json::from_slice(&decoded).ok()?;
+        claims
+            .get("email")
+            .and_then(|email| email.as_str())
+            .map(|email| email.to_string())
     }
 
     async fn handle_sso_sign_in_inner(
@@ -251,6 +286,8 @@ impl DeviceService {
             },
         };
 
+        let email = Self::email_from_id_token(&request.sso_credentials.id_token);
+
         let response = ServerRestApiNoAuth::new()
             .sso_add_device(&request)
             .await
@@ -260,6 +297,12 @@ impl DeviceService {
         self.token_storage
             .save_token(response.token.clone())
             .await?;
+
+        // save account email
+        if let Some(email) = email {
+            self.account_storage.save_email(email.clone()).await?;
+            self.email = Some(email);
+        }
 
         // parse ipv4 address
         let ipv4_address: std::net::Ipv4Addr = response
@@ -313,6 +356,8 @@ impl DeviceService {
         // remove from DB and memory
         self.token_storage.remove_all().await?;
         self.token = None;
+        self.account_storage.remove_all().await?;
+        self.email = None;
 
         Ok(())
     }
@@ -325,6 +370,16 @@ impl DeviceService {
         let token = self.token.clone();
         tokio::spawn(async move {
             Self::oneshot_send(tx, Ok(token), "handle_bearer_token");
+        });
+    }
+
+    async fn handle_account_info(&self, tx: ResponseTx<AccountInfo, DeviceError>) {
+        let account_info = AccountInfo {
+            email: self.email.clone(),
+            token: self.token.clone(),
+        };
+        tokio::spawn(async move {
+            Self::oneshot_send(tx, Ok(account_info), "handle_account_info");
         });
     }
 

@@ -172,7 +172,15 @@ impl ControllerService for ControllerServiceImpl {
     }
 
     async fn get_account_info(&self, _: Request<()>) -> ServiceResult<AccountInfo> {
-        todo!()
+        let (tx, rx) = oneshot::channel();
+        self.send_command_to_daemon(DaemonCommand::GetAccountInfo(tx))?;
+        let account_info = self.wait_for_result(rx).await?.map_err(map_daemon_error)?;
+
+        if account_info.token.is_none() {
+            return Err(Status::unauthenticated("please sign in first"));
+        }
+
+        Ok(Response::new(account_info.into()))
     }
 
     /// Control VPN

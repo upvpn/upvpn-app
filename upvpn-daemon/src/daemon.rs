@@ -59,6 +59,7 @@ pub enum DaemonError {
 #[derive(Debug)]
 pub enum DaemonCommand {
     IsAuthenticated(ResponseTx<bool, DaemonError>),
+    GetAccountInfo(ResponseTx<upvpn_types::account::AccountInfo, DaemonError>),
     AccountSignIn(ResponseTx<(), DaemonError>, UserCredentials),
     AccountSsoSignIn(ResponseTx<(), DaemonError>, String, String),
     AccountSignOut(ResponseTx<(), DaemonError>),
@@ -161,6 +162,7 @@ impl Display for DaemonEvent {
         let event = match self {
             DaemonEvent::Command(command) => match command {
                 DaemonCommand::IsAuthenticated(_) => "IsAuthenticated".into(),
+                DaemonCommand::GetAccountInfo(_) => "GetAccountInfo".into(),
                 DaemonCommand::AccountSignIn(_, user_creds) => {
                     format!("AccountSignIn: {}", user_creds.email)
                 }
@@ -377,6 +379,7 @@ impl Daemon {
     async fn handle_command(&mut self, command: DaemonCommand) {
         match command {
             DaemonCommand::IsAuthenticated(tx) => self.is_authenticated(tx).await,
+            DaemonCommand::GetAccountInfo(tx) => self.on_get_account_info(tx).await,
             DaemonCommand::AccountSignIn(tx, auth_input) => {
                 self.on_account_sign_in(tx, auth_input).await
             }
@@ -646,6 +649,23 @@ impl Daemon {
                 tx,
                 Ok(device_handler.is_authenticated().await),
                 "is_authenticated_response",
+            )
+        });
+    }
+
+    async fn on_get_account_info(
+        &self,
+        tx: ResponseTx<upvpn_types::account::AccountInfo, DaemonError>,
+    ) {
+        let device_handler = self.device_handler.clone();
+        tokio::spawn(async move {
+            Self::oneshot_send(
+                tx,
+                device_handler
+                    .account_info()
+                    .await
+                    .map_err(DaemonError::DeviceError),
+                "on_get_account_info response",
             )
         });
     }
