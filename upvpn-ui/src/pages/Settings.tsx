@@ -104,7 +104,7 @@ function Settings({}: Props) {
                   <div className="flex flex-row justify-between">
                     <span>Email</span>
                     {email.length > 0 ? (
-                      <span className="opacity-70 whitespace-nowrap text-xs">
+                      <span className="opacity-70 text-xs min-w-0 truncate">
                         {email}
                       </span>
                     ) : (
