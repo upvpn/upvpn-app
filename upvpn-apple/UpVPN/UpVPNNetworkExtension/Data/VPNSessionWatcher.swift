@@ -30,12 +30,23 @@ class VPNSessionWatcher {
             os_log("watcher started")
             while !self.done && !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
+                guard !Task.isCancelled else { return }
                 
                 let result = await vpnSessionRepository.getVpnSessionStatus(request: self.request)
 
-                guard case .success(let status) = result else {
-                    // todo log error
-                    continue
+                var status: VpnSessionStatus
+                switch result {
+                case .success(let received_status):
+                    status = received_status
+                case .failure(let error):
+                    os_log("%{public}@", "watcher error: \(error.description)")
+                    if error.description == "unauthorized" {
+                        status = .failed(Failed.init(
+                            requestId: self.request.requestId,
+                            vpnSessionUuid: self.request.vpnSessionUuid))
+                    } else {
+                        continue
+                    }
                 }
 
                 self.onStatusUpdate(status, location)
