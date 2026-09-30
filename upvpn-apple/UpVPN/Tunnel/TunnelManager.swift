@@ -320,6 +320,8 @@ actor TunnelManager {
             try (self.manager?.connection as? NETunnelProviderSession)?.startTunnel(options: options)
         } catch let error {
             print("cannot start: \(error)")
+            refreshVpnStatus()
+            self.lastError = error.localizedDescription
             throw error
         }
     }
