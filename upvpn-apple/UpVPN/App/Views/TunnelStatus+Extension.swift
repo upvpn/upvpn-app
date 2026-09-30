@@ -5,7 +5,7 @@
 //  Created by Himanshu on 7/28/24.
 //
 
-import Foundation
+import SwiftUI
 
 extension TunnelStatus {
     func displayText() -> String {
@@ -16,11 +16,11 @@ extension TunnelStatus {
             "VPN is off"
         case .requesting(_):
             "Requesting"
-        case .accepted(_):
+        case .accepted(_, _):
             "Accepted"
-        case .serverCreated(_):
+        case .serverCreated(_, _):
             "Server Created"
-        case .serverRunning(_):
+        case .serverRunning(_, _):
             "Server Running"
         case .serverReady(_):
             "Server Ready"
@@ -70,5 +70,50 @@ extension TunnelStatus {
         default:
             false
         }
+    }
+}
+
+/// Enables VPN toggle when tunnel is disconnected or connected, and also
+/// when user can end the session that is still being setup
+struct VPNToggleEnabled: ViewModifier {
+    var tunnelStatus: TunnelStatus
+    var endSessionThreshold: TimeInterval = TunnelStatus.endSessionThreshold
+
+    // endAllowedDate that is known to have been reached. It is compared with
+    // endAllowedDate of current status hence cannot enable toggle for any other session
+    @State private var reachedEndAllowedDate: Date? = nil
+
+    func body(content: Content) -> some View {
+        let endAllowedDate = tunnelStatus.endAllowedDate(threshold: endSessionThreshold)
+        let isEndAllowed = endAllowedDate.map { $0 == reachedEndAllowedDate || $0 <= Date() } ?? false
+
+        content
+            .disabled(!(tunnelStatus.isDisconnectedOrConnected() || isEndAllowed))
+            // nothing else is guaranteed to update the view when endAllowedDate is reached
+            .task(id: endAllowedDate) {
+                await waitUntilReached(endAllowedDate)
+            }
+    }
+
+    @MainActor
+    private func waitUntilReached(_ endAllowedDate: Date?) async {
+        guard let endAllowedDate = endAllowedDate else { return }
+
+        let remaining = endAllowedDate.timeIntervalSinceNow
+        if remaining > 0 {
+            // session is requested in network extension according to wall clock, which could
+            // have changed since. No matter what, the wait is never longer than the threshold.
+            let seconds = min(remaining, endSessionThreshold > 0 ? endSessionThreshold : 0)
+            // nil when not representable, for example infinite threshold which never allows to end
+            guard let nanoseconds = UInt64(exactly: (seconds * 1_000_000_000).rounded()) else { return }
+            do {
+                try await Task.sleep(nanoseconds: nanoseconds)
+            } catch {
+                // cancelled: view is gone or tunnel status has a different endAllowedDate
+                return
+            }
+        }
+
+        reachedEndAllowedDate = endAllowedDate
     }
 }

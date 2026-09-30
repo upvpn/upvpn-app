@@ -59,6 +59,11 @@ actor VPNOrchestrator {
     // which are stored here:
     var lastErrorAfterAccepted: OrchestratorError? = nil
 
+    // Set for as long as tunnel is being stopped on request (by user or system).
+    // A session that was still being setup when it was asked to stop has not failed,
+    // hence there is no error to show to user.
+    private(set) var stopRequested = false
+
     init(packetTunnelProvider: NEPacketTunnelProvider) {
         (commandStream, continuation) = AsyncStream.makeStream(
             of: Any.self,
@@ -164,10 +169,17 @@ actor VPNOrchestrator {
 
     // only run by mainTask
     func start(location: Location) async -> Result<(), OrchestratorError> {
+        // tunnel was asked to stop before this command got its turn
+        if self.stopRequested {
+            return .failure(.invalid("VPN was asked to stop"))
+        }
+
         // check if no other session is already in progress
         if !self.orchestratorState.isDisconnected() {
             return .failure(.invalid("VPN session is already in progress"))
         }
+
+        self.lastErrorAfterAccepted = nil
 
         let requestId = UUID()
         self.updateOrchestratorState(.requesting(requestId: requestId, location: location))
@@ -189,8 +201,12 @@ actor VPNOrchestrator {
         }
 
         // update orchestrator state to accepted
+        // session is requested as of now i.e. after api call for new session has succeeded
         self.updateOrchestratorState(
-            VPNOrchestratorState.accepted(location: location, accepted: accepted, interface: interfaceConfiguration))
+            VPNOrchestratorState.accepted(location: location,
+                                          accepted: accepted,
+                                          interface: interfaceConfiguration,
+                                          requestedAt: Date.now))
 
         return .success(())
     }
@@ -248,7 +264,6 @@ actor VPNOrchestrator {
             // only call adapter to stop only when connection was attempted
             result = await wgAdapterAsync.stop()
                 .mapError(OrchestratorError.wireguardAdapterError)
-            updateOrchestratorState(VPNOrchestratorState.disconnected)
         }
 
         // now wait for api call to complete
@@ -256,7 +271,25 @@ actor VPNOrchestrator {
             await apiTask.value
         }
 
+        // disconnected only after api call to end session is complete. A session that was
+        // still being setup has startAndWait waiting on this state to complete startTunnel,
+        // after which network extension may not live long enough to complete the api call.
+        updateOrchestratorState(VPNOrchestratorState.disconnected)
+
         return result
+    }
+
+    // Tunnel is asked to stop by user or system.
+    // Not run by mainTask so that stop request is known even when Stop command
+    // is waiting for its turn behind other commands.
+    func stopOnRequest(reason: String) async -> Result<(), OrchestratorError> {
+        self.stopRequested = true
+        return await self.sendCommand(Stop(reason: reason))
+    }
+
+    // To be called when tunnel has stopped on request and startAndWait (if any) has returned
+    func stopRequestCompleted() {
+        self.stopRequested = false
     }
 
     func getStatus() async -> VPNState {

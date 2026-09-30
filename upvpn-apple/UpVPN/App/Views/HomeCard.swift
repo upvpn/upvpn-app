@@ -65,7 +65,7 @@ struct HomeCard: View {
                 Toggle("", isOn: isOnBinding)
                     .labelsHidden()
                     .toggleStyle(.switch)
-                    .disabled(!tunnelStatus.isDisconnectedOrConnected())
+                    .modifier(VPNToggleEnabled(tunnelStatus: tunnelStatus))
             }
             Spacer()
         }
@@ -81,7 +81,14 @@ struct HomeCard: View {
         .environmentObject(LocationViewModel(dataRepository: DataRepository.shared, isDisconnected: { return true }))
 }
 
+// session in progress cannot be ended yet
 #Preview {
-    HomeCard(tunnelStatus: TunnelStatus.serverRunning(Location.default))
+    HomeCard(tunnelStatus: TunnelStatus.serverRunning(Location.default, Date.now))
+        .environmentObject(LocationViewModel(dataRepository: DataRepository.shared, isDisconnected: { return true }))
+}
+
+// session in progress can be ended
+#Preview {
+    HomeCard(tunnelStatus: TunnelStatus.serverRunning(Location.default, Date.distantPast))
         .environmentObject(LocationViewModel(dataRepository: DataRepository.shared, isDisconnected: { return true }))
 }

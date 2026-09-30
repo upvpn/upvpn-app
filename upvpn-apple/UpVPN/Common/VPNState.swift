@@ -10,9 +10,10 @@ import Foundation
 enum VPNState : Codable {
     case disconnected
     case requesting(Location)
-    case accepted(Location)
-    case serverCreated(Location)
-    case serverRunning(Location)
+    // Date is when the session was requested
+    case accepted(Location, Date)
+    case serverCreated(Location, Date)
+    case serverRunning(Location, Date)
     case serverReady(Location)
     case connecting(Location)
     case connected(Location, Date)
@@ -25,9 +26,9 @@ extension VPNState {
         case .disconnected:
             self
         case .requesting(let location),
-                .accepted(let location),
-                .serverCreated(let location),
-                .serverRunning(let location),
+                .accepted(let location, _),
+                .serverCreated(let location, _),
+                .serverRunning(let location, _),
                 .serverReady(let location),
                 .connecting(let location),
                 .connected(let location, _),

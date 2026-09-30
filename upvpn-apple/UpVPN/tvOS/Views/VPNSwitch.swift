@@ -37,7 +37,7 @@ struct VPNSwitch: View {
                 }
             }
         }
-        .disabled(!tunnelStatus.isDisconnectedOrConnected())
+        .modifier(VPNToggleEnabled(tunnelStatus: tunnelStatus))
         .background(Color.clear)
         .frame( maxWidth: .infinity)
     }

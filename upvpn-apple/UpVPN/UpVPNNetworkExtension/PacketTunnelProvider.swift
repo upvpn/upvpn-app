@@ -17,6 +17,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
 
     var vpnOrchestrator: VPNOrchestrator!
 
+    private var startTask: Task<Void, Never>? = nil
+
     override init() {
         os_log("init PacketTunnelProvider")
         super.init()
@@ -32,7 +34,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
 
         os_log("%{public}@", "staring tunnel from " + (startRequestId == nil ? "OS" : "app") +  " to location " + location.city)
 
-        Task {
+        self.startTask = Task {
             let errorNotifier = await ErrorNotifier(startRequestId: startRequestId)
             let result = await self.vpnOrchestrator.startAndWait(location: location)
 
@@ -41,7 +43,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             case .success():
                 completionHandler(nil)
             case .failure(let orcaError):
-                await errorNotifier.notify(orcaError)
+                // tunnel asked to stop while it was being setup is not an error to show in app
+                if await !self.vpnOrchestrator.stopRequested {
+                    await errorNotifier.notify(orcaError)
+                }
                 completionHandler(orcaError)
             }
         }
@@ -50,10 +55,18 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         os_log("stopTunnel")
 
+        let startTask = self.startTask
+
         Task {
             // todo return error and handle error
-            let _ = await self.vpnOrchestrator.sendCommand(Stop(reason: "client requested"))
-           completionHandler()
+            let _ = await self.vpnOrchestrator.stopOnRequest(reason: "client requested")
+
+            // startTunnel could still be waiting on the session that is now stopped,
+            // let it complete before tunnel is reported as stopped
+            await startTask?.value
+            await self.vpnOrchestrator.stopRequestCompleted()
+
+            completionHandler()
 
             // From upstream WireGuard project / MIT license
             #if os(macOS)

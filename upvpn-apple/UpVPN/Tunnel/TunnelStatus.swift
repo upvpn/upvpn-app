@@ -11,9 +11,10 @@ enum TunnelStatus: Equatable {
     case loading
     case disconnected
     case requesting(Location)
-    case accepted(Location)
-    case serverCreated(Location)
-    case serverRunning(Location)
+    // Date is when the session was requested
+    case accepted(Location, Date)
+    case serverCreated(Location, Date)
+    case serverRunning(Location, Date)
     case serverReady(Location)
     case connecting(Location)
     case connected(Location, Date)
@@ -36,12 +37,12 @@ extension TunnelStatus : CustomStringConvertible {
             return "connected \(location.city) \(date)"
         case .disconnecting(let location):
             return "disconnecting \(location.city)"
-        case .accepted(let location):
-            return "accepted \(location.city)"
-        case .serverCreated(let location):
-            return "serverCreated \(location.city)"
-        case .serverRunning(let location):
-            return "serverRunning \(location.city)"
+        case .accepted(let location, let requestedAt):
+            return "accepted \(location.city) \(requestedAt)"
+        case .serverCreated(let location, let requestedAt):
+            return "serverCreated \(location.city) \(requestedAt)"
+        case .serverRunning(let location, let requestedAt):
+            return "serverRunning \(location.city) \(requestedAt)"
         case .serverReady(let location):
             return "serverReady \(location.city)"
         }
@@ -61,12 +62,12 @@ extension TunnelStatus {
                 .connected(location, date)
         case .disconnecting(let location):
                 .disconnecting(location)
-        case .accepted(let location):
-                .accepted(location)
-        case .serverCreated(let location):
-                .serverCreated(location)
-        case .serverRunning(let location):
-                .serverRunning(location)
+        case .accepted(let location, let requestedAt):
+                .accepted(location, requestedAt)
+        case .serverCreated(let location, let requestedAt):
+                .serverCreated(location, requestedAt)
+        case .serverRunning(let location, let requestedAt):
+                .serverRunning(location, requestedAt)
         case .serverReady(let location):
                 .serverReady(location)
         }
@@ -78,9 +79,9 @@ extension TunnelStatus {
         case .disconnected, .loading:
             self
         case .requesting(let location),
-                .accepted(let location),
-                .serverCreated(let location),
-                .serverRunning(let location),
+                .accepted(let location, _),
+                .serverCreated(let location, _),
+                .serverRunning(let location, _),
                 .serverReady(let location),
                 .connecting(let location),
                 .connected(let location, _),
@@ -108,9 +109,9 @@ extension TunnelStatus {
         case .loading, .disconnected:
             nil
         case .requesting(let location),
-            .accepted(let location),
-            .serverCreated(let location),
-           .serverRunning(let location),
+            .accepted(let location, _),
+            .serverCreated(let location, _),
+           .serverRunning(let location, _),
            .serverReady(let location),
            .connecting(let location),
            .connected(let location, _),
@@ -134,6 +135,31 @@ extension TunnelStatus {
             false
         default:
             true
+        }
+    }
+}
+
+extension TunnelStatus {
+    /// Seconds since a session was requested after which user can end the session
+    /// while it is still being setup i.e. when accepted, serverCreated or serverRunning
+    #if targetEnvironment(simulator)
+    static let endSessionThreshold: TimeInterval = 1
+    #else
+    static let endSessionThreshold: TimeInterval = 10
+    #endif
+
+    /// Date from which user can end the session that is still being setup,
+    /// nil when session in current status cannot be ended
+    func endAllowedDate(threshold: TimeInterval = TunnelStatus.endSessionThreshold) -> Date? {
+        switch self {
+        case .accepted(_, let requestedAt),
+                .serverCreated(_, let requestedAt),
+                .serverRunning(_, let requestedAt):
+            // negative (or NaN) threshold is same as no threshold
+            return requestedAt.addingTimeInterval(threshold > 0 ? threshold : 0)
+        case .loading, .disconnected, .requesting, .serverReady, .connecting, .connected, .disconnecting:
+            // requesting has no session yet, serverReady and connecting are quick to get connected
+            return nil
         }
     }
 }
