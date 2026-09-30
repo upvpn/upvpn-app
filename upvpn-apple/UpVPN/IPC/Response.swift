@@ -12,14 +12,10 @@ enum Response : Codable {
     case runtimeConfiguration(String?)
 
     init(data: Data) throws {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        self = try decoder.decode(Self.self, from: data)
+        self = try JSONDecoder().decode(Self.self, from: data)
     }
 
     func encode() throws -> Data {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        return try encoder.encode(self)
+        try JSONEncoder().encode(self)
     }
 }
