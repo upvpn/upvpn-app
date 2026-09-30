@@ -155,6 +155,9 @@ extension VPNOrchestratorState {
             default:
                 nil
             }
+        // if session ended on server already - we should stop just like .failed
+        case .ended:
+                .disconnected
         default: nil
         }
     }
