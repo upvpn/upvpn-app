@@ -141,8 +141,23 @@ sealed class VPNOrchestratorState {
                     else -> null
                 }
             }
-
-            is VpnSessionStatus.Failed -> Disconnected
+            // session failed or ended on server while it was still being setup.
+            is VpnSessionStatus.Failed -> {
+                when(this) {
+                    is Accepted -> Disconnected
+                    is ServerCreated -> Disconnected
+                    is ServerRunning -> Disconnected
+                    else -> null
+                }
+            }
+            is VpnSessionStatus.Ended -> {
+                when(this) {
+                    is Accepted -> Disconnected
+                    is ServerCreated -> Disconnected
+                    is ServerRunning -> Disconnected
+                    else -> null
+                }
+            }
             is VpnSessionStatus.ServerCreated -> {
                 when (this) {
                     is VPNOrchestratorState.Accepted -> ServerCreated(
