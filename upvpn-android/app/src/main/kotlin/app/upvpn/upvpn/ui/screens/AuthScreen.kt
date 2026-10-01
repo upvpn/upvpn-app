@@ -2,9 +2,10 @@ package app.upvpn.upvpn.ui.screens
 
 import android.app.Activity
 import android.util.Patterns
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,12 +25,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -43,7 +46,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -365,23 +368,41 @@ fun SignInCard(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            // Google sign-in button
+            // Google sign-in button, colors per Google branding guidelines
             val context = LocalContext.current
-            if (authUIState.isGoogleSignInButtonSubmitting) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(40.dp)
-                )
-            } else {
-                Image(
-                    painter = painterResource(id = R.drawable.btn_google_signin),
-                    contentDescription = "Continue with Google",
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(40.dp)
-                        .clickable {
-                            (context as? Activity)?.let { onGoogleSignInButton(it) }
-                        }
-                )
+            val isDark = isSystemInDarkTheme()
+            val googleContainerColor = if (isDark) Color(0xFF131314) else Color.White
+            OutlinedButton(
+                onClick = { (context as? Activity)?.let { onGoogleSignInButton(it) } },
+                enabled = !authUIState.isGoogleSignInButtonSubmitting,
+                shape = RoundedCornerShape(5.dp),
+                border = BorderStroke(1.dp, if (isDark) Color(0xFF8E918F) else Color(0xFF747775)),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = googleContainerColor,
+                    contentColor = if (isDark) Color(0xFFE3E3E3) else Color(0xFF1F1F1F),
+                    disabledContainerColor = googleContainerColor,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                if (authUIState.isGoogleSignInButtonSubmitting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_google_logo),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "Continue with Google",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
         }
 
