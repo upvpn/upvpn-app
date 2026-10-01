@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -249,6 +250,7 @@ fun VPNApp(
                 modifier = modifier
                     .fillMaxSize()
                     .statusBarsPadding()
+                    .imePadding()
             ) {
                 SignInScreen(
                     windowSize,
