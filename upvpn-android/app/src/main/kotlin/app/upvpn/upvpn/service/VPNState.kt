@@ -15,9 +15,10 @@ import java.util.UUID
 sealed class VPNState : Parcelable {
     data object Disconnected : VPNState()
     data class Requesting(val location: Location) : VPNState()
-    data class Accepted(val location: Location) : VPNState()
-    data class ServerCreated(val location: Location) : VPNState()
-    data class ServerRunning(val location: Location) : VPNState()
+    // requestedAt is SystemClock.elapsedRealtime() of when new vpn session was accepted
+    data class Accepted(val location: Location, val requestedAt: Long) : VPNState()
+    data class ServerCreated(val location: Location, val requestedAt: Long) : VPNState()
+    data class ServerRunning(val location: Location, val requestedAt: Long) : VPNState()
     data class ServerReady(val location: Location) : VPNState()
     data class Connecting(val location: Location) : VPNState()
     data class Connected(val location: Location, val time: Long) : VPNState()
@@ -41,23 +42,28 @@ fun VPNState.progress(): Int {
 sealed class VPNOrchestratorState {
     data object Disconnected : VPNOrchestratorState()
     data class Requesting(val requestId: UUID, val location: Location) : VPNOrchestratorState()
+    // requestedAt is stamped once when session is accepted and carried forward as is,
+    // so that repeated updates for same status result in equal state
     data class Accepted(
         val location: Location,
         val accepted: app.upvpn.upvpn.model.Accepted,
-        val interFace: Interface
+        val interFace: Interface,
+        val requestedAt: Long
     ) :
         VPNOrchestratorState()
 
     data class ServerCreated(
         val location: Location,
         val serverCreated: app.upvpn.upvpn.model.ServerCreated,
-        val interFace: Interface
+        val interFace: Interface,
+        val requestedAt: Long
     ) : VPNOrchestratorState()
 
     data class ServerRunning(
         val location: Location,
         val serverRunning: app.upvpn.upvpn.model.ServerRunning,
-        val interFace: Interface
+        val interFace: Interface,
+        val requestedAt: Long
     ) : VPNOrchestratorState()
 
     data class ServerReady(
@@ -97,9 +103,9 @@ sealed class VPNOrchestratorState {
         return when (this) {
             is Disconnected -> VPNState.Disconnected
             is Requesting -> VPNState.Requesting(this.location)
-            is Accepted -> VPNState.Accepted(this.location)
-            is ServerCreated -> VPNState.ServerCreated(this.location)
-            is ServerRunning -> VPNState.ServerRunning(this.location)
+            is Accepted -> VPNState.Accepted(this.location, this.requestedAt)
+            is ServerCreated -> VPNState.ServerCreated(this.location, this.requestedAt)
+            is ServerRunning -> VPNState.ServerRunning(this.location, this.requestedAt)
             is ServerReady -> VPNState.ServerReady(this.location)
             is Connecting -> VPNState.Connecting(this.location)
             is Connected -> VPNState.Connected(this.location, this.time)
@@ -142,7 +148,8 @@ sealed class VPNOrchestratorState {
                     is VPNOrchestratorState.Accepted -> ServerCreated(
                         location,
                         status.content,
-                        this.interFace
+                        this.interFace,
+                        this.requestedAt
                     )
 
                     is VPNOrchestratorState.ServerCreated -> this // no update
@@ -152,8 +159,20 @@ sealed class VPNOrchestratorState {
 
             is VpnSessionStatus.ServerRunning -> {
                 when (this) {
-                    is Accepted -> ServerRunning(location, status.content, this.interFace)
-                    is ServerCreated -> ServerRunning(location, status.content, this.interFace)
+                    is Accepted -> ServerRunning(
+                        location,
+                        status.content,
+                        this.interFace,
+                        this.requestedAt
+                    )
+
+                    is ServerCreated -> ServerRunning(
+                        location,
+                        status.content,
+                        this.interFace,
+                        this.requestedAt
+                    )
+
                     is ServerRunning -> this // no update
                     else -> null
                 }

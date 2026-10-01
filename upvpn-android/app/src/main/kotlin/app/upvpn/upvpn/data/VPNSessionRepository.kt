@@ -102,8 +102,9 @@ class DefaultVPNSessionRepository(
             onConnectResponseCallback(response)
 
             response.onSuccess { (accepted, _) ->
-                // start vpn session watch
-                newSessionScope.launch(Dispatchers.IO) {
+                // start vpn session watch, as a child so that it cannot outlive
+                // cancellation of this session
+                launch {
                     val watcher = VPNSessionWatcher(
                         VpnSessionStatusRequest(
                             accepted.requestId,
