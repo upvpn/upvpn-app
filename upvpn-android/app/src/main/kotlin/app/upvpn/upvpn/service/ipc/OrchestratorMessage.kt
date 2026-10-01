@@ -19,10 +19,13 @@ sealed class OrchestratorMessage() : Parcelable {
         val result: @RawValue Result<Pair<Accepted, Interface>, String>
     ) : OrchestratorMessage()
 
+    // isUnauthorized when status is Failed because session status could not be
+    // fetched due to authorization
     data class VpnSessionUpdate(
         val requestId: UUID,
         val location: Location,
-        val status: @RawValue VpnSessionStatus
+        val status: @RawValue VpnSessionStatus,
+        val isUnauthorized: Boolean
     ) : OrchestratorMessage()
 
     data object GetAndPublishWGConfig : OrchestratorMessage()

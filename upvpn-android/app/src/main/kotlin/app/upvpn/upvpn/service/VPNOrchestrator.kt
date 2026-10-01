@@ -88,7 +88,7 @@ class VPNOrchestrator(
             onConnectResponse(it.requestId, it.location, it.result)
         }
         orchestratorMessageHandler.registerHandler(OrchestratorMessage.VpnSessionUpdate::class) {
-            onVpnSessionUpdate(it.requestId, it.location, it.status)
+            onVpnSessionUpdate(it.requestId, it.location, it.status, it.isUnauthorized)
         }
         orchestratorMessageHandler.registerHandler(OrchestratorMessage.GetAndPublishWGConfig::class) {
             onGetAndPublishWGConfig()
@@ -139,9 +139,9 @@ class VPNOrchestrator(
                     OrchestratorMessage.ConnectResponse(requestId, location, result)
                 )
             },
-            onVpnSessionUpdateCallback = { status ->
+            onVpnSessionUpdateCallback = { status, isUnauthorized ->
                 sendOrchestratorMessage(
-                    OrchestratorMessage.VpnSessionUpdate(requestId, location, status)
+                    OrchestratorMessage.VpnSessionUpdate(requestId, location, status, isUnauthorized)
                 )
             }
         )
@@ -187,7 +187,12 @@ class VPNOrchestrator(
         )
     }
 
-    private fun onVpnSessionUpdate(requestId: UUID, location: Location, status: VpnSessionStatus) {
+    private fun onVpnSessionUpdate(
+        requestId: UUID,
+        location: Location,
+        status: VpnSessionStatus,
+        isUnauthorized: Boolean
+    ) {
         Log.i(tag, "onVpnSessionUpdate $status")
 
         // before update could arrive, vpn might already have been disconnected
@@ -205,7 +210,11 @@ class VPNOrchestrator(
 
         // on Failed status send in-app notification
         if (status is VpnSessionStatus.Failed) {
-            dispatchVpnNotification("Unavailable. Please try again or choose a different location.")
+            if (isUnauthorized) {
+                dispatchVpnNotification("unauthorized")
+            } else {
+                dispatchVpnNotification("Unavailable. Please try again or choose a different location.")
+            }
         }
 
         // check for permission on every update
