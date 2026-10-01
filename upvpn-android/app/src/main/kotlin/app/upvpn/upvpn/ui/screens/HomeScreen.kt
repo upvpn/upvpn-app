@@ -745,7 +745,7 @@ fun RecentLocationsCard(
                                 HorizontalDivider(
                                     thickness = 0.5.dp,
                                     color = MaterialTheme.colorScheme.outlineVariant,
-                                    modifier = Modifier.padding(start = 52.dp)
+                                    modifier = Modifier.padding(start = 60.dp)
                                 )
                             }
                         }

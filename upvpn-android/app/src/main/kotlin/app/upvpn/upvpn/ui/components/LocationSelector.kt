@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.upvpn.upvpn.model.DEFAULT_LOCATION
+import app.upvpn.upvpn.model.LOCATION_INDICATOR_SIZE
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.displayText
 import app.upvpn.upvpn.model.warmOrColdColor
@@ -63,13 +64,13 @@ fun LocationSelector(
                 Icon(
                     imageVector = Icons.Rounded.Circle,
                     contentDescription = location.warmOrColdDescription(),
-                    modifier = Modifier.size(15.dp),
+                    modifier = Modifier.size(LOCATION_INDICATOR_SIZE),
                     tint = location.warmOrColdColor()
                 )
             } else {
                 CircularProgressIndicator(
                     strokeWidth = 2.dp,
-                    modifier = Modifier.size(12.dp)
+                    modifier = Modifier.size(LOCATION_INDICATOR_SIZE)
                 )
             }
         }
