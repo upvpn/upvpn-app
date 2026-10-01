@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.ManageAccounts
@@ -60,7 +61,7 @@ private data class VPNNavigationItem(
 private fun allVpnNavigationItems(): List<VPNNavigationItem> = listOf(
     VPNNavigationItem(VPNScreen.Location, Icons.Default.LocationOn, VPNScreen.Location.name),
     VPNNavigationItem(VPNScreen.Home, Icons.Default.Home, VPNScreen.Home.name),
-    VPNNavigationItem(VPNScreen.Settings, Icons.Default.ManageAccounts, VPNScreen.Settings.name)
+    VPNNavigationItem(VPNScreen.Settings, Icons.Default.AccountCircle, VPNScreen.Settings.name)
 )
 
 @Composable
