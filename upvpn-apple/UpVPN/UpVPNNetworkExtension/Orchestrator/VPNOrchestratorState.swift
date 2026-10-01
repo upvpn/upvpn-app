@@ -126,8 +126,14 @@ extension VPNOrchestratorState {
             case .accepted: self // no update
             default: nil
             }
-        case .failed:
-                .disconnected
+        // session failed or ended on server while it was still being setup.
+        // Watcher stops at serverReady, so these are never expected later, and
+        // if they were, moving to disconnected would skip stopping the WG tunnel.
+        case .failed, .ended:
+            switch self {
+            case .accepted, .serverCreated, .serverRunning: .disconnected
+            default: nil
+            }
         case .serverCreated(let serverCreated):
             switch self {
             case .accepted(_, _, let interface, let requestedAt):
@@ -155,9 +161,6 @@ extension VPNOrchestratorState {
             default:
                 nil
             }
-        // if session ended on server already - we should stop just like .failed
-        case .ended:
-                .disconnected
         default: nil
         }
     }

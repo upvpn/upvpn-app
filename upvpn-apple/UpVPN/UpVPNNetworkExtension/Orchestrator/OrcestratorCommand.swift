@@ -61,13 +61,16 @@ struct ServerStatusUpdate: OrchestratorCommand {
 
     let newStatus: VpnSessionStatus
     let location: Location
+    // newStatus is .failed only because device is no longer authorized
+    let isUnauthorized: Bool
 
-    init(newStatus: VpnSessionStatus, location: Location) {
+    init(newStatus: VpnSessionStatus, location: Location, isUnauthorized: Bool) {
         self.newStatus = newStatus
         self.location = location
+        self.isUnauthorized = isUnauthorized
     }
 
     func execute(in actor: VPNOrchestrator) async -> Void {
-        await actor.onServerStatusUpdate(newStatus: self.newStatus, location: self.location)
+        await actor.onServerStatusUpdate(newStatus: self.newStatus, location: self.location, isUnauthorized: self.isUnauthorized)
     }
 }

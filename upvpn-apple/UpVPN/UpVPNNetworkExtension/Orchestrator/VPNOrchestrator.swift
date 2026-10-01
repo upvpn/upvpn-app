@@ -185,10 +185,12 @@ actor VPNOrchestrator {
         self.updateOrchestratorState(.requesting(requestId: requestId, location: location))
 
         // create new vpn session and start watcher
-        let result = await self.vpnSessionRepository.newVpnSession(requestId: requestId, location: location) { (vpnSessionStatus, location) in
+        let result = await self.vpnSessionRepository.newVpnSession(requestId: requestId, location: location) { (vpnSessionStatus, location, isUnauthorized) in
             // watcher will use this callback to send updates back to orchestrator
             Task {
-                await self.sendCommand(ServerStatusUpdate(newStatus: vpnSessionStatus, location: location))
+                await self.sendCommand(ServerStatusUpdate(newStatus: vpnSessionStatus,
+                                                          location: location,
+                                                          isUnauthorized: isUnauthorized))
             }
         }.mapError(OrchestratorError.vpnSessionRepositoryError)
 
@@ -301,7 +303,7 @@ actor VPNOrchestrator {
     }
 
     // only run by mainTask
-    func onServerStatusUpdate(newStatus: VpnSessionStatus, location: Location) async {
+    func onServerStatusUpdate(newStatus: VpnSessionStatus, location: Location, isUnauthorized: Bool) async {
         // drop any udpates that arrived after session was already ask to end
         if self.orchestratorState.isDisconnectingOrDisconnected() {
             os_log("dropping status update as tunnel is already disconnecting or disconnected")
@@ -312,7 +314,10 @@ actor VPNOrchestrator {
 
         if case .failed = newStatus {
             os_log("vpn session failed")
-            self.lastErrorAfterAccepted = OrchestratorError.invalid("Unavailable. Please try again or choose a different location.")
+            // "unauthorized" is what app looks for to sign out
+            self.lastErrorAfterAccepted = isUnauthorized
+                ? OrchestratorError.invalid("unauthorized")
+                : OrchestratorError.invalid("Unavailable. Please try again or choose a different location.")
         }
 
         let newOrchestratorState = self.orchestratorState.newStateFromUpdate(status: newStatus, location: location)
