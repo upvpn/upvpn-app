@@ -35,7 +35,7 @@ interface VPNSessionRepository {
         requestId: UUID,
         location: Location,
         onConnectResponseCallback: (Result<Pair<Accepted, Interface>, String>) -> Unit,
-        onVpnSessionUpdateCallback: (VpnSessionStatus) -> Unit
+        onVpnSessionUpdateCallback: (status: VpnSessionStatus, isUnauthorized: Boolean) -> Unit
     )
 
     suspend fun getVpnSessionStatus(request: VpnSessionStatusRequest): Result<VpnSessionStatus, String>
@@ -65,7 +65,7 @@ class DefaultVPNSessionRepository(
         requestId: UUID,
         location: Location,
         onConnectResponseCallback: (Result<Pair<Accepted, Interface>, String>) -> Unit,
-        onVpnSessionUpdateCallback: (VpnSessionStatus) -> Unit
+        onVpnSessionUpdateCallback: (status: VpnSessionStatus, isUnauthorized: Boolean) -> Unit
     ) {
         newSessionScope.launch(Dispatchers.IO) {
             val vpnSessionDb = VpnSession(requestId, location.toDbLocation())
@@ -102,8 +102,9 @@ class DefaultVPNSessionRepository(
             onConnectResponseCallback(response)
 
             response.onSuccess { (accepted, _) ->
-                // start vpn session watch
-                newSessionScope.launch(Dispatchers.IO) {
+                // start vpn session watch, as a child so that it cannot outlive
+                // cancellation of this session
+                launch {
                     val watcher = VPNSessionWatcher(
                         VpnSessionStatusRequest(
                             accepted.requestId,

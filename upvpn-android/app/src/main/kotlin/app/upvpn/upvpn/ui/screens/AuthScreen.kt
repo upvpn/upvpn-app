@@ -2,9 +2,10 @@ package app.upvpn.upvpn.ui.screens
 
 import android.app.Activity
 import android.util.Patterns
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,12 +25,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -43,7 +46,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,7 +64,6 @@ import androidx.compose.ui.unit.sp
 import app.upvpn.upvpn.R
 import app.upvpn.upvpn.ui.components.AuthFooter
 import app.upvpn.upvpn.ui.components.EmailCodeField
-import app.upvpn.upvpn.ui.components.Logo
 import app.upvpn.upvpn.ui.state.AuthAction
 import app.upvpn.upvpn.ui.state.AuthUiState
 import app.upvpn.upvpn.ui.state.SignInState
@@ -167,25 +171,46 @@ fun SignInScreen(
 
 @Composable
 fun SignInHeader() {
+    val primary = MaterialTheme.colorScheme.primary
+    val logoShape = RoundedCornerShape(24.dp)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Logo()
-        Spacer(modifier = Modifier.height(8.dp))
+        // soft brand glow behind the logo, also keeps the black tile visible in dark mode
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(136.dp)
+                .background(
+                    Brush.radialGradient(
+                        0.5f to primary.copy(alpha = 0.25f),
+                        1f to Color.Transparent
+                    )
+                )
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.upvpn),
+                contentDescription = "UpVPN Logo",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(88.dp)
+                    .shadow(elevation = 12.dp, shape = logoShape, spotColor = primary)
+                    .background(color = Color.Black, shape = logoShape)
+                    .border(width = 1.dp, color = Color.White.copy(alpha = 0.12f), shape = logoShape)
+            )
+        }
         Text(
             text = "UpVPN",
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
-            letterSpacing = (-0.5).sp
+            letterSpacing = (-1).sp
         )
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "A Modern Serverless VPN",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Normal,
-            letterSpacing = 0.3.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -216,6 +241,63 @@ fun SignInCard(
         modifier = Modifier
             .padding(20.dp)
     ) {
+
+        if (authUIState.isGoogleSignInAvailable) {
+            // Google sign-in button, neutral theme colors so it blends with the form fields
+            val context = LocalContext.current
+            OutlinedButton(
+                onClick = { (context as? Activity)?.let { onGoogleSignInButton(it) } },
+                enabled = !authUIState.isGoogleSignInButtonSubmitting,
+                shape = RoundedCornerShape(5.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                if (authUIState.isGoogleSignInButtonSubmitting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_google_logo),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "Continue with Google",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            // "or" divider
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                HorizontalDivider()
+                Text(
+                    text = "OR",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = 1.5.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(horizontal = 12.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+        }
 
         SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
             SegmentedButton(
@@ -338,49 +420,6 @@ fun SignInCard(
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.2.sp
-                )
-            }
-        }
-
-        if (authUIState.isGoogleSignInAvailable) {
-            Spacer(modifier = Modifier.height(15.dp))
-
-            // "or" divider
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                HorizontalDivider()
-                Text(
-                    text = "OR",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Medium,
-                    letterSpacing = 1.5.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = 12.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            // Google sign-in button
-            val context = LocalContext.current
-            if (authUIState.isGoogleSignInButtonSubmitting) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(40.dp)
-                )
-            } else {
-                Image(
-                    painter = painterResource(id = R.drawable.btn_google_signin),
-                    contentDescription = "Continue with Google",
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(40.dp)
-                        .clickable {
-                            (context as? Activity)?.let { onGoogleSignInButton(it) }
-                        }
                 )
             }
         }

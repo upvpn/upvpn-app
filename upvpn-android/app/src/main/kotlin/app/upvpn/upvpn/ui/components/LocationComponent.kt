@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.upvpn.upvpn.model.LOCATION_COLD_COLOR
+import app.upvpn.upvpn.model.LOCATION_INDICATOR_SIZE
 import app.upvpn.upvpn.model.LOCATION_WARM_COLOR
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.displayText
@@ -53,7 +54,7 @@ fun LocationComponent(
                 indication = ripple(color = MaterialTheme.colorScheme.primary)
             )
             .defaultMinSize(minHeight = 76.dp)
-            .padding(horizontal = 16.dp, vertical = 18.dp),
+            .padding(horizontal = 24.dp, vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
@@ -84,7 +85,7 @@ fun LocationComponent(
             contentDescription = "Warm or Cold",
             tint = location.estimate?.let { if (it <= 10) LOCATION_WARM_COLOR else LOCATION_COLD_COLOR }
                 ?: LOCATION_COLD_COLOR,
-            modifier = Modifier.size(12.dp)
+            modifier = Modifier.size(LOCATION_INDICATOR_SIZE)
         )
     }
 }

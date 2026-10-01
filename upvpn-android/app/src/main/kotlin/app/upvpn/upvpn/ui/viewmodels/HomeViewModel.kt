@@ -14,6 +14,7 @@ import app.upvpn.upvpn.service.client.VPNServiceConnectionManager
 import app.upvpn.upvpn.service.client.WgConfigKV
 import app.upvpn.upvpn.ui.state.HomeUiState
 import app.upvpn.upvpn.ui.state.VpnUiState
+import app.upvpn.upvpn.ui.state.canEndSession
 import app.upvpn.upvpn.ui.state.toVPNUiState
 import app.upvpn.upvpn.ui.state.transitionToDisconnecting
 import kotlinx.coroutines.CoroutineDispatcher
@@ -137,12 +138,24 @@ class HomeViewModel(
     }
 
     fun disconnect() {
-        val newVpnUiState = _uiState.value.vpnUiState.transitionToDisconnecting()
-        newVpnUiState?.let { vpnUiState ->
-            _uiState.update { value -> value.copy(vpnUiState = vpnUiState) }
+        // without service there is no one to disconnect and to report the new state
+        val vpnManager = serviceConnectionManager.vpnManager() ?: return
+
+        // state updates are collected on another thread, so transition atomically and only
+        // from a state in which session can be ended: for disconnecting written over a
+        // newer state (e.g. disconnected) no further update may arrive to correct it
+        while (true) {
+            val current = _uiState.value
+            if (current.vpnUiState.canEndSession(SystemClock.elapsedRealtime()).not()) {
+                return
+            }
+            val newVpnUiState = current.vpnUiState.transitionToDisconnecting() ?: return
+            if (_uiState.compareAndSet(current, current.copy(vpnUiState = newVpnUiState))) {
+                break
+            }
         }
 
-        serviceConnectionManager.vpnManager()?.disconnect()
+        vpnManager.disconnect()
     }
 
     fun ackVpnNotification(vpnNotification: VPNNotification) {

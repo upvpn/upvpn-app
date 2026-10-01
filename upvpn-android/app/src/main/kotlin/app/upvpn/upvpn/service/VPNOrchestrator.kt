@@ -3,6 +3,7 @@ package app.upvpn.upvpn.service
 import android.net.VpnService
 import android.os.Looper
 import android.os.Messenger
+import android.os.SystemClock
 import android.util.Log
 import app.upvpn.upvpn.BuildConfig
 import app.upvpn.upvpn.data.AppContainer
@@ -52,6 +53,10 @@ class VPNOrchestrator(
     private val vpnNotificationManager = appContainer.vpnNotificationManager
     private var wgConfigJob: Job? = null
 
+    // request ID of the most recent connect request, messages produced for
+    // any other request are stale
+    private var latestRequestId: UUID? = null
+
     init {
         endVpnSessionScope.launch {
             vpnSessionRepository.runReclaimer(endVpnSessionScope)
@@ -80,10 +85,10 @@ class VPNOrchestrator(
         }
 
         orchestratorMessageHandler.registerHandler(OrchestratorMessage.ConnectResponse::class) {
-            onConnectResponse(it.location, it.result)
+            onConnectResponse(it.requestId, it.location, it.result)
         }
         orchestratorMessageHandler.registerHandler(OrchestratorMessage.VpnSessionUpdate::class) {
-            onVpnSessionUpdate(it.location, it.status)
+            onVpnSessionUpdate(it.requestId, it.location, it.status, it.isUnauthorized)
         }
         orchestratorMessageHandler.registerHandler(OrchestratorMessage.GetAndPublishWGConfig::class) {
             onGetAndPublishWGConfig()
@@ -120,6 +125,7 @@ class VPNOrchestrator(
 
         // update state & send event
         val requestId = UUID.randomUUID()
+        latestRequestId = requestId
         updateStateAndNotifyClients(VPNOrchestratorState.Requesting(requestId, location))
 
         // create new vpn session
@@ -129,23 +135,30 @@ class VPNOrchestrator(
             requestId,
             location,
             onConnectResponseCallback = { result ->
-                sendOrchestratorMessage(OrchestratorMessage.ConnectResponse(location, result))
+                sendOrchestratorMessage(
+                    OrchestratorMessage.ConnectResponse(requestId, location, result)
+                )
             },
-            onVpnSessionUpdateCallback = { status ->
-                sendOrchestratorMessage(OrchestratorMessage.VpnSessionUpdate(location, status))
+            onVpnSessionUpdateCallback = { status, isUnauthorized ->
+                sendOrchestratorMessage(
+                    OrchestratorMessage.VpnSessionUpdate(requestId, location, status, isUnauthorized)
+                )
             }
         )
     }
 
     private fun onConnectResponse(
+        requestId: UUID,
         location: Location,
         result: Result<Pair<Accepted, Interface>, String>
     ) {
         Log.i(tag, "onConnectResponse $result")
 
         // before connect response could arrive, vpn might already have been disconnected
-        if (vpnOrchestratorState.isDisconnectingOrDisconnected()) {
-            Log.i(tag, "no VPN session in progress, dropping on connect response $result")
+        // or even requested again, response is only for the request still waiting for it
+        val state = vpnOrchestratorState
+        if (state !is VPNOrchestratorState.Requesting || state.requestId != requestId) {
+            Log.i(tag, "no VPN session request in progress, dropping on connect response $result")
             return
         }
 
@@ -153,11 +166,14 @@ class VPNOrchestrator(
             success = {
                 Log.i(tag, "onConnectResponse success $it")
                 // update state & send event to clients
+                // session is requested as of now, clients use it to allow ending a session
+                // which is taking long to be ready
                 updateStateAndNotifyClients(
                     VPNOrchestratorState.Accepted(
                         location,
                         it.first,
-                        it.second
+                        it.second,
+                        SystemClock.elapsedRealtime()
                     )
                 )
             },
@@ -171,7 +187,12 @@ class VPNOrchestrator(
         )
     }
 
-    private fun onVpnSessionUpdate(location: Location, status: VpnSessionStatus) {
+    private fun onVpnSessionUpdate(
+        requestId: UUID,
+        location: Location,
+        status: VpnSessionStatus,
+        isUnauthorized: Boolean
+    ) {
         Log.i(tag, "onVpnSessionUpdate $status")
 
         // before update could arrive, vpn might already have been disconnected
@@ -180,9 +201,20 @@ class VPNOrchestrator(
             return
         }
 
+        // or a session was ended and new one requested, update of an ended session
+        // must not move the new one
+        if (requestId != latestRequestId) {
+            Log.i(tag, "not for VPN session in progress, dropping on onVpnSessionUpdate $status")
+            return
+        }
+
         // on Failed status send in-app notification
         if (status is VpnSessionStatus.Failed) {
-            dispatchVpnNotification("Unavailable. Please try again or choose a different location.")
+            if (isUnauthorized) {
+                dispatchVpnNotification("unauthorized")
+            } else {
+                dispatchVpnNotification("Unavailable. Please try again or choose a different location.")
+            }
         }
 
         // check for permission on every update

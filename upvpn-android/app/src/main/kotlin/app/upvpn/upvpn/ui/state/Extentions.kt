@@ -3,13 +3,17 @@ package app.upvpn.upvpn.ui.state
 import app.upvpn.upvpn.R
 import app.upvpn.upvpn.service.VPNState
 
+// a session which is not yet connected can be ended by user only after
+// this much time since it was requested
+const val END_SESSION_THRESHOLD_MS = 10_000L
+
 fun VPNState.toVPNUiState(): VpnUiState {
     return when (this) {
         is VPNState.Disconnected -> VpnUiState.Disconnected
         is VPNState.Requesting -> VpnUiState.Requesting(this.location)
-        is VPNState.Accepted -> VpnUiState.Accepted(this.location)
-        is VPNState.ServerCreated -> VpnUiState.ServerCreated(this.location)
-        is VPNState.ServerRunning -> VpnUiState.ServerRunning(this.location)
+        is VPNState.Accepted -> VpnUiState.Accepted(this.location, this.requestedAt)
+        is VPNState.ServerCreated -> VpnUiState.ServerCreated(this.location, this.requestedAt)
+        is VPNState.ServerRunning -> VpnUiState.ServerRunning(this.location, this.requestedAt)
         is VPNState.ServerReady -> VpnUiState.ServerReady(this.location)
         is VPNState.Connecting -> VpnUiState.Connecting(this.location)
         is VPNState.Connected -> VpnUiState.Connected(this.location, this.time)
@@ -45,14 +49,34 @@ fun VpnUiState.isConnectedOrDisconnectedOrDisconnecting(): Boolean = (this is Vp
         || this is VpnUiState.Disconnecting)
 
 
-fun VpnUiState.switchEnabled(): Boolean {
-    return when (this) {
-        is VpnUiState.Connected,
-        is VpnUiState.Disconnected -> true
-
-        else -> false
+// time (ms) left until session can be ended by user: 0 when it can be ended now,
+// null when it cannot be ended in this state no matter the time.
+// now is SystemClock.elapsedRealtime()
+fun VpnUiState.endSessionRemainingMs(
+    now: Long,
+    thresholdMs: Long = END_SESSION_THRESHOLD_MS
+): Long? {
+    val requestedAt = when (this) {
+        is VpnUiState.Connected -> return 0L
+        is VpnUiState.Accepted -> this.requestedAt
+        is VpnUiState.ServerCreated -> this.requestedAt
+        is VpnUiState.ServerRunning -> this.requestedAt
+        is VpnUiState.Checking,
+        is VpnUiState.Disconnected,
+        is VpnUiState.Requesting,
+        is VpnUiState.ServerReady,
+        is VpnUiState.Connecting,
+        is VpnUiState.Disconnecting -> return null
     }
+
+    return (thresholdMs - (now - requestedAt)).coerceAtLeast(0L)
 }
+
+fun VpnUiState.canEndSession(now: Long, thresholdMs: Long = END_SESSION_THRESHOLD_MS): Boolean =
+    this.endSessionRemainingMs(now, thresholdMs) == 0L
+
+fun VpnUiState.switchEnabled(now: Long, thresholdMs: Long = END_SESSION_THRESHOLD_MS): Boolean =
+    this is VpnUiState.Disconnected || this.canEndSession(now, thresholdMs)
 
 fun VpnUiState.switchChecked(): Boolean {
     return when (this) {

@@ -405,7 +405,7 @@ fun YearlyPlan(
             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Text("Yearly Plan", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "Get unlimited data",
+                    "Unlimited data. Just $3.33/mo",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.alpha(0.7f)
                 )
