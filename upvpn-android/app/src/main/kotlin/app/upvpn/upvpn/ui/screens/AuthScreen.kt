@@ -6,7 +6,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -244,19 +243,15 @@ fun SignInCard(
     ) {
 
         if (authUIState.isGoogleSignInAvailable) {
-            // Google sign-in button, colors per Google branding guidelines
+            // Google sign-in button, neutral theme colors so it blends with the form fields
             val context = LocalContext.current
-            val isDark = isSystemInDarkTheme()
-            val googleContainerColor = if (isDark) Color(0xFF131314) else Color.White
             OutlinedButton(
                 onClick = { (context as? Activity)?.let { onGoogleSignInButton(it) } },
                 enabled = !authUIState.isGoogleSignInButtonSubmitting,
                 shape = RoundedCornerShape(5.dp),
-                border = BorderStroke(1.dp, if (isDark) Color(0xFF8E918F) else Color(0xFF747775)),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = googleContainerColor,
-                    contentColor = if (isDark) Color(0xFFE3E3E3) else Color(0xFF1F1F1F),
-                    disabledContainerColor = googleContainerColor,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
