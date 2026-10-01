@@ -41,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,6 +68,7 @@ import app.upvpn.upvpn.ui.components.VPNLayout
 import app.upvpn.upvpn.ui.state.HomeUiState
 import app.upvpn.upvpn.ui.state.LocationUiState
 import app.upvpn.upvpn.ui.state.VpnUiState
+import app.upvpn.upvpn.ui.state.endSessionRemainingMs
 import app.upvpn.upvpn.ui.state.progress
 import app.upvpn.upvpn.ui.state.shieldResourceId
 import app.upvpn.upvpn.ui.state.switchChecked
@@ -593,6 +595,24 @@ fun HomeCard(
             connectPostVpnPermission(it.resultCode == Activity.RESULT_OK, selectedLocation)
         })
 
+    // a session which is not yet connected can be ended only after a threshold,
+    // so whether switch is enabled also depends on time and not just on the state
+    var isSwitchEnabled by remember(vpnUiState) {
+        mutableStateOf(vpnUiState.switchEnabled(SystemClock.elapsedRealtime()))
+    }
+    LaunchedEffect(key1 = vpnUiState) {
+        while (true) {
+            val remainingMs =
+                vpnUiState.endSessionRemainingMs(SystemClock.elapsedRealtime()) ?: break
+            if (remainingMs == 0L) {
+                isSwitchEnabled = true
+                break
+            }
+            // delay does not count time device spent in sleep, so check again at least every second
+            delay(remainingMs.coerceAtMost(1000L))
+        }
+    }
+
     val onCheckedChange: (Boolean) -> Unit = when (vpnUiState.switchChecked()) {
         false -> {
             {
@@ -660,7 +680,7 @@ fun HomeCard(
                     onLocationSelectorClick = onLocationSelectorClick,
                 )
                 Switch(
-                    enabled = vpnUiState.switchEnabled(),
+                    enabled = isSwitchEnabled,
                     checked = vpnUiState.switchChecked(),
                     onCheckedChange = onCheckedChange
                 )

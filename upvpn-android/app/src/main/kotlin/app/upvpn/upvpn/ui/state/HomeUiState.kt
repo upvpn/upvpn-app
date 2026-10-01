@@ -10,9 +10,10 @@ sealed class VpnUiState {
     data object Checking : VpnUiState()
     data object Disconnected : VpnUiState()
     data class Requesting(val location: Location) : VpnUiState()
-    data class Accepted(val location: Location) : VpnUiState()
-    data class ServerCreated(val location: Location) : VpnUiState()
-    data class ServerRunning(val location: Location) : VpnUiState()
+    // requestedAt is SystemClock.elapsedRealtime() of when new vpn session was accepted
+    data class Accepted(val location: Location, val requestedAt: Long) : VpnUiState()
+    data class ServerCreated(val location: Location, val requestedAt: Long) : VpnUiState()
+    data class ServerRunning(val location: Location, val requestedAt: Long) : VpnUiState()
     data class ServerReady(val location: Location) : VpnUiState()
     data class Connecting(val location: Location) : VpnUiState()
     data class Connected(val location: Location, val time: Long) : VpnUiState()
