@@ -5,6 +5,7 @@ import android.util.Patterns
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +47,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -62,7 +65,6 @@ import androidx.compose.ui.unit.sp
 import app.upvpn.upvpn.R
 import app.upvpn.upvpn.ui.components.AuthFooter
 import app.upvpn.upvpn.ui.components.EmailCodeField
-import app.upvpn.upvpn.ui.components.Logo
 import app.upvpn.upvpn.ui.state.AuthAction
 import app.upvpn.upvpn.ui.state.AuthUiState
 import app.upvpn.upvpn.ui.state.SignInState
@@ -170,25 +172,46 @@ fun SignInScreen(
 
 @Composable
 fun SignInHeader() {
+    val primary = MaterialTheme.colorScheme.primary
+    val logoShape = RoundedCornerShape(24.dp)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Logo()
-        Spacer(modifier = Modifier.height(8.dp))
+        // soft brand glow behind the logo, also keeps the black tile visible in dark mode
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(136.dp)
+                .background(
+                    Brush.radialGradient(
+                        0.5f to primary.copy(alpha = 0.25f),
+                        1f to Color.Transparent
+                    )
+                )
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.upvpn),
+                contentDescription = "UpVPN Logo",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(88.dp)
+                    .shadow(elevation = 12.dp, shape = logoShape, spotColor = primary)
+                    .background(color = Color.Black, shape = logoShape)
+                    .border(width = 1.dp, color = Color.White.copy(alpha = 0.12f), shape = logoShape)
+            )
+        }
         Text(
             text = "UpVPN",
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
-            letterSpacing = (-0.5).sp
+            letterSpacing = (-1).sp
         )
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "A Modern Serverless VPN",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Normal,
-            letterSpacing = 0.3.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -219,6 +242,67 @@ fun SignInCard(
         modifier = Modifier
             .padding(20.dp)
     ) {
+
+        if (authUIState.isGoogleSignInAvailable) {
+            // Google sign-in button, colors per Google branding guidelines
+            val context = LocalContext.current
+            val isDark = isSystemInDarkTheme()
+            val googleContainerColor = if (isDark) Color(0xFF131314) else Color.White
+            OutlinedButton(
+                onClick = { (context as? Activity)?.let { onGoogleSignInButton(it) } },
+                enabled = !authUIState.isGoogleSignInButtonSubmitting,
+                shape = RoundedCornerShape(5.dp),
+                border = BorderStroke(1.dp, if (isDark) Color(0xFF8E918F) else Color(0xFF747775)),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = googleContainerColor,
+                    contentColor = if (isDark) Color(0xFFE3E3E3) else Color(0xFF1F1F1F),
+                    disabledContainerColor = googleContainerColor,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                if (authUIState.isGoogleSignInButtonSubmitting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_google_logo),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "Continue with Google",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            // "or" divider
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                HorizontalDivider()
+                Text(
+                    text = "OR",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = 1.5.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(horizontal = 12.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+        }
 
         SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
             SegmentedButton(
@@ -342,67 +426,6 @@ fun SignInCard(
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.2.sp
                 )
-            }
-        }
-
-        if (authUIState.isGoogleSignInAvailable) {
-            Spacer(modifier = Modifier.height(15.dp))
-
-            // "or" divider
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                HorizontalDivider()
-                Text(
-                    text = "OR",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Medium,
-                    letterSpacing = 1.5.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = 12.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            // Google sign-in button, colors per Google branding guidelines
-            val context = LocalContext.current
-            val isDark = isSystemInDarkTheme()
-            val googleContainerColor = if (isDark) Color(0xFF131314) else Color.White
-            OutlinedButton(
-                onClick = { (context as? Activity)?.let { onGoogleSignInButton(it) } },
-                enabled = !authUIState.isGoogleSignInButtonSubmitting,
-                shape = RoundedCornerShape(5.dp),
-                border = BorderStroke(1.dp, if (isDark) Color(0xFF8E918F) else Color(0xFF747775)),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = googleContainerColor,
-                    contentColor = if (isDark) Color(0xFFE3E3E3) else Color(0xFF1F1F1F),
-                    disabledContainerColor = googleContainerColor,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                if (authUIState.isGoogleSignInButtonSubmitting) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp)
-                    )
-                } else {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_google_logo),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(
-                        text = "Continue with Google",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
             }
         }
 
