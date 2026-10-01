@@ -211,8 +211,12 @@ struct MapOrConfigOnTunnelStatusChange: ViewModifier {
         content
             .onChange(of: tunnelStatus) { newStatus in
                 switch newStatus {
-                case .connected, .disconnecting:
+                case .connected:
                     showMapOrConfig = .config
+                case .disconnecting:
+                    // config is already shown when disconnecting from connected, and there is
+                    // no config to show when session is ended while it was still being setup
+                    break
                 default:
                     showMapOrConfig = .map
                 }

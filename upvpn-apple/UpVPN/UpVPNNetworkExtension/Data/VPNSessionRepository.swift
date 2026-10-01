@@ -30,7 +30,7 @@ extension VPNSessionRepositoryError : CustomStringConvertible {
 protocol VPNSessionRepository {
     func newVpnSession(requestId: UUID,
                        location: Location,
-                       onStatusUpdate: @escaping (VpnSessionStatus, Location) -> Void)
+                       onStatusUpdate: @escaping (VpnSessionStatus, Location, Bool) -> Void)
         async -> Result<(Accepted, InterfaceConfiguration),  VPNSessionRepositoryError>
 
     func getVpnSessionStatus(request: VpnSessionStatusRequest) async -> Result<VpnSessionStatus, VPNSessionRepositoryError>
@@ -49,13 +49,14 @@ class DefaultVPNSessionRepository : VPNSessionRepository {
 
     private func startVpnSessionWatcherTask(request: VpnSessionStatusRequest,
                                             location: Location,
-                                            onStatusUpdate: @escaping (VpnSessionStatus, Location) -> Void) {
-        if self.vpnSessionWatcherTask == nil {
-            self.vpnSessionWatcherTask = VPNSessionWatcher(request: request,
-                                                           vpnSessionRepository: self,
-                                                           location: location,
-                                                           onStatusUpdate: onStatusUpdate).watch()
-        }
+                                            onStatusUpdate: @escaping (VpnSessionStatus, Location, Bool) -> Void) {
+        // a watcher from an earlier session may be left behind when it ended without
+        // stopVpnSessionWatcherTask (failed or ended on server), it must not stop this one
+        self.stopVpnSessionWatcherTask()
+        self.vpnSessionWatcherTask = VPNSessionWatcher(request: request,
+                                                       vpnSessionRepository: self,
+                                                       location: location,
+                                                       onStatusUpdate: onStatusUpdate).watch()
     }
 
     private func stopVpnSessionWatcherTask() {
@@ -65,7 +66,7 @@ class DefaultVPNSessionRepository : VPNSessionRepository {
 
     func newVpnSession(requestId: UUID,
                        location: Location,
-                       onStatusUpdate: @escaping (VpnSessionStatus, Location) -> Void) async -> Result<(Accepted, InterfaceConfiguration), VPNSessionRepositoryError> {
+                       onStatusUpdate: @escaping (VpnSessionStatus, Location, Bool) -> Void) async -> Result<(Accepted, InterfaceConfiguration), VPNSessionRepositoryError> {
         // wrapped in do catch to avoid nested switch statements for enum cases
         do {
             let device = try await DeviceStore.getDevice().get()

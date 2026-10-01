@@ -140,6 +140,10 @@ actor TunnelManager {
                     guard let session = self.manager?.connection as? NETunnelProviderSession else { return }
                     do {
                         if let response = try await session.sendProviderMessage(request: Request.status) {
+                            // task could have been stopped while waiting for the response,
+                            // which must not override tunnel status set since then
+                            if Task.isCancelled { break loop }
+
                             switch response {
                             case .status(let state):
                                 // we only care about states from orchestrator in
@@ -316,11 +320,16 @@ actor TunnelManager {
             try (self.manager?.connection as? NETunnelProviderSession)?.startTunnel(options: options)
         } catch let error {
             print("cannot start: \(error)")
+            refreshVpnStatus()
+            self.lastError = error.localizedDescription
             throw error
         }
     }
 
     func stop() {
+        // when session is still being setup status task is running, and
+        // status from network extension must not override disconnecting
+        self.stopStatusTask()
         self.tunnelStatus = self.tunnelStatus.toDisconnecting()
         self.manager?.connection.stopVPNTunnel()
     }

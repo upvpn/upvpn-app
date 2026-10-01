@@ -81,25 +81,39 @@ actor TunnelManager {
 
     func start(to location: Location) async throws {
         self.stopAndCleanup()
+        let requestedAt = Date.now
         stateTransitionTask = Task {
-            self.tunnelStatus = TunnelStatus.requesting(location)
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            self.tunnelStatus = TunnelStatus.accepted(location)
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            self.tunnelStatus = TunnelStatus.serverCreated(location)
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            self.tunnelStatus = TunnelStatus.serverRunning(location)
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            self.tunnelStatus = TunnelStatus.serverReady(location)
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            self.tunnelStatus = TunnelStatus.connecting(location)
-            self.startRuntimeConfigTask()
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            self.tunnelStatus = TunnelStatus.connected(location, Date())
+            guard !Task.isCancelled else { return }
+            do {
+                self.tunnelStatus = TunnelStatus.requesting(location)
+                try await self.waitForNextStep()
+                self.tunnelStatus = TunnelStatus.accepted(location, requestedAt)
+                try await self.waitForNextStep()
+                self.tunnelStatus = TunnelStatus.serverCreated(location, requestedAt)
+                try await self.waitForNextStep()
+                self.tunnelStatus = TunnelStatus.serverRunning(location, requestedAt)
+                try await self.waitForNextStep()
+                self.tunnelStatus = TunnelStatus.serverReady(location)
+                try await self.waitForNextStep()
+                self.tunnelStatus = TunnelStatus.connecting(location)
+                self.startRuntimeConfigTask()
+                try await self.waitForNextStep()
+                self.tunnelStatus = TunnelStatus.connected(location, Date())
+            } catch {
+                // Stop advancing when an early stop cancels provisioning.
+                return
+            }
 
         }
     }
 
+    /// Time taken by a step of session setup. Throws when the state transition task
+    /// is cancelled by stop, even if the sleep itself completed just before that,
+    /// so that the task does not move status past disconnecting
+    private func waitForNextStep() async throws {
+        try await Task.sleep(nanoseconds: 1_000_000_000)
+        try Task.checkCancellation()
+    }
 
     func stop() async {
         self.stopAndCleanup()
