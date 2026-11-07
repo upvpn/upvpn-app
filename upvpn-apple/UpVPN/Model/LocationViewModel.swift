@@ -51,18 +51,22 @@ class LocationViewModel: ObservableObject {
         self.isDisconnected = isDisconnected
     }
 
-    /// update estimates of recent locations & selected location
-    private func updateEstimates() {
-        for recentIdx in self.recentLocations.indices {
-            if let foundIdx = self.locations.firstIndex(of: self.recentLocations[recentIdx]) {
-                self.recentLocations[recentIdx].estimate = self.locations[foundIdx].estimate
-            }
+    private func updateRecents() {
+        self.recentLocations = self.recentLocations.compactMap { recent in
+            self.locations.first(where: { $0 == recent })
         }
+    }
 
+    private func reconcileSelected() {
         if let selected = self.selected {
-            if let foundIdx = self.locations.firstIndex(of: selected) {
-                self.selected?.estimate = self.locations[foundIdx].estimate
+            if let fresh = self.locations.first(where: { $0 == selected }) {
+                // same location from the latest list, to update estimate and price
+                self.selected = fresh
+            } else if self.isDisconnected() {
+                self.selected = self.locations.defaultLocation()
             }
+        } else {
+            self.selected = self.locations.defaultLocation()
         }
     }
 
@@ -75,15 +79,11 @@ class LocationViewModel: ObservableObject {
                 await MainActor.run {
                     if !locations.isEmpty {
                         self.locations = locations
-                        if !self.locations.isEmpty && self.selected == nil {
-                            self.selected = self.locations.first { location in
-                                location.city.lowercased().contains("ashburn") } ?? self.locations[0]
-                            self.loading = false
-                        }
-
+                        self.reconcileSelected()
                         // upon fetching new locations
-                        self.updateEstimates()
+                        self.updateRecents()
                         self.locationsLastUpdated = Date()
+                        self.loading = false
                     }
                 }
             }
