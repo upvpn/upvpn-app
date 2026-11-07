@@ -221,9 +221,28 @@ struct UserPlanPayAsYouGo: Codable {
     var balance: Int32
 }
 
+struct UserPlanAnnualSubscription: Codable {
+    /// the pay as you go balance in cents, which pays for premium locations
+    var balance: Int32
+    /// RFC 3339 timestamp of when the subscription started
+    var startedAt: String?
+
+    /// `startedAt` as a date, nil when absent or not parseable
+    var startedDate: Date? {
+        guard let startedAt = startedAt else { return nil }
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = formatter.date(from: startedAt) {
+            return date
+        }
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter.date(from: startedAt)
+    }
+}
+
 enum UserPlan: Decodable {
     case PayAsYouGo(UserPlanPayAsYouGo)
-    case AnnualSubscription
+    case AnnualSubscription(UserPlanAnnualSubscription)
 
     enum CodingKeys: String, CodingKey {
         case type
@@ -242,10 +261,26 @@ enum UserPlan: Decodable {
 
         switch type {
         case .PayAsYouGo:
-            let accepted = try container.decode(UserPlanPayAsYouGo.self, forKey: .content)
-            self = .PayAsYouGo(accepted)
+            let payAsYouGo = try container.decode(UserPlanPayAsYouGo.self, forKey: .content)
+            self = .PayAsYouGo(payAsYouGo)
         case .AnnualSubscription:
-            self = .AnnualSubscription
+            let annualSubscription = try container.decode(UserPlanAnnualSubscription.self, forKey: .content)
+            self = .AnnualSubscription(annualSubscription)
+        }
+    }
+
+    var displayName: String {
+        switch self {
+        case .PayAsYouGo: "Pay as you go"
+        case .AnnualSubscription: "Yearly"
+        }
+    }
+
+    /// The pay as you go balance in cents, which every plan carries: it pays for premium locations.
+    var balance: Int32 {
+        switch self {
+        case .PayAsYouGo(let plan): plan.balance
+        case .AnnualSubscription(let plan): plan.balance
         }
     }
 }

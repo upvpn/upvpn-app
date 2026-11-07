@@ -54,66 +54,67 @@ class DefaultVpnApiService: VPNApiService, PlanApiService {
     }()
 
     func addDevice(request: AddDeviceRequest) async -> Result<AddDeviceResponse, ApiError> {
-        return await self.client.request("devices", method: .post, body: encodeToData(request))
+        return await self.client.request("v1/devices", method: .post, body: encodeToData(request))
             .mapError(mapClientError)
     }
 
     func ssoAddDevice(request: SsoAddDeviceRequest) async -> Result<AddDeviceResponse, ApiError> {
-        return await self.client.request("sso/devices", method: .post, body: encodeToData(request))
+        return await self.client.request("v1/sso/devices", method: .post, body: encodeToData(request))
             .mapError(mapClientError)
     }
     
     func signOut() async -> Result<(), ApiError> {
-        let result: Result<Empty, ApiError> = await self.client.request("sign-out", method: .post)
+        let result: Result<Empty, ApiError> = await self.client.request("v1/sign-out", method: .post)
             .mapError(mapClientError)
 
         return result.map { _ in () }
     }
 
     func signUp(userCredsWithCode: UserCredentialsWithCode) async -> Result<(), ApiError> {
-        let result: Result<Empty, ApiError> = await self.client.request("account", method: .post,
+        let result: Result<Empty, ApiError> = await self.client.request("v1/account", method: .post,
                                                                         body: encodeToData(userCredsWithCode))
             .mapError(mapClientError)
         return result.map { _ in () }
     }
 
     func requestCode(onlyEmail: OnlyEmail) async -> Result<(), ApiError> {
-        let result: Result<Empty, ApiError> = await self.client.request("account/send-code", method: .post,
+        let result: Result<Empty, ApiError> = await self.client.request("v1/account/send-code", method: .post,
                                                                         body: encodeToData(onlyEmail))
             .mapError(mapClientError)
         return result.map { _ in () }
     }
 
     func getLocations() async -> Result<[Location], ApiError> {
-        return await self.client.request("locations")
+        let result: Result<LocationsV2, ApiError> = await self.client.request("v2/locations")
             .mapError(mapClientError)
+        return result.map { $0.locations }
     }
     
     func newVpnSession(request: NewSession) async -> Result<Accepted, ApiError> {
-        return await self.client.request("new-vpn-session", method: .post, body: encodeToData(request))
+        return await self.client.request("v1/new-vpn-session", method: .post, body: encodeToData(request))
             .mapError(mapClientError)
     }
     
     func getVpnSessionStatus(request: VpnSessionStatusRequest) async -> Result<VpnSessionStatus, ApiError> {
-        return await self.client.request("vpn-session-status", method: .post, body: encodeToData(request))
+        return await self.client.request("v1/vpn-session-status", method: .post, body: encodeToData(request))
             .mapError(mapClientError)
     }
     
     func endVpnSession(request: EndSessionApi) async -> Result<Ended, ApiError> {
-        return await self.client.request("end-vpn-session", method: .post, body: encodeToData(request),
+        return await self.client.request("v1/end-vpn-session", method: .post, body: encodeToData(request),
                                          options: RequestOptions(maxRetries: 3, retryDelay: 0.2))
             .mapError(mapClientError)
     }
 
     func processTransaction(environment: String, id: UInt64) async -> Result<(), ApiError> {
-        let result: Result<Empty, ApiError> = await self.client.request("iap/transaction/\(environment)/\(id)", method: .post)
+        let result: Result<Empty, ApiError> = await self.client.request("v1/iap/transaction/\(environment)/\(id)", method: .post)
             .mapError(mapClientError)
 
         return result.map { _ in () }
     }
 
     func getUserPlan() async -> Result<UserPlan, ApiError> {
-        return await self.client.request("plan/current")
+        return await self.client.request("v1/plan/current")
             .mapError(mapClientError)
     }
 }
