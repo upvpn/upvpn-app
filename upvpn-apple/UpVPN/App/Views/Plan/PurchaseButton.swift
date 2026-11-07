@@ -10,7 +10,7 @@ import StoreKit
 
 private func productHeading(_ product: Product) -> String {
     return if product.id.starts(with: "prepaid") {
-        "Prepaid balance never expires. A VPN session is charged $0.02/hr + $0.04/GB + $0.05 base."
+        "Prepaid balance never expires. VPN sessions start at $0.02/hr + $0.04/GB + $0.05 base."
     } else if product.id.starts(with: "subscription") {
         "Yearly at just $3.33/mo. Unlimited data."
     } else {
