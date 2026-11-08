@@ -22,8 +22,7 @@ struct CardContainer<Content: View>: View {
                 .ignoresSafeArea()
             content
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.uSecondarySystemGroupedBackground)
-                .cornerRadius(10)
+                .modifier(CardBackground())
                 .padding()
         }
     }

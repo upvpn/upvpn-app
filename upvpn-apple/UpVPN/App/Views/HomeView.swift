@@ -79,12 +79,13 @@ struct HomeView: View {
                     } else {
                         RecentLocationsCard()
                         #if os(macOS)
-                            .cornerRadius(10)
                             .padding()
                         #endif
                     }
                 }
             }
+            // the page under both cards
+            .background(Color.uSystemGroupedBackground.ignoresSafeArea())
         }
         .onAppear {
             // for macOS locations are reloaded by LocationsView
