@@ -28,33 +28,50 @@ struct PlanView: View {
                         Text("Pay as you go")
                         Spacer()
                         Text("Balance \(formatCentsToDollars(userPlanPayAsYouGo.balance))")
+                            .foregroundStyle(.secondary)
                     }
-                case .AnnualSubscription:
-                    VStack(alignment: .leading) {
-                        Text("Yearly")
-                        Divider()
-                        Label("You're on the best plan", systemImage: "sparkles")
+                case .AnnualSubscription(let userPlanAnnualSubscription):
+                    HStack {
+                        Text(userPlan.displayName)
+                        Spacer()
+                        if let startedDate = userPlanAnnualSubscription.startedDate {
+                            Text("Since \(startedDate.formatted(date: .abbreviated, time: .omitted))")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    // every plan carries a pay as you go balance: it pays for premium locations
+                    VStack(alignment: .leading, spacing: 5) {
+                        HStack {
+                            Text("Pay as you go")
+                            Spacer()
+                            Text("Balance \(formatCentsToDollars(userPlan.balance))")
+                                .foregroundStyle(.secondary)
+                        }
+                        Text("Used for premium locations")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                 }
 
             }
 
-            if case .PayAsYouGo = userPlan {
-                if let yearlyProduct = yearlyProduct {
-                    Section {
-                        YearlyPlanView(yearlyProduct: yearlyProduct,
-                                       selectedProduct: selectedProduct,
-                                       isEligibleForFreeTrial: isEligibleForFreeTrial,
-                                       setSelectedProduct: { product in
-                            self.selectedProduct = product
-                        })
-                    }
-                }
+            // prepaid credit is for sale on every plan: premium locations are billed from
+            // the pay as you go balance even on yearly
+            Section {
+                PrepaidPlansView(prepaidProducts: prepaidProducts,
+                                 selectedProduct: selectedProduct,
+                                 setSelectedProduct: { product in
+                    self.selectedProduct = product
+                })
+            }
 
+            // the yearly plan is only for sale to pay as you go users
+            if case .PayAsYouGo = userPlan, let yearlyProduct = yearlyProduct {
                 Section {
-                    PrepaidPlansView(prepaidProducts: prepaidProducts,
-                                     selectedProduct: selectedProduct,
-                                     setSelectedProduct: { product in
+                    YearlyPlanView(yearlyProduct: yearlyProduct,
+                                   selectedProduct: selectedProduct,
+                                   isEligibleForFreeTrial: isEligibleForFreeTrial,
+                                   setSelectedProduct: { product in
                         self.selectedProduct = product
                     })
                 }
@@ -78,5 +95,5 @@ struct PlanView: View {
 }
 
 #Preview {
-    PlanView(userPlan: .AnnualSubscription)
+    PlanView(userPlan: .AnnualSubscription(UserPlanAnnualSubscription(balance: 250, startedAt: "2026-01-15T10:00:00Z")))
 }
