@@ -98,7 +98,9 @@ struct MainViewContent26: View {
                 )
         } detail: {
             HomeView(onStatsTap: { showInspector.toggle() })
-                .navigationSplitViewColumnWidth(min: 400, ideal: 400, max: 400)
+                // flexible: so that it fills the width the sidebar or inspector frees when
+                // closed; otherwise the split view is centered with blank bands on the sides
+                .navigationSplitViewColumnWidth(min: 400, ideal: 400, max: .infinity)
                 .toolbar {
                     ToolbarView26(
                         showInspector: $showInspector,

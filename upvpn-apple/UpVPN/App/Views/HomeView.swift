@@ -86,6 +86,12 @@ struct HomeView: View {
             }
             // the page under both cards
             .background(Color.uSystemGroupedBackground.ignoresSafeArea())
+            #if os(macOS)
+            // readable width when the detail column is wide (e.g. after the inspector
+            // closes), centered, as the grouped form of System Settings
+            .frame(maxWidth: 400)
+            .frame(maxWidth: .infinity)
+            #endif
         }
         .onAppear {
             // for macOS locations are reloaded by LocationsView
