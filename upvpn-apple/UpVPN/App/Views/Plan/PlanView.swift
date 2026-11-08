@@ -19,8 +19,39 @@ struct PlanView: View {
     @State private var isEligibleForFreeTrial: Bool = false
 
     var body: some View {
-        List {
+        planSections
+            .safeAreaInset(edge: .bottom) {
+                PurchaseButton(selectedProduct: selectedProduct, isEligibleForFreeTrial: isEligibleForFreeTrial, isPurchasing: isPurchasing, purchaseProduct: purchaseProduct)
+            }
+            .task(id: yearlyProduct?.id) {
+                if let subscription = yearlyProduct?.subscription {
+                    isEligibleForFreeTrial = await subscription.isEligibleForIntroOffer
+                } else {
+                    isEligibleForFreeTrial = false
+                }
+            }
+    }
 
+    /// The sections in the platform's grouped container: a List on iOS and tvOS; on macOS a
+    /// grouped Form, which draws each section in a rounded box as System Settings does (a
+    /// List there is a flat, sidebar-like list with tall section headers).
+    @ViewBuilder
+    private var planSections: some View {
+        #if os(macOS)
+        Form {
+            sections
+        }
+        // grouped where available (macOS 13+), see SettingsView
+        .modifier(FormModifier())
+        #else
+        List {
+            sections
+        }
+        #endif
+    }
+
+    @ViewBuilder
+    private var sections: some View {
             Section("Current Plan") {
                 switch userPlan {
                 case .PayAsYouGo(let userPlanPayAsYouGo):
@@ -76,17 +107,6 @@ struct PlanView: View {
                     })
                 }
             }
-        }
-        .safeAreaInset(edge: .bottom) {
-            PurchaseButton(selectedProduct: selectedProduct, isEligibleForFreeTrial: isEligibleForFreeTrial, isPurchasing: isPurchasing, purchaseProduct: purchaseProduct)
-        }
-        .task(id: yearlyProduct?.id) {
-            if let subscription = yearlyProduct?.subscription {
-                isEligibleForFreeTrial = await subscription.isEligibleForIntroOffer
-            } else {
-                isEligibleForFreeTrial = false
-            }
-        }
     }
 }
 
