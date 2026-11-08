@@ -22,7 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -63,13 +62,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.upvpn.upvpn.model.UserPlan
 import app.upvpn.upvpn.model.forDisplay
 import app.upvpn.upvpn.model.prettyBalance
+import app.upvpn.upvpn.model.prettyStartedAt
 import app.upvpn.upvpn.ui.VPNAppViewModelProvider
 import app.upvpn.upvpn.ui.viewmodels.BillingViewModel
 import app.upvpn.upvpn.ui.viewmodels.PlanState
 import app.upvpn.upvpn.ui.viewmodels.ProductInfo
 import app.upvpn.upvpn.ui.viewmodels.buyButtonText
 import app.upvpn.upvpn.ui.viewmodels.displayText
-import app.upvpn.upvpn.ui.viewmodels.isYearlyPlan
 import app.upvpn.upvpn.util.getActivityOrNull
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -183,6 +182,10 @@ fun PlanScreen(
                     }
 
                     is PlanState.Plan -> {
+                        // the yearly plan is only for sale to pay as you go users
+                        val yearlyForSale = yearlyProduct.value
+                            ?.takeIf { planState.userPlan is UserPlan.PayAsYouGo }
+
                         Box(
                             Modifier.fillMaxSize(),
 
@@ -195,9 +198,9 @@ fun PlanScreen(
                             ) {
                                 CurrentPlan(planState)
 
-                                if (prepaidProducts.value.isEmpty()
-                                        .not() && planState.isYearlyPlan().not()
-                                ) {
+                                // prepaid credit is for sale on every plan: premium locations
+                                // are billed from the pay as you go balance even on yearly
+                                if (prepaidProducts.value.isNotEmpty()) {
                                     PrepaidPlans(
                                         prepaidProducts.value,
                                         selectedProduct.value,
@@ -205,9 +208,9 @@ fun PlanScreen(
                                     )
                                 }
 
-                                if (yearlyProduct.value != null && planState.isYearlyPlan().not()) {
+                                if (yearlyForSale != null) {
                                     YearlyPlan(
-                                        yearlyProduct.value!!,
+                                        yearlyForSale,
                                         selectedProduct.value,
                                         billingViewModel::setSelectedProduct,
                                     )
@@ -216,11 +219,8 @@ fun PlanScreen(
                                 Spacer(modifier = Modifier.height(100.dp))
                             }
 
-                            // only show buy button when at least one product is available
-                            if ((prepaidProducts.value.isEmpty()
-                                    .not() || yearlyProduct.value != null) &&
-                                planState.isYearlyPlan().not()
-                            ) {
+                            // only show buy button when at least one product is for sale
+                            if (prepaidProducts.value.isNotEmpty() || yearlyForSale != null) {
                                 PurchaseButton(
                                     isPurchasing.value,
                                     selectedProduct.value,
@@ -271,7 +271,7 @@ fun CurrentPlan(plan: PlanState.Plan) {
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = "Balance ${plan.userPlan.content.prettyBalance()}",
+                        text = "Balance ${plan.userPlan.prettyBalance()}",
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
@@ -283,22 +283,44 @@ fun CurrentPlan(plan: PlanState.Plan) {
                             .padding(15.dp, 10.dp)
                             .fillMaxWidth()
                     ) {
-                        Text(
-                            plan.userPlan.forDisplay(),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                plan.userPlan.forDisplay(),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            plan.userPlan.content.prettyStartedAt()?.let { since ->
+                                Text(
+                                    text = "Since $since",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.alpha(0.7f)
+                                )
+                            }
+                        }
                         HorizontalDivider()
-                        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-                            Icon(
-                                Icons.Filled.Star,
-                                "Star",
-                                tint = MaterialTheme.colorScheme.primary
+                        // every plan carries a pay as you go balance: it pays for premium locations
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Pay as you go",
+                                style = MaterialTheme.typography.bodyLarge
                             )
                             Text(
-                                "You're on the best plan",
+                                text = "Balance ${plan.userPlan.prettyBalance()}",
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }
+                        Text(
+                            text = "Used for premium locations",
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.alpha(0.7f)
+                        )
                     }
                 }
             }
