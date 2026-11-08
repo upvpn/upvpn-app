@@ -162,7 +162,9 @@ class DefaultVPNRepository(
 
     override suspend fun getLocations(): Result<List<Location>, String> {
 
-        val apiResult = vpnApiService.getLocations().toResult().mapError { e -> e.message }
+        val apiResult = vpnApiService.getLocations().toResult()
+            .map { it.locations }
+            .mapError { e -> e.message }
 
         var result = apiResult.fold(
             success = { newLocations ->
