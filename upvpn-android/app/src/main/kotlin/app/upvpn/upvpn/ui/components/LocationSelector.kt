@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.upvpn.upvpn.model.DEFAULT_LOCATION
 import app.upvpn.upvpn.model.LOCATION_INDICATOR_SIZE
 import app.upvpn.upvpn.model.Location
 import app.upvpn.upvpn.model.displayText
@@ -36,8 +35,6 @@ fun LocationSelector(
     onLocationSelectorClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val location = selectedLocation ?: DEFAULT_LOCATION
-
     Button(
         onClick = onLocationSelectorClick,
         shape = RoundedCornerShape(5.dp),
@@ -54,24 +51,33 @@ fun LocationSelector(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            CountryIcon(countryCode = selectedLocation?.countryCode ?: "US")
-            Text(
-                text = location.displayText(),
-                style = MaterialTheme.typography.titleMedium,
-                overflow = TextOverflow.Visible
-            )
-            if (vpnUiState.isConnectedOrDisconnectedOrDisconnecting()) {
-                Icon(
-                    imageVector = Icons.Rounded.Circle,
-                    contentDescription = location.warmOrColdDescription(),
-                    modifier = Modifier.size(LOCATION_INDICATOR_SIZE),
-                    tint = location.warmOrColdColor()
+            if (selectedLocation == null) {
+                // no location yet (list not loaded or empty)
+                Text(
+                    text = "Select a location",
+                    style = MaterialTheme.typography.titleMedium,
+                    overflow = TextOverflow.Visible
                 )
             } else {
-                CircularProgressIndicator(
-                    strokeWidth = 2.dp,
-                    modifier = Modifier.size(LOCATION_INDICATOR_SIZE)
+                CountryIcon(countryCode = selectedLocation.countryCode)
+                Text(
+                    text = selectedLocation.displayText(),
+                    style = MaterialTheme.typography.titleMedium,
+                    overflow = TextOverflow.Visible
                 )
+                if (vpnUiState.isConnectedOrDisconnectedOrDisconnecting()) {
+                    Icon(
+                        imageVector = Icons.Rounded.Circle,
+                        contentDescription = selectedLocation.warmOrColdDescription(),
+                        modifier = Modifier.size(LOCATION_INDICATOR_SIZE),
+                        tint = selectedLocation.warmOrColdColor()
+                    )
+                } else {
+                    CircularProgressIndicator(
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.size(LOCATION_INDICATOR_SIZE)
+                    )
+                }
             }
         }
     }
