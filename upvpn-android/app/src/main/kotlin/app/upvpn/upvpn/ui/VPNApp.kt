@@ -20,7 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import android.net.Uri
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -37,6 +40,7 @@ import app.upvpn.upvpn.ui.screens.LocationScreen
 import app.upvpn.upvpn.ui.screens.PlanScreen
 import app.upvpn.upvpn.ui.screens.SettingsScreen
 import app.upvpn.upvpn.ui.screens.SignInScreen
+import app.upvpn.upvpn.ui.screens.WebViewScreen
 import app.upvpn.upvpn.ui.state.SignInState
 import app.upvpn.upvpn.ui.state.VpnUiState
 import app.upvpn.upvpn.ui.state.getLocation
@@ -53,7 +57,16 @@ enum class VPNScreen() {
     Settings,
     Help,
     Plan,
+    // a web page (pricing calculator, FAQ, ...) shown inside the app
+    WebPage,
 }
+
+private const val WEB_PAGE_URL = "url"
+private const val WEB_PAGE_TITLE = "title"
+
+/** Route to [VPNScreen.WebPage] showing [url] under [title]. */
+private fun webPageRoute(url: String, title: String): String =
+    "${VPNScreen.WebPage.name}?$WEB_PAGE_URL=${Uri.encode(url)}&$WEB_PAGE_TITLE=${Uri.encode(title)}"
 
 @Composable
 fun VPNApp(
@@ -65,7 +78,8 @@ fun VPNApp(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentVPNScreen = VPNScreen.valueOf(
-        backStackEntry?.destination?.route ?: VPNScreen.Login.name
+        // a route may carry arguments after '?'
+        backStackEntry?.destination?.route?.substringBefore('?') ?: VPNScreen.Login.name
     )
 
     val authViewModel: AuthViewModel = viewModel(factory = VPNAppViewModelProvider.Factory)
@@ -159,11 +173,10 @@ fun VPNApp(
         }
     }
 
-    // always update location from the vpn state if present
+    // always update location from the vpn state if present, and let location view model
+    // know about the session so that its location is kept even if API stops listing it
     LaunchedEffect(key1 = homeUiState.value.vpnUiState.getLocation()) {
-        homeUiState.value.vpnUiState.getLocation()?.let {
-            locationVM.onLocationSelected(it)
-        }
+        locationVM.onVpnSessionLocation(homeUiState.value.vpnUiState.getLocation())
     }
 
     if (BuildConfig.DEBUG) {
@@ -316,6 +329,7 @@ fun VPNApp(
                 LocationScreen(
                     uiState = locationUiState.value,
                     onSearchValueChange = locationVM::onSearchValueChange,
+                    onTierFilterChange = locationVM::onTierFilterChange,
                     onRefresh = locationVM::onRefresh,
                     clearSearchQuery = locationVM::clearSearchQuery,
                     isSelectedLocation = isSelectedLocation,
@@ -353,8 +367,34 @@ fun VPNApp(
                 modifier = modifier,
             ) {
 
-                HelpScreen(navigateUp = { navController.navigateUp() })
+                HelpScreen(
+                    navigateUp = { navController.navigateUp() },
+                    openWebPage = { url, title -> navController.navigate(webPageRoute(url, title)) },
+                )
 
+            }
+        }
+
+        composable(
+            route = "${VPNScreen.WebPage.name}?$WEB_PAGE_URL={$WEB_PAGE_URL}&$WEB_PAGE_TITLE={$WEB_PAGE_TITLE}",
+            arguments = listOf(
+                navArgument(WEB_PAGE_URL) { type = NavType.StringType },
+                navArgument(WEB_PAGE_TITLE) { type = NavType.StringType; defaultValue = "" },
+            )
+        ) { entry ->
+            VPNLayout(
+                windowSize = windowSize,
+                currentVPNScreen = currentVPNScreen,
+                onNavItemPressed = { screen ->
+                    navController.navigate(screen.name)
+                },
+                modifier = modifier,
+            ) {
+                WebViewScreen(
+                    url = entry.arguments?.getString(WEB_PAGE_URL) ?: BuildConfig.UPVPN_BASE_URL,
+                    title = entry.arguments?.getString(WEB_PAGE_TITLE) ?: "",
+                    navigateUp = { navController.navigateUp() },
+                )
             }
         }
 
