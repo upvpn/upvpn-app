@@ -85,11 +85,13 @@ struct MainViewContent12: View {
 @available(macOS 26, *)
 struct MainViewContent26: View {
     @State private var showInspector: Bool = false
+    // .detailOnly while the sidebar is collapsed
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var showAccountSheet: Bool = false
 
     var body: some View {
-        NavigationSplitView {
-            LocationsView()
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            LocationsView(showTierFilter: columnVisibility != .detailOnly)
                 .frame(maxWidth: .infinity)
                 .navigationSplitViewColumnWidth(
                     min: 310,
@@ -150,12 +152,14 @@ struct ToolbarView26: ToolbarContent {
 @available(macOS 14, *)
 struct MainViewContent14: View {
     @State private var showInspector: Bool = false
+    // .detailOnly while the sidebar is collapsed
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
 
     var body: some View {
         // NavigationStack & NavigationSplitView available from macOS 13+
         NavigationStack {
-            NavigationSplitView {
-                LocationsView()
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                LocationsView(showTierFilter: columnVisibility != .detailOnly)
                     .frame(maxWidth: .infinity)
                     .navigationSplitViewColumnWidth(
                         min: 310,
@@ -188,11 +192,13 @@ struct MainViewContent14: View {
 struct MainViewContent13: View {
 
     @State private var showInspector: Bool = false
+    // .detailOnly while the sidebar is collapsed
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
 
     var body: some View {
         NavigationStack {
-            NavigationSplitView {
-                LocationsView()
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                LocationsView(showTierFilter: columnVisibility != .detailOnly)
                     .frame(maxWidth: .infinity)
                     .navigationSplitViewColumnWidth(
                         min: 310,

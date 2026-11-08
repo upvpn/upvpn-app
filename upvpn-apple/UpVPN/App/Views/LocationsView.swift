@@ -15,6 +15,9 @@ struct LocationsView: View {
     @State private var tierFilter: LocationTierFilter = .all
 
     var showMapInToolbar: Bool = false
+    /// whether to offer the tier filter in the toolbar; off on macOS while the sidebar is
+    /// collapsed, since the toolbar item stays in the window toolbar without the list
+    var showTierFilter: Bool = true
 
     private var tiers: [LocationTier] {
         locationViewModel.locations.availableTiers
@@ -53,7 +56,7 @@ struct LocationsView: View {
         }
         .toolbar {
             // a tier is worth filtering by only when there is more than one
-            if tiers.count > 1 {
+            if showTierFilter && tiers.count > 1 {
                 TierFilterMenu(tiers: tiers, selection: $tierFilter)
             }
             if showMapInToolbar {
