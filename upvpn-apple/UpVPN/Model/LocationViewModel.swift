@@ -111,6 +111,15 @@ class LocationViewModel: ObservableObject {
         }
     }
 
+    /// A VPN session ended: a selection the API no longer lists, kept while the session
+    /// lasted, makes way for the default location so that it cannot be connected to again.
+    func onSessionEnded() {
+        guard let selected = self.selected, !self.locations.isEmpty else { return }
+        if !self.locations.contains(where: { $0 == selected }) {
+            self.selected = self.locations.defaultLocation()
+        }
+    }
+
     func setSelected(location: Location) {
         if self.isDisconnected() {
             self.selected = location

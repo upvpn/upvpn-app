@@ -46,6 +46,8 @@ struct ContentView: View {
             Task { @MainActor in
                 if let location = tunnelStatus.currentLocation() {
                     locationViewModel.selected = location
+                } else if case .disconnected = tunnelStatus {
+                    locationViewModel.onSessionEnded()
                 }
                 if case .disconnecting = tunnelStatus,
                    tunnelViewModel.tunnelObserver.lastTunnelStatus?.isConnected() ?? false {
