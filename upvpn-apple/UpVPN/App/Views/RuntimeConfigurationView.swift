@@ -17,7 +17,26 @@ struct RuntimeConfigurationView: View {
     }
 
     var body: some View {
+        #if os(macOS)
+        // a grouped Form draws each section in a rounded box as System Settings does; a List
+        // on macOS is a flat, sidebar-like list (see PlanView)
+        Form {
+            sections
+        }
+        .modifier(FormModifier())
+        #else
         List {
+            sections
+        }
+        #if os(iOS)
+        // only available on iOS
+        .modifier(ListStyleModifer())
+        #endif
+        #endif
+    }
+
+    @ViewBuilder
+    private var sections: some View {
             Section("Interface") {
                 KeyValueView(key: "Public key", value: tc?.interface.privateKey.publicKey.base64Key ?? "-")
                 KeyValueView(key: "Addresses", value: tc?.interface.addresses
@@ -53,11 +72,6 @@ struct RuntimeConfigurationView: View {
                 // otherwise list does not update
                 .onReceive(tunnelViewModel.tunnelObserver.$runtimeConfig) { _ in  }
             }
-        }
-        #if os(iOS)
-        // only available on iOS
-        .modifier(ListStyleModifer())
-        #endif
     }
 }
 
