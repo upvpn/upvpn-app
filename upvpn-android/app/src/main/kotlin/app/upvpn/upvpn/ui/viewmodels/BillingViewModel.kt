@@ -92,7 +92,7 @@ fun ProductInfo.promoHeading(): String? {
 fun ProductInfo.displayText(): String {
     promoHeading()?.let { return it }
     return when (productDetails.productType) {
-        ProductType.INAPP -> "Prepaid balance never expires. A VPN session is charged $0.02/hr + $0.04/GB + $0.05 base"
+        ProductType.INAPP -> "Prepaid balance never expires. VPN sessions start at $0.02/hr + $0.04/GB + $0.05 base."
         ProductType.SUBS -> "Yearly at just $3.33/mo. Unlimited data."
         else -> ""
     }
