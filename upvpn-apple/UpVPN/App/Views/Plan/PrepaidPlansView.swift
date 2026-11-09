@@ -16,9 +16,11 @@ struct PrepaidPlansView: View {
     #if os(tvOS)
     private let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 40), count: 4)
     #else
+    // flexible, not fixed: a localized promo price ("Rp 419.000 $5 FREE") can be wider
+    // than 120pt, and a fixed column would let it overlap its neighbour
     private let columns = [
-        GridItem(.fixed(120)),
-        GridItem(.fixed(120))
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
     #endif
 
