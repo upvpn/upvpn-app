@@ -9,13 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -67,7 +66,9 @@ import app.upvpn.upvpn.ui.VPNAppViewModelProvider
 import app.upvpn.upvpn.ui.viewmodels.BillingViewModel
 import app.upvpn.upvpn.ui.viewmodels.PlanState
 import app.upvpn.upvpn.ui.viewmodels.ProductInfo
+import app.upvpn.upvpn.ui.viewmodels.bonusText
 import app.upvpn.upvpn.ui.viewmodels.buyButtonText
+import app.upvpn.upvpn.ui.viewmodels.compactFormattedPrice
 import app.upvpn.upvpn.ui.viewmodels.displayText
 import app.upvpn.upvpn.util.getActivityOrNull
 
@@ -332,6 +333,8 @@ fun CurrentPlan(plan: PlanState.Plan) {
 fun PriceCapsule(
     price: String,
     isSelected: Boolean = false,
+    // short promo drawn beside the price, e.g. "$5 FREE"
+    bonus: String? = null,
     onClick: () -> Unit
 ) {
     Box(
@@ -344,17 +347,34 @@ fun PriceCapsule(
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            // same size for every chip, with room for "$25 $5 FREE" on one line
+            .defaultMinSize(minWidth = 120.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = price,
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.primary
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = price,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary
+                )
             )
-        )
+            if (bonus != null) {
+                Text(
+                    text = bonus,
+                    style = TextStyle(
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                )
+            }
+        }
     }
 }
 
@@ -384,19 +404,30 @@ fun PrepaidPlans(
             )
             HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
 
-            Column(modifier = Modifier.height(100.dp), verticalArrangement = Arrangement.Center) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    verticalArrangement = Arrangement.spacedBy(25.dp)
-                ) {
-                    prepaidProducts.forEach { prepaidProduct ->
-                        item {
-                            Row(horizontalArrangement = Arrangement.Center) {
+            // two chips per row; sized by content so any number of products fits
+            Column(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)
+            ) {
+                prepaidProducts.chunked(2).forEach { rowProducts ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        rowProducts.forEach { prepaidProduct ->
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 PriceCapsule(
-                                    prepaidProduct.formattedPrice,
+                                    prepaidProduct.compactFormattedPrice(),
                                     isSelected = selectedProduct?.productId == prepaidProduct.productId,
+                                    bonus = prepaidProduct.bonusText(),
                                     onClick = { setSelectedProduct(prepaidProduct) })
                             }
+                        }
+                        // keep a lone last chip in the left column
+                        if (rowProducts.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
                         }
                     }
                 }

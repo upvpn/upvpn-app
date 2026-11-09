@@ -39,13 +39,58 @@ data class ProductInfo(
     val productDetails: ProductDetails
 )
 
+// Cents credited to the pay as you go balance, carried by the product id ("prepaid.3000"
+// credits 3000). Play charges the product's own price, which may be lower than the credit
+// (prepaid.3000 sells for $25 and credits $30).
+fun ProductInfo.prepaidCreditCents(): Int? {
+    if (productId.startsWith("prepaid").not()) return null
+    return productId.split(".").getOrNull(1)?.toIntOrNull()?.takeIf { it > 0 }
+}
+
 @SuppressLint("DefaultLocale")
 fun ProductInfo.prepaidUSD(): String? {
-    val cents = productId.split(".").getOrNull(1)
-    return cents?.toInt()?.let { String.format("$%.2f", it / 100f) }
+    return prepaidCreditCents()?.let { String.format("$%.2f", it / 100f) }
+}
+
+// "$25.00" -> "$25"; prices with real cents ("$4.99") are left alone. Removes at most one
+// zero-cents suffix so a price mixing "," and "." separators is never stripped twice.
+private fun stripZeroCents(price: String): String {
+    return when {
+        price.endsWith(".00") -> price.removeSuffix(".00")
+        price.endsWith(",00") -> price.removeSuffix(",00")
+        else -> price
+    }
+}
+
+// Play's localized price without a ".00" fraction, so a chip reads "$25" rather than "$25.00"
+fun ProductInfo.compactFormattedPrice(): String = stripZeroCents(formattedPrice)
+
+// the credited amount without a ".00" fraction, e.g. "$30"
+fun ProductInfo.compactPrepaidCredit(): String? = prepaidUSD()?.let(::stripZeroCents)
+
+// Promo drawn on the chip of a prepaid product whose credit exceeds its price
+fun ProductInfo.bonusText(): String? {
+    return when (productId) {
+        "prepaid.3000" -> "$5 FREE"
+        else -> null
+    }
+}
+
+// heading over the purchase button for a promo prepaid product,
+// e.g. "Pay $25 receive $30 in usage credit. That's $5 free!"
+fun ProductInfo.promoHeading(): String? {
+    return when (productId) {
+        "prepaid.3000" -> {
+            val credit = compactPrepaidCredit() ?: "$30"
+            "Pay ${compactFormattedPrice()} receive $credit in usage credit. That's $5 free!"
+        }
+
+        else -> null
+    }
 }
 
 fun ProductInfo.displayText(): String {
+    promoHeading()?.let { return it }
     return when (productDetails.productType) {
         ProductType.INAPP -> "Prepaid balance never expires. A VPN session is charged $0.02/hr + $0.04/GB + $0.05 base"
         ProductType.SUBS -> "Yearly at just $3.33/mo. Unlimited data."
@@ -73,8 +118,11 @@ class BillingViewModel(
     private val maxRetryAttempts = 5
     private var retryJob: Job? = null
 
+    // the id carries the credited cents: prepaid.3000 is priced $24.99 and credits $30
+    // ("$25 + $5 free", as on web). prepaid.199 is no longer for sale in the app; the
+    // server still maps it so refunds of past purchases revert correctly.
     private val prepaidProductIds =
-        listOf("prepaid.99", "prepaid.199", "prepaid.499", "prepaid.999")
+        listOf("prepaid.99", "prepaid.499", "prepaid.999", "prepaid.3000")
     private val yearlyProductId = "subscription.yearly"
 
     private val _prepaidProducts = MutableStateFlow<List<ProductInfo>>(emptyList())
