@@ -27,8 +27,13 @@ struct PrepaidPlansView: View {
     var body: some View {
         Group {
             VStack(alignment: .leading, spacing: 5) {
-                Text("Prepaid Credit").font(.headline)
-                Text("Add to Pay-as-you-go balance").font(.caption).foregroundStyle(.gray)
+                HStack {
+                    Text("Prepaid Credit").font(.headline)
+                    Spacer()
+                    Text("Top up balance")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
 
                 Divider()
 
