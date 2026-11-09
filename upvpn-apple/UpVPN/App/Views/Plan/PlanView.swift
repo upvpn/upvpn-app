@@ -14,14 +14,27 @@ struct PlanView: View {
     var prepaidProducts: [Product] = []
     var yearlyProduct: Product? = nil
     var isPurchasing: Bool = false
+    /// changes after each successful subscription purchase (see PlanViewModel)
+    var completedSubscriptionPurchases: Int = 0
 
     @State var selectedProduct: Product? = nil
     @State private var isEligibleForFreeTrial: Bool = false
 
+    /// The selection, only while its product is still for sale. The selection is view state
+    /// that outlives a plan reload, and the yearly plan stops being offered once the user
+    /// subscribes (here, on another device, or through a deferred transaction): without this
+    /// the buy button would keep offering "Start Free Trial" for a card that is gone.
+    private var offeredSelectedProduct: Product? {
+        guard let selected = selectedProduct else { return nil }
+        if prepaidProducts.contains(selected) { return selected }
+        if case .PayAsYouGo = userPlan, selected == yearlyProduct { return selected }
+        return nil
+    }
+
     var body: some View {
         planSections
             .safeAreaInset(edge: .bottom) {
-                PurchaseButton(selectedProduct: selectedProduct, isEligibleForFreeTrial: isEligibleForFreeTrial, isPurchasing: isPurchasing, purchaseProduct: purchaseProduct)
+                PurchaseButton(selectedProduct: offeredSelectedProduct, isEligibleForFreeTrial: isEligibleForFreeTrial, isPurchasing: isPurchasing, purchaseProduct: purchaseProduct)
             }
             .task(id: yearlyProduct?.id) {
                 if let subscription = yearlyProduct?.subscription {
@@ -29,6 +42,11 @@ struct PlanView: View {
                 } else {
                     isEligibleForFreeTrial = false
                 }
+            }
+            // subscribed: drop the yearly selection, its card is gone; a prepaid selection
+            // stays since that chip is still for sale
+            .onChange(of: completedSubscriptionPurchases) { _ in
+                selectedProduct = nil
             }
     }
 
@@ -104,7 +122,7 @@ struct PlanView: View {
             // the pay as you go balance even on yearly
             Section {
                 PrepaidPlansView(prepaidProducts: prepaidProducts,
-                                 selectedProduct: selectedProduct,
+                                 selectedProduct: offeredSelectedProduct,
                                  setSelectedProduct: { product in
                     self.selectedProduct = product
                 })
@@ -114,7 +132,7 @@ struct PlanView: View {
             if case .PayAsYouGo = userPlan, let yearlyProduct = yearlyProduct {
                 Section {
                     YearlyPlanView(yearlyProduct: yearlyProduct,
-                                   selectedProduct: selectedProduct,
+                                   selectedProduct: offeredSelectedProduct,
                                    isEligibleForFreeTrial: isEligibleForFreeTrial,
                                    setSelectedProduct: { product in
                         self.selectedProduct = product

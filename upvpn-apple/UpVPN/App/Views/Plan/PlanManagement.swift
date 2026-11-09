@@ -29,7 +29,8 @@ struct PlanManagement: View {
                     userPlan: userPlan,
                     prepaidProducts: planViewModel.prepaidProducts,
                     yearlyProduct: planViewModel.yearlyProduct,
-                    isPurchasing: planViewModel.isPurchasing)
+                    isPurchasing: planViewModel.isPurchasing,
+                    completedSubscriptionPurchases: planViewModel.completedSubscriptionPurchases)
             case .errored:
                 Button("Couldn't load plan, retry") {
                     planViewModel.reloadUserPlan()

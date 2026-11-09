@@ -78,6 +78,10 @@ class PlanViewModel: ObservableObject {
 
     @Published var purchaseError: String? = nil
     @Published var isPurchasing: Bool = false
+    /// Bumped after each successful subscription purchase; the plan view clears its selection
+    /// on change. A prepaid selection stays: its chip is still for sale, so buying again is a
+    /// valid next step, while the yearly card is gone once the user is subscribed.
+    @Published var completedSubscriptionPurchases: Int = 0
 
     enum PlanState {
         case loading
@@ -206,6 +210,9 @@ class PlanViewModel: ObservableObject {
                     await transaction.finish()
                     // purchase was successful reload updated plan
                     await MainActor.run {
+                        if product.type == .autoRenewable {
+                            self.completedSubscriptionPurchases += 1
+                        }
                         self.reloadUserPlan()
                     }
                 case .userCancelled, .pending:
