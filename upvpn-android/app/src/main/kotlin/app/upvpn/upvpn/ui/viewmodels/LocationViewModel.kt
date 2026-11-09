@@ -87,8 +87,32 @@ class LocationViewModel(
         )
     }
 
+    /**
+     * Locations as last received from the API, shown until the API responds: the list is not
+     * empty on a fresh start, and a failure to refresh is not an empty list with an error.
+     * The API response replaces them, selection and tier filter settled against it as usual.
+     */
+    private suspend fun getCachedLocations() {
+        val cachedLocations = vpnRepository.getCachedLocations()
+        if (cachedLocations.isEmpty()) {
+            return
+        }
+        _uiState.update { value ->
+            if (value.locations.isNotEmpty()) {
+                // the API responded first
+                value
+            } else {
+                value.copy(
+                    locations = cachedLocations,
+                    selectedLocation = value.selectedLocation ?: cachedLocations.defaultLocation()
+                )
+            }
+        }
+    }
+
     init {
         viewModelScope.launch(dispatcher) {
+            getCachedLocations()
             getRecentLocations()
             getLocations()
         }

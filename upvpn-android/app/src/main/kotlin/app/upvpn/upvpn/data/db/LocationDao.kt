@@ -1,9 +1,8 @@
 package app.upvpn.upvpn.data.db
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 
 @Dao
 interface LocationDao {
@@ -11,8 +10,9 @@ interface LocationDao {
     @Query("SELECT * FROM location")
     suspend fun getLocations(): List<Location>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(locations: List<Location>)
+    /** Inserts new locations and overwrites existing ones, [Location.lastAccess] included. */
+    @Upsert
+    suspend fun upsert(locations: List<Location>)
 
     @Query("DELETE FROM location WHERE code NOT IN (:notInLocationCodes)")
     suspend fun deleteNotIn(notInLocationCodes: List<String>);

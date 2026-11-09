@@ -32,6 +32,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.UUID
 
 class VPNOrchestrator(
@@ -58,6 +59,12 @@ class VPNOrchestrator(
     private var latestRequestId: UUID? = null
 
     init {
+        // Sessions stored when this process starts are stale: a tunnel cannot have outlived
+        // it. Marking completes before this constructor returns, so that no connect request
+        // (handled on this looper, after construction) can insert a live session first.
+        runBlocking {
+            vpnSessionRepository.markAllForReclaim()
+        }
         endVpnSessionScope.launch {
             vpnSessionRepository.runReclaimer(endVpnSessionScope)
         }

@@ -37,6 +37,8 @@ interface VPNRepository {
     suspend fun signUp(request: UserCredentialsWithCode): Result<Unit, String>
     suspend fun requestCode(request: OnlyEmail): Result<Unit, String>
     suspend fun getLocations(): Result<List<Location>, String>
+    /** Locations as last received from the API, to show until [getLocations] responds. */
+    suspend fun getCachedLocations(): List<Location>
     suspend fun getUser(): User?
     suspend fun getRecentLocations(limit: Int): List<Location>
     suspend fun addRecentLocation(location: Location)
@@ -170,9 +172,16 @@ class DefaultVPNRepository(
             success = { newLocations ->
                 Log.i(tag, "received ${newLocations.size} locations from API")
                 val newLocationCodes = newLocations.map { it.code }
-                vpnDatabase.locationDao().deleteNotIn(newLocationCodes);
-                val dbLocations = newLocations.map { it.toDbLocation() }
-                vpnDatabase.locationDao().insert(dbLocations)
+                vpnDatabase.withTransaction {
+                    val locationDao = vpnDatabase.locationDao()
+                    // lastAccess is local information, which the API response must not reset
+                    val lastAccess = locationDao.getLocations()
+                        .associate { it.code to it.lastAccess }
+                    locationDao.deleteNotIn(newLocationCodes)
+                    locationDao.upsert(newLocations.map {
+                        it.toDbLocation().copy(lastAccess = lastAccess[it.code])
+                    })
+                }
                 Ok(newLocations)
             },
             failure = { error ->
@@ -182,6 +191,10 @@ class DefaultVPNRepository(
         )
 
         return result
+    }
+
+    override suspend fun getCachedLocations(): List<Location> {
+        return vpnDatabase.locationDao().getLocations().map { it.toModelLocation() }
     }
 
     override suspend fun getRecentLocations(limit: Int): List<Location> {

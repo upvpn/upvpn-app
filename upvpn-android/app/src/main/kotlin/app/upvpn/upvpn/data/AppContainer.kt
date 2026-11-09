@@ -45,8 +45,9 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
             runBlocking {
                 // init device
                 vpnRepository.initDevice()
-                // mark old vpn sessions to be reclaimed
-                vpnDatabase.vpnSessionDao().markAllForDeletion()
+                // stale VPN sessions are marked for reclaim by the VPN service process when
+                // it starts (VPNOrchestrator), not here: this also runs in the UI process,
+                // which may start while the service holds the session in progress
                 // create VPN session status notification channel
                 vpnNotificationManager.createChannels()
             }
