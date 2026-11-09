@@ -159,9 +159,9 @@ struct AuthView: View {
 
                 HStack {
                     VStack { Divider() }
-                    Text("or")
+                    Text("OR")
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundStyle(.secondary)
                     VStack { Divider() }
                 }
 
