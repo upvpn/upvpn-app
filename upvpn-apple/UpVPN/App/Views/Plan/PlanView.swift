@@ -52,38 +52,52 @@ struct PlanView: View {
 
     @ViewBuilder
     private var sections: some View {
-            Section("Current Plan") {
-                switch userPlan {
-                case .PayAsYouGo(let userPlanPayAsYouGo):
-                    HStack {
-                        Text("Pay as you go")
-                        Spacer()
-                        Text("Balance \(formatCentsToDollars(userPlanPayAsYouGo.balance))")
-                            .foregroundStyle(.secondary)
-                    }
-                case .AnnualSubscription(let userPlanAnnualSubscription):
-                    HStack {
-                        Text(userPlan.displayName)
-                        Spacer()
-                        if let startedDate = userPlanAnnualSubscription.startedDate {
-                            Text("Since \(startedDate.formatted(date: .abbreviated, time: .omitted))")
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    // every plan carries a pay as you go balance: it pays for premium locations
-                    VStack(alignment: .leading, spacing: 5) {
+            // laid out like the prepaid and yearly cards: a title row, a divider, then the
+            // content, rather than a section header floating above the card
+            Section {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Current Plan").font(.headline)
+
+                    Divider()
+
+                    switch userPlan {
+                    case .PayAsYouGo(let userPlanPayAsYouGo):
                         HStack {
                             Text("Pay as you go")
                             Spacer()
-                            Text("Balance \(formatCentsToDollars(userPlan.balance))")
+                            Text("Balance \(formatCentsToDollars(userPlanPayAsYouGo.balance))")
                                 .foregroundStyle(.secondary)
                         }
-                        Text("Used for premium locations")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        .padding(.vertical, 8)
+                    case .AnnualSubscription(let userPlanAnnualSubscription):
+                        HStack {
+                            Text(userPlan.displayName)
+                            Spacer()
+                            if let startedDate = userPlanAnnualSubscription.startedDate {
+                                Text("Since \(startedDate.formatted(date: .abbreviated, time: .omitted))")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .padding(.vertical, 8)
+
+                        Divider()
+
+                        // every plan carries a pay as you go balance: it pays for premium locations
+                        VStack(alignment: .leading, spacing: 5) {
+                            HStack {
+                                Text("Pay as you go")
+                                Spacer()
+                                Text("Balance \(formatCentsToDollars(userPlan.balance))")
+                                    .foregroundStyle(.secondary)
+                            }
+                            Text("Used for premium locations")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.vertical, 8)
                     }
                 }
-
+                .frame(maxWidth: .infinity)
             }
 
             // prepaid credit is for sale on every plan: premium locations are billed from
