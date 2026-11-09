@@ -10,6 +10,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlin.math.absoluteValue
+import java.util.Locale
 
 @Serializable
 data class UserCredentials(
@@ -296,9 +297,10 @@ fun UserPlanAnnualSubscription.prettyStartedAt(): String? {
         .format(instant)
 }
 
+// the balance is in USD, so format it US style ("$4.99") regardless of the device locale
 fun Int.prettyCents(): String {
     val sign = if (this < 0) "-" else ""
-    return "$sign$%.2f".format(this.absoluteValue / 100.0)
+    return "$sign$%.2f".format(Locale.US, this.absoluteValue / 100.0)
 }
 
 fun UserPlanPayAsYouGo.prettyBalance(): String = this.balance.prettyCents()

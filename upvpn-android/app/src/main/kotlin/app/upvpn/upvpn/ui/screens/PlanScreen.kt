@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -352,12 +353,17 @@ fun PriceCapsule(
             .padding(horizontal = 12.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically
+        // price and bonus side by side when they fit; otherwise the bonus moves under the
+        // price as a whole, so a long localized price ("Rp 419.000 $5 FREE") never breaks
+        // mid-text. The flow never exceeds the chip's column, so chips cannot overlap.
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            itemVerticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = price,
+                textAlign = TextAlign.Center,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
@@ -367,6 +373,7 @@ fun PriceCapsule(
             if (bonus != null) {
                 Text(
                     text = bonus,
+                    textAlign = TextAlign.Center,
                     style = TextStyle(
                         fontSize = 11.sp,
                         fontWeight = FontWeight.SemiBold,

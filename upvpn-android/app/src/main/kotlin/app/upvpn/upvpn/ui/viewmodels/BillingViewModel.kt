@@ -1,6 +1,5 @@
 package app.upvpn.upvpn.ui.viewmodels
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -29,6 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
+import java.util.Locale
 import kotlin.math.min
 
 data class ProductInfo(
@@ -44,9 +44,10 @@ fun ProductInfo.prepaidCreditCents(): Int? {
     return productId.split(".").getOrNull(1)?.toIntOrNull()?.takeIf { it > 0 }
 }
 
-@SuppressLint("DefaultLocale")
+// the balance is in USD, so format it US style ("$4.99") regardless of the device locale;
+// the default locale would produce a hybrid like "$4,99" that matches no convention
 fun ProductInfo.prepaidUSD(): String? {
-    return prepaidCreditCents()?.let { String.format("$%.2f", it / 100f) }
+    return prepaidCreditCents()?.let { String.format(Locale.US, "$%.2f", it / 100f) }
 }
 
 private fun stripZeroCents(price: String): String {
