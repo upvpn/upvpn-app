@@ -143,8 +143,13 @@ fun HelpScreen(
             Text(
                 buildAnnotatedString {
                     append("To delete your account, visit the ")
-                    link("account page on the dashboard", linkStyle) {
-                        openWebPage("${BuildConfig.UPVPN_BASE_URL}/dashboard/account", "Account")
+                    // the dashboard needs sign in, and its Google and Apple sign-in refuse
+                    // embedded web views, so it opens in the browser (which may already hold
+                    // a dashboard session) rather than in the app
+                    withStyle(style = linkStyle) {
+                        withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/dashboard/account")) {
+                            append("account page on the dashboard")
+                        }
                     }
 
                     append("\n\n")

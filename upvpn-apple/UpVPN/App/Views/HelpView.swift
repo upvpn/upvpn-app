@@ -80,10 +80,11 @@ struct HelpView: View {
         .padding()
         .navigationTitle("Help")
         .frame(maxWidth: .infinity)
-        // every web link on this page (FAQ, pricing calculator, dashboard, acknowledgements)
-        // opens inside the app; anything else (mailto) goes to the system
+        // web links on this page (FAQ, pricing calculator, acknowledgements) open inside the
+        // app; anything else (mailto, and the dashboard on macOS) goes to the system
         .environment(\.openURL, OpenURLAction { url in
-            if let scheme = url.scheme?.lowercased(), scheme == "https" || scheme == "http" {
+            if let scheme = url.scheme?.lowercased(), scheme == "https" || scheme == "http",
+               HelpView.opensInApp(url) {
                 presentedPage = WebPage(url: url)
                 return .handled
             }
@@ -92,6 +93,18 @@ struct HelpView: View {
         .sheet(item: $presentedPage) { page in
             InAppBrowserView(url: page.url)
         }
+    }
+
+    /// Whether a web link opens inside the app. The dashboard needs sign in, and its Google
+    /// and Apple sign-in use popups and refuse embedded web views, so on macOS (a plain web
+    /// view) it goes to the browser, which may already hold a dashboard session. On iOS the
+    /// in-app view is Safari itself, where sign-in works.
+    static func opensInApp(_ url: URL) -> Bool {
+        #if os(macOS)
+        return !url.path.hasPrefix("/dashboard")
+        #else
+        return true
+        #endif
     }
 }
 
@@ -114,7 +127,6 @@ struct InAppBrowserView: UIViewControllerRepresentable {
 /// app, with a way to open it in the browser instead.
 struct InAppBrowserView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.openURL) private var openURL
 
     var url: URL
 
@@ -125,7 +137,9 @@ struct InAppBrowserView: View {
                     .font(.headline)
                 Spacer()
                 Button("Open in Browser") {
-                    openURL(url)
+                    // straight to the workspace: the sheet inherits HelpView's openURL
+                    // action, which would show the page in the app again
+                    NSWorkspace.shared.open(url)
                 }
                 Button("Done") {
                     dismiss()
@@ -136,13 +150,15 @@ struct InAppBrowserView: View {
 
             Divider()
 
-            WebView(url: url)
+            WebKitPageView(url: url)
         }
         .frame(minWidth: 800, minHeight: 650)
     }
 }
 
-struct WebView: NSViewRepresentable {
+/// A WKWebView showing one page. Not named `WebView`: SwiftUI has a `WebView` of its own from
+/// macOS 26, and the app's type would shadow it.
+struct WebKitPageView: NSViewRepresentable {
     var url: URL
 
     func makeNSView(context: Context) -> WKWebView {
