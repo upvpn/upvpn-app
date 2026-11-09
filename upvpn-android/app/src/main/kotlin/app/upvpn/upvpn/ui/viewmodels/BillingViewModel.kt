@@ -39,9 +39,6 @@ data class ProductInfo(
     val productDetails: ProductDetails
 )
 
-// Cents credited to the pay as you go balance, carried by the product id ("prepaid.3000"
-// credits 3000). Play charges the product's own price, which may be lower than the credit
-// (prepaid.3000 sells for $25 and credits $30).
 fun ProductInfo.prepaidCreditCents(): Int? {
     if (productId.startsWith("prepaid").not()) return null
     return productId.split(".").getOrNull(1)?.toIntOrNull()?.takeIf { it > 0 }
@@ -52,8 +49,6 @@ fun ProductInfo.prepaidUSD(): String? {
     return prepaidCreditCents()?.let { String.format("$%.2f", it / 100f) }
 }
 
-// "$25.00" -> "$25"; prices with real cents ("$4.99") are left alone. Removes at most one
-// zero-cents suffix so a price mixing "," and "." separators is never stripped twice.
 private fun stripZeroCents(price: String): String {
     return when {
         price.endsWith(".00") -> price.removeSuffix(".00")
@@ -62,13 +57,10 @@ private fun stripZeroCents(price: String): String {
     }
 }
 
-// Play's localized price without a ".00" fraction, so a chip reads "$25" rather than "$25.00"
 fun ProductInfo.compactFormattedPrice(): String = stripZeroCents(formattedPrice)
 
-// the credited amount without a ".00" fraction, e.g. "$30"
 fun ProductInfo.compactPrepaidCredit(): String? = prepaidUSD()?.let(::stripZeroCents)
 
-// Promo drawn on the chip of a prepaid product whose credit exceeds its price
 fun ProductInfo.bonusText(): String? {
     return when (productId) {
         "prepaid.3000" -> "$5 FREE"
@@ -76,8 +68,6 @@ fun ProductInfo.bonusText(): String? {
     }
 }
 
-// heading over the purchase button for a promo prepaid product,
-// e.g. "Pay $25 receive $30 in usage credit. That's $5 free!"
 fun ProductInfo.promoHeading(): String? {
     return when (productId) {
         "prepaid.3000" -> {
