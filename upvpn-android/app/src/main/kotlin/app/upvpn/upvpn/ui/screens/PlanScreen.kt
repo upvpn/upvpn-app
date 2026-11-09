@@ -244,29 +244,28 @@ fun PlanScreen(
 
 @Composable
 fun CurrentPlan(plan: PlanState.Plan) {
-    Column(
+    // laid out like the prepaid and yearly cards: a title row, a divider, then the content,
+    // rather than a label floating above the card
+    Card(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 15.dp),
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp)
     ) {
-        Text(
-            text = "CURRENT PLAN",
-            style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.padding(15.dp, 4.dp)
-        )
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-
+        Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.padding(15.dp)
         ) {
+            Text(
+                "Current Plan",
+                style = MaterialTheme.typography.titleMedium
+            )
+            HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
 
             when (plan.userPlan) {
                 is UserPlan.PayAsYouGo -> Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp, 10.dp)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = plan.userPlan.forDisplay(),
@@ -281,9 +280,7 @@ fun CurrentPlan(plan: PlanState.Plan) {
                 is UserPlan.AnnualSubscription -> {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier
-                            .padding(15.dp, 10.dp)
-                            .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
