@@ -86,13 +86,14 @@ struct MainView: View {
             Text(message)
         }
         .sheet(isPresented: $isPlanManagmentPresented) {
+            // refreshable so the plan can be reloaded after a purchase, as in settings
             if #available(iOS 16, macOS 13, *) {
-                PlanManagement()
+                PlanManagement(isRefreshable: true)
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.large])
 
             } else {
-                PlanManagement()
+                PlanManagement(isRefreshable: true)
                     #if os(macOS)
                     .toolbar {
                         // on macOS 12 ESC doesnt close it, hence provide a button

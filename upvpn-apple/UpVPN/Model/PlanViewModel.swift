@@ -162,7 +162,14 @@ class PlanViewModel: ObservableObject {
     }
 
     func reloadUserPlan() {
-        self.planState = PlanState.loading
+        // Keep the loaded plan on screen while it refreshes (after a purchase, on pull to
+        // refresh) instead of flashing a spinner: besides the flicker, swapping the whole
+        // plan view for a small ProgressView changes the content size, and on macOS the
+        // sheet window cannot follow while the StoreKit confirmation sheet is still attached
+        // to it, which left the view displaced inside the sheet after a purchase.
+        if case .plan = planState {} else {
+            self.planState = PlanState.loading
+        }
         Task {
             let userPlan = await planRepository.getUserPlan()
 

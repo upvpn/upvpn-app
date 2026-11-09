@@ -69,7 +69,7 @@ struct MainViewContent12: View {
                 }
             }
             .sheet(isPresented: $showPlans) {
-                PlanManagement()
+                PlanManagement(isRefreshable: true)
                     .toolbar {
                         Button {
                             showPlans.toggle()
@@ -88,6 +88,7 @@ struct MainViewContent26: View {
     // .detailOnly while the sidebar is collapsed
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var showAccountSheet: Bool = false
+    @State private var showPlanSheet: Bool = false
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -118,11 +119,24 @@ struct MainViewContent26: View {
         }
         .sheet(isPresented: $showAccountSheet) {
             NavigationStack {
-                SettingsView()
-                    .toolbar {
-                        Button("Close", action: { showAccountSheet.toggle() })
-                    }
+                // the plan opens in its own sheet rather than pushed here: a purchase made
+                // inside this sheet attaches StoreKit's confirmation sheet to this window,
+                // which then keeps a taller title bar on every screen pushed afterwards
+                SettingsView(onPlan: {
+                    showAccountSheet = false
+                    showPlanSheet = true
+                })
+                .toolbar {
+                    Button("Close", action: { showAccountSheet.toggle() })
+                }
             }
+        }
+        .sheet(isPresented: $showPlanSheet) {
+            // refreshable, as it was when pushed from the account view
+            PlanManagement(isRefreshable: true)
+                .toolbar {
+                    Button("Close", action: { showPlanSheet.toggle() })
+                }
         }
     }
 }
