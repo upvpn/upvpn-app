@@ -1,21 +1,16 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# R8 rules for the release build. Library rules (kotlinx-serialization, Retrofit,
+# Sandwich, Room, OkHttp, Billing, Credentials) ship inside their artifacts and are
+# applied automatically; only app-specific rules live here.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep file names and line numbers so Play Console / crash reports stay readable
+# after obfuscation. The mapping file is bundled in the AAB automatically.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# JNI: libwg-go exports symbols named Java_app_upvpn_upvpn_service_VPNService_*
+# (see app/tunnel/libwg-go/jni.c), so this class and its native methods must keep
+# their exact names. The default Android rules already do this; stated explicitly
+# because the app does not work without it.
+-keepclasseswithmembernames,includedescriptorclasses class app.upvpn.upvpn.service.VPNService {
+    native <methods>;
+}
