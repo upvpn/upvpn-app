@@ -8,7 +8,6 @@
 import SwiftUI
 import StoreKit
 
-
 struct PrepaidPlansView: View {
     var prepaidProducts: [Product] = []
     var selectedProduct: Product? = nil
@@ -33,7 +32,9 @@ struct PrepaidPlansView: View {
 
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(prepaidProducts) { product in
-                        PriceCapsule(text: product.displayPrice, isSelected: product == selectedProduct)
+                        PriceCapsule(text: product.compactDisplayPrice,
+                                     isSelected: product == selectedProduct,
+                                     bonus: product.prepaidBonus)
                             .onTapGesture {
                                setSelectedProduct(product)
                             }

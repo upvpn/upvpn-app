@@ -18,6 +18,58 @@ extension Transaction {
     }
 }
 
+/// "$25.00" -> "$25"; prices with real cents ("$4.99") are left alone
+private func stripZeroCents(_ price: String) -> String {
+    for zeroCents in [".00", ",00"] where price.hasSuffix(zeroCents) {
+        return String(price.dropLast(zeroCents.count))
+    }
+    return price
+}
+
+extension Product {
+    /// Cents credited to the pay as you go balance, carried by the product id
+    /// ("prepaid.3000" credits 3000). The store charges the product's own price, which may be
+    /// lower than the credit (prepaid.3000 sells for $25 and credits $30).
+    var prepaidCreditCents: Int32? {
+        guard id.starts(with: "prepaid"),
+              let centsString = id.splitToArray(separator: ".").last,
+              let cents = Int32(centsString), cents > 0 else {
+            return nil
+        }
+        return cents
+    }
+
+    /// store price without a ".00" fraction, so a chip reads "$25" rather than "$25.00"
+    var compactDisplayPrice: String {
+        stripZeroCents(displayPrice)
+    }
+
+    /// the credited amount without a ".00" fraction, e.g. "$30"
+    var compactPrepaidCredit: String? {
+        prepaidCreditCents.map { stripZeroCents(formatCentsToDollars($0)) }
+    }
+
+    /// promo drawn on the chip of a prepaid product whose credit exceeds its price
+    var prepaidBonus: String? {
+        switch id {
+        case "prepaid.3000": return "$5 FREE"
+        default: return nil
+        }
+    }
+
+    /// heading over the purchase button for a promo prepaid product,
+    /// e.g. "Pay $25 receive $30 in usage credit. That's $5 free!"
+    var prepaidPromoHeading: String? {
+        switch id {
+        case "prepaid.3000":
+            let credit = compactPrepaidCredit ?? "$30"
+            return "Pay \(compactDisplayPrice) receive \(credit) in usage credit. That's $5 free!"
+        default:
+            return nil
+        }
+    }
+}
+
 @MainActor
 class PlanViewModel: ObservableObject {
     @Published var planState: PlanState = PlanState.loading
@@ -33,11 +85,13 @@ class PlanViewModel: ObservableObject {
         case errored(String)
     }
 
+    // the id carries the credited cents: prepaid.3000 is priced $24.99 and credits $30
+    // ("$25 + $5 free", as on web). prepaid.2499 is no longer for sale.
     private let prepaidProductIdentifiers = [
         "prepaid.499",
         "prepaid.999",
         "prepaid.1499",
-        "prepaid.2499",
+        "prepaid.3000",
     ]
 
     private let yearlyProductIdentifier = "subscription.yearly"
