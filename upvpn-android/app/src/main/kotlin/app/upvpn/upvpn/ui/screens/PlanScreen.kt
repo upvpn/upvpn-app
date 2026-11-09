@@ -400,15 +400,22 @@ fun PrepaidPlans(
             verticalArrangement = Arrangement.spacedBy(5.dp),
             modifier = Modifier.padding(15.dp)
         ) {
-            Text(
-                "Prepaid Credit",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                "Add to Pay-as-you-go balance",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.alpha(0.7f)
-            )
+            // title left, short description right, as the Current Plan rows are laid out
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    "Prepaid Credit",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    "Top up balance",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.alpha(0.7f)
+                )
+            }
             HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
 
             // two chips per row; sized by content so any number of products fits
@@ -449,31 +456,42 @@ fun YearlyPlan(
     selectedProduct: ProductInfo?,
     setSelectedProduct: (ProductInfo) -> Unit,
 ) {
+    // laid out like the prepaid card: a title row with a short description on the right,
+    // a divider, then the content row
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp)
             .clickable { setSelectedProduct(yearlyProduct) }
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(15.dp)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.padding(15.dp)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Yearly Plan", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "Unlimited data. Just $3.33/mo",
-                    style = MaterialTheme.typography.bodySmall,
+                    "Just $3.33/mo",
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.alpha(0.7f)
                 )
             }
-            PriceCapsule(
-                "${yearlyProduct.formattedPrice}/year",
-                isSelected = selectedProduct?.productId == yearlyProduct.productId,
-                onClick = { setSelectedProduct(yearlyProduct) })
+            HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Unlimited data", style = MaterialTheme.typography.bodyMedium)
+                PriceCapsule(
+                    "${yearlyProduct.formattedPrice}/year",
+                    isSelected = selectedProduct?.productId == yearlyProduct.productId,
+                    onClick = { setSelectedProduct(yearlyProduct) })
+            }
         }
     }
 }
