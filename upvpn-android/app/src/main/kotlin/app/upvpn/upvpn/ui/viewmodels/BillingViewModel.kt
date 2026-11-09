@@ -171,6 +171,11 @@ class BillingViewModel(
                         Log.d(tag, "purchased: $purchase")
                     }
                 }
+                // subscribed: drop the yearly selection, its card is gone once the plan is a
+                // subscription; a prepaid selection stays since that chip is still for sale
+                if (purchases.any { it.products.contains(yearlyProductId) }) {
+                    _selectedProduct.update { null }
+                }
 
             } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
                 Log.d(tag, "purchase cancelled")

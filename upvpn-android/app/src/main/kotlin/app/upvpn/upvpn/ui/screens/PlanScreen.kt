@@ -188,6 +188,15 @@ fun PlanScreen(
                         val yearlyForSale = yearlyProduct.value
                             ?.takeIf { planState.userPlan is UserPlan.PayAsYouGo }
 
+                        // the selection only while its product is still for sale: it lives in
+                        // the view model and outlives a plan refresh, and the yearly plan stops
+                        // being offered once the user subscribes (here or elsewhere); without
+                        // this the buy button would keep offering a card that is gone
+                        val offeredSelectedProduct = selectedProduct.value?.takeIf { selected ->
+                            prepaidProducts.value.any { it.productId == selected.productId } ||
+                                selected.productId == yearlyForSale?.productId
+                        }
+
                         Box(
                             Modifier.fillMaxSize(),
 
@@ -205,7 +214,7 @@ fun PlanScreen(
                                 if (prepaidProducts.value.isNotEmpty()) {
                                     PrepaidPlans(
                                         prepaidProducts.value,
-                                        selectedProduct.value,
+                                        offeredSelectedProduct,
                                         billingViewModel::setSelectedProduct,
                                     )
                                 }
@@ -213,7 +222,7 @@ fun PlanScreen(
                                 if (yearlyForSale != null) {
                                     YearlyPlan(
                                         yearlyForSale,
-                                        selectedProduct.value,
+                                        offeredSelectedProduct,
                                         billingViewModel::setSelectedProduct,
                                     )
                                 }
@@ -225,7 +234,7 @@ fun PlanScreen(
                             if (prepaidProducts.value.isNotEmpty() || yearlyForSale != null) {
                                 PurchaseButton(
                                     isPurchasing.value,
-                                    selectedProduct.value,
+                                    offeredSelectedProduct,
                                     billingViewModel::makePurchase,
                                     modifier = Modifier
                                         .fillMaxWidth()
