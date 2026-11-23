@@ -1,6 +1,5 @@
 package app.upvpn.upvpn.ui.viewmodels
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -29,6 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
+import java.util.Locale
 import kotlin.math.min
 
 data class ProductInfo(
@@ -39,15 +39,51 @@ data class ProductInfo(
     val productDetails: ProductDetails
 )
 
-@SuppressLint("DefaultLocale")
+fun ProductInfo.prepaidCreditCents(): Int? {
+    if (productId.startsWith("prepaid").not()) return null
+    return productId.split(".").getOrNull(1)?.toIntOrNull()?.takeIf { it > 0 }
+}
+
+// the balance is in USD, so format it US style ("$4.99") regardless of the device locale;
+// the default locale would produce a hybrid like "$4,99" that matches no convention
 fun ProductInfo.prepaidUSD(): String? {
-    val cents = productId.split(".").getOrNull(1)
-    return cents?.toInt()?.let { String.format("$%.2f", it / 100f) }
+    return prepaidCreditCents()?.let { String.format(Locale.US, "$%.2f", it / 100f) }
+}
+
+private fun stripZeroCents(price: String): String {
+    return when {
+        price.endsWith(".00") -> price.removeSuffix(".00")
+        price.endsWith(",00") -> price.removeSuffix(",00")
+        else -> price
+    }
+}
+
+fun ProductInfo.compactFormattedPrice(): String = stripZeroCents(formattedPrice)
+
+fun ProductInfo.compactPrepaidCredit(): String? = prepaidUSD()?.let(::stripZeroCents)
+
+fun ProductInfo.bonusText(): String? {
+    return when (productId) {
+        "prepaid.3000" -> "$5 FREE"
+        else -> null
+    }
+}
+
+fun ProductInfo.promoHeading(): String? {
+    return when (productId) {
+        "prepaid.3000" -> {
+            val credit = compactPrepaidCredit() ?: "$30"
+            "Pay ${compactFormattedPrice()} receive $credit in usage credit. That's $5 free!"
+        }
+
+        else -> null
+    }
 }
 
 fun ProductInfo.displayText(): String {
+    promoHeading()?.let { return it }
     return when (productDetails.productType) {
-        ProductType.INAPP -> "Prepaid balance never expires. A VPN session is charged $0.02/hr + $0.04/GB + $0.05 base"
+        ProductType.INAPP -> "Prepaid balance never expires. VPN sessions start at $0.02/hr + $0.04/GB + $0.05 base."
         ProductType.SUBS -> "Yearly at just $3.33/mo. Unlimited data."
         else -> ""
     }
@@ -73,8 +109,11 @@ class BillingViewModel(
     private val maxRetryAttempts = 5
     private var retryJob: Job? = null
 
+    // the id carries the credited cents: prepaid.3000 is priced $24.99 and credits $30
+    // ("$25 + $5 free", as on web). prepaid.199 is no longer for sale in the app; the
+    // server still maps it so refunds of past purchases revert correctly.
     private val prepaidProductIds =
-        listOf("prepaid.99", "prepaid.199", "prepaid.499", "prepaid.999")
+        listOf("prepaid.99", "prepaid.499", "prepaid.999", "prepaid.3000")
     private val yearlyProductId = "subscription.yearly"
 
     private val _prepaidProducts = MutableStateFlow<List<ProductInfo>>(emptyList())
@@ -131,6 +170,11 @@ class BillingViewModel(
                     if (BuildConfig.DEBUG) {
                         Log.d(tag, "purchased: $purchase")
                     }
+                }
+                // subscribed: drop the yearly selection, its card is gone once the plan is a
+                // subscription; a prepaid selection stays since that chip is still for sale
+                if (purchases.any { it.products.contains(yearlyProductId) }) {
+                    _selectedProduct.update { null }
                 }
 
             } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {

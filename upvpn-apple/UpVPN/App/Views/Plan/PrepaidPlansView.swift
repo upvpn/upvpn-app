@@ -8,7 +8,6 @@
 import SwiftUI
 import StoreKit
 
-
 struct PrepaidPlansView: View {
     var prepaidProducts: [Product] = []
     var selectedProduct: Product? = nil
@@ -17,23 +16,32 @@ struct PrepaidPlansView: View {
     #if os(tvOS)
     private let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 40), count: 4)
     #else
+    // flexible, not fixed: a localized promo price ("Rp 419.000 $5 FREE") can be wider
+    // than 120pt, and a fixed column would let it overlap its neighbour
     private let columns = [
-        GridItem(.fixed(120)),
-        GridItem(.fixed(120))
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
     #endif
 
     var body: some View {
         Group {
             VStack(alignment: .leading, spacing: 5) {
-                Text("Prepaid Credit").font(.headline)
-                Text("Add to Pay-as-you-go balance").font(.caption).foregroundStyle(.gray)
+                HStack {
+                    Text("Prepaid Credit").font(.headline)
+                    Spacer()
+                    Text("Top up balance")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
 
                 Divider()
 
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(prepaidProducts) { product in
-                        PriceCapsule(text: product.displayPrice, isSelected: product == selectedProduct)
+                        PriceCapsule(text: product.compactDisplayPrice,
+                                     isSelected: product == selectedProduct,
+                                     bonus: product.prepaidBonus)
                             .onTapGesture {
                                setSelectedProduct(product)
                             }

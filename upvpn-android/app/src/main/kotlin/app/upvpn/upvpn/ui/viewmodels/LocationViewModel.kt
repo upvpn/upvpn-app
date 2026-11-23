@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.upvpn.upvpn.data.VPNRepository
-import app.upvpn.upvpn.model.DEFAULT_LOCATION
 import app.upvpn.upvpn.model.Location
+import app.upvpn.upvpn.model.LocationTier
+import app.upvpn.upvpn.model.defaultLocation
+import app.upvpn.upvpn.model.tier
 import app.upvpn.upvpn.ui.state.LocationUiState
 import com.github.michaelbull.result.fold
 import kotlinx.coroutines.CoroutineDispatcher
@@ -30,6 +32,10 @@ class LocationViewModel(
     private val _recentLocations = MutableStateFlow(listOf<Location>())
     val recentLocations = _recentLocations.asStateFlow()
 
+    // location of the VPN session in progress, if any, as known locally. It stays
+    // selected even when the API no longer lists it (e.g. disabled on the backend)
+    private val _sessionLocation = MutableStateFlow(null as Location?)
+
     private suspend fun getRecentLocations() {
         val newRecentLocations = vpnRepository.getRecentLocations(5)
         _recentLocations.update { newRecentLocations }
@@ -40,26 +46,33 @@ class LocationViewModel(
         val locations = vpnRepository.getLocations()
         locations.fold(
             success = { newLocations ->
+                val sessionLocation = _sessionLocation.value
                 _uiState.update { value ->
                     value.copy(
                         isLoading = false,
                         locations = newLocations,
-                        // to update estimates
+                        // a filter on a tier that no location has anymore would show nothing
+                        tierFilter = value.tierFilter
+                            ?.takeIf { tier -> newLocations.any { it.tier == tier } },
                         selectedLocation = value.selectedLocation
-                            // find same location as selected from newLocations
-                            ?.let { sl -> newLocations.firstOrNull { it.code == sl.code } }
-                            ?: /* now try computing default selected location */
-                            (newLocations.find {
-                                it.city.lowercase().contains("ashburn")
-                            } ?: DEFAULT_LOCATION)
+                            ?.let { sl ->
+                                // same location from newLocations, to update estimate and price
+                                newLocations.firstOrNull { it.code == sl.code }
+                                // not listed anymore (disabled on the backend) but a session
+                                // to it is in progress: keep showing it from local information
+                                    ?: sl.takeIf { sessionLocation?.code == sl.code }
+                            }
+                        // nothing selected (or selection no longer available): pick a default,
+                        // none when there are no locations
+                            ?: newLocations.defaultLocation()
                     )
                 }
 
-                // make sure to preserve recent locations order
+                // refresh recent locations from the API (estimate, price), in their order,
+                // dropping those it no longer lists, as the database does
                 _recentLocations.update { list ->
-                    list.map { recentLocation ->
+                    list.mapNotNull { recentLocation ->
                         newLocations.firstOrNull { it.code == recentLocation.code }
-                            ?: recentLocation
                     }
                 }
             },
@@ -74,8 +87,32 @@ class LocationViewModel(
         )
     }
 
+    /**
+     * Locations as last received from the API, shown until the API responds: the list is not
+     * empty on a fresh start, and a failure to refresh is not an empty list with an error.
+     * The API response replaces them, selection and tier filter settled against it as usual.
+     */
+    private suspend fun getCachedLocations() {
+        val cachedLocations = vpnRepository.getCachedLocations()
+        if (cachedLocations.isEmpty()) {
+            return
+        }
+        _uiState.update { value ->
+            if (value.locations.isNotEmpty()) {
+                // the API responded first
+                value
+            } else {
+                value.copy(
+                    locations = cachedLocations,
+                    selectedLocation = value.selectedLocation ?: cachedLocations.defaultLocation()
+                )
+            }
+        }
+    }
+
     init {
         viewModelScope.launch(dispatcher) {
+            getCachedLocations()
             getRecentLocations()
             getLocations()
         }
@@ -95,8 +132,36 @@ class LocationViewModel(
         }
     }
 
+    fun onTierFilterChange(tier: LocationTier?) {
+        _uiState.update { value -> value.copy(tierFilter = tier) }
+    }
+
     fun onLocationSelected(location: Location) {
         _uiState.update { value -> value.copy(selectedLocation = location) }
+    }
+
+    /**
+     * Location of the VPN session in progress (null when there is none). It becomes the
+     * selected location, and remains so even if the API stops listing it.
+     */
+    fun onVpnSessionLocation(location: Location?) {
+        _sessionLocation.update { location }
+        if (location != null) {
+            onLocationSelected(location)
+        } else {
+            // session over: a selection the API no longer lists (kept for the session)
+            // makes way for the default location, so that it cannot be connected to again
+            _uiState.update { value ->
+                val selected = value.selectedLocation
+                if (selected == null || value.locations.isEmpty()
+                    || value.locations.any { it.code == selected.code }
+                ) {
+                    value
+                } else {
+                    value.copy(selectedLocation = value.locations.defaultLocation())
+                }
+            }
+        }
     }
 
     fun addRecentLocation(location: Location) {

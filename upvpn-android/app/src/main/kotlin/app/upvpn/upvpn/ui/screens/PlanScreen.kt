@@ -7,22 +7,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -63,13 +62,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.upvpn.upvpn.model.UserPlan
 import app.upvpn.upvpn.model.forDisplay
 import app.upvpn.upvpn.model.prettyBalance
+import app.upvpn.upvpn.model.prettyStartedAt
 import app.upvpn.upvpn.ui.VPNAppViewModelProvider
 import app.upvpn.upvpn.ui.viewmodels.BillingViewModel
 import app.upvpn.upvpn.ui.viewmodels.PlanState
 import app.upvpn.upvpn.ui.viewmodels.ProductInfo
+import app.upvpn.upvpn.ui.viewmodels.bonusText
 import app.upvpn.upvpn.ui.viewmodels.buyButtonText
+import app.upvpn.upvpn.ui.viewmodels.compactFormattedPrice
 import app.upvpn.upvpn.ui.viewmodels.displayText
-import app.upvpn.upvpn.ui.viewmodels.isYearlyPlan
 import app.upvpn.upvpn.util.getActivityOrNull
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -183,6 +184,19 @@ fun PlanScreen(
                     }
 
                     is PlanState.Plan -> {
+                        // the yearly plan is only for sale to pay as you go users
+                        val yearlyForSale = yearlyProduct.value
+                            ?.takeIf { planState.userPlan is UserPlan.PayAsYouGo }
+
+                        // the selection only while its product is still for sale: it lives in
+                        // the view model and outlives a plan refresh, and the yearly plan stops
+                        // being offered once the user subscribes (here or elsewhere); without
+                        // this the buy button would keep offering a card that is gone
+                        val offeredSelectedProduct = selectedProduct.value?.takeIf { selected ->
+                            prepaidProducts.value.any { it.productId == selected.productId } ||
+                                selected.productId == yearlyForSale?.productId
+                        }
+
                         Box(
                             Modifier.fillMaxSize(),
 
@@ -195,20 +209,20 @@ fun PlanScreen(
                             ) {
                                 CurrentPlan(planState)
 
-                                if (prepaidProducts.value.isEmpty()
-                                        .not() && planState.isYearlyPlan().not()
-                                ) {
+                                // prepaid credit is for sale on every plan: premium locations
+                                // are billed from the pay as you go balance even on yearly
+                                if (prepaidProducts.value.isNotEmpty()) {
                                     PrepaidPlans(
                                         prepaidProducts.value,
-                                        selectedProduct.value,
+                                        offeredSelectedProduct,
                                         billingViewModel::setSelectedProduct,
                                     )
                                 }
 
-                                if (yearlyProduct.value != null && planState.isYearlyPlan().not()) {
+                                if (yearlyForSale != null) {
                                     YearlyPlan(
-                                        yearlyProduct.value!!,
-                                        selectedProduct.value,
+                                        yearlyForSale,
+                                        offeredSelectedProduct,
                                         billingViewModel::setSelectedProduct,
                                     )
                                 }
@@ -216,14 +230,11 @@ fun PlanScreen(
                                 Spacer(modifier = Modifier.height(100.dp))
                             }
 
-                            // only show buy button when at least one product is available
-                            if ((prepaidProducts.value.isEmpty()
-                                    .not() || yearlyProduct.value != null) &&
-                                planState.isYearlyPlan().not()
-                            ) {
+                            // only show buy button when at least one product is for sale
+                            if (prepaidProducts.value.isNotEmpty() || yearlyForSale != null) {
                                 PurchaseButton(
                                     isPurchasing.value,
-                                    selectedProduct.value,
+                                    offeredSelectedProduct,
                                     billingViewModel::makePurchase,
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -242,36 +253,35 @@ fun PlanScreen(
 
 @Composable
 fun CurrentPlan(plan: PlanState.Plan) {
-    Column(
+    // laid out like the prepaid and yearly cards: a title row, a divider, then the content,
+    // rather than a label floating above the card
+    Card(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 15.dp),
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp)
     ) {
-        Text(
-            text = "CURRENT PLAN",
-            style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.padding(15.dp, 4.dp)
-        )
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-
+        Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.padding(15.dp)
         ) {
+            Text(
+                "Current Plan",
+                style = MaterialTheme.typography.titleMedium
+            )
+            HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
 
             when (plan.userPlan) {
                 is UserPlan.PayAsYouGo -> Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp, 10.dp)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = plan.userPlan.forDisplay(),
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = "Balance ${plan.userPlan.content.prettyBalance()}",
+                        text = "Balance ${plan.userPlan.prettyBalance()}",
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
@@ -279,26 +289,46 @@ fun CurrentPlan(plan: PlanState.Plan) {
                 is UserPlan.AnnualSubscription -> {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier
-                            .padding(15.dp, 10.dp)
-                            .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            plan.userPlan.forDisplay(),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                plan.userPlan.forDisplay(),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            plan.userPlan.content.prettyStartedAt()?.let { since ->
+                                Text(
+                                    text = "Since $since",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.alpha(0.7f)
+                                )
+                            }
+                        }
                         HorizontalDivider()
-                        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-                            Icon(
-                                Icons.Filled.Star,
-                                "Star",
-                                tint = MaterialTheme.colorScheme.primary
+                        // every plan carries a pay as you go balance: it pays for premium locations
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Pay as you go",
+                                style = MaterialTheme.typography.bodyLarge
                             )
                             Text(
-                                "You're on the best plan",
+                                text = "Balance ${plan.userPlan.prettyBalance()}",
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }
+                        Text(
+                            text = "Used for premium locations",
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.alpha(0.7f)
+                        )
                     }
                 }
             }
@@ -310,6 +340,8 @@ fun CurrentPlan(plan: PlanState.Plan) {
 fun PriceCapsule(
     price: String,
     isSelected: Boolean = false,
+    // short promo drawn beside the price, e.g. "$5 FREE"
+    bonus: String? = null,
     onClick: () -> Unit
 ) {
     Box(
@@ -322,17 +354,40 @@ fun PriceCapsule(
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            // same size for every chip, with room for "$25 $5 FREE" on one line
+            .defaultMinSize(minWidth = 120.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = price,
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.primary
+        // price and bonus side by side when they fit; otherwise the bonus moves under the
+        // price as a whole, so a long localized price ("Rp 419.000 $5 FREE") never breaks
+        // mid-text. The flow never exceeds the chip's column, so chips cannot overlap.
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            itemVerticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = price,
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary
+                )
             )
-        )
+            if (bonus != null) {
+                Text(
+                    text = bonus,
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                )
+            }
+        }
     }
 }
 
@@ -351,30 +406,48 @@ fun PrepaidPlans(
             verticalArrangement = Arrangement.spacedBy(5.dp),
             modifier = Modifier.padding(15.dp)
         ) {
-            Text(
-                "Prepaid Credit",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                "Add to Pay-as-you-go balance",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.alpha(0.7f)
-            )
+            // title left, short description right, as the Current Plan rows are laid out
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    "Prepaid Credit",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    "Top up balance",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.alpha(0.7f)
+                )
+            }
             HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
 
-            Column(modifier = Modifier.height(100.dp), verticalArrangement = Arrangement.Center) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    verticalArrangement = Arrangement.spacedBy(25.dp)
-                ) {
-                    prepaidProducts.forEach { prepaidProduct ->
-                        item {
-                            Row(horizontalArrangement = Arrangement.Center) {
+            // two chips per row; sized by content so any number of products fits
+            Column(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)
+            ) {
+                prepaidProducts.chunked(2).forEach { rowProducts ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        rowProducts.forEach { prepaidProduct ->
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 PriceCapsule(
-                                    prepaidProduct.formattedPrice,
+                                    prepaidProduct.compactFormattedPrice(),
                                     isSelected = selectedProduct?.productId == prepaidProduct.productId,
+                                    bonus = prepaidProduct.bonusText(),
                                     onClick = { setSelectedProduct(prepaidProduct) })
                             }
+                        }
+                        // keep a lone last chip in the left column
+                        if (rowProducts.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
                         }
                     }
                 }
@@ -389,31 +462,42 @@ fun YearlyPlan(
     selectedProduct: ProductInfo?,
     setSelectedProduct: (ProductInfo) -> Unit,
 ) {
+    // laid out like the prepaid card: a title row with a short description on the right,
+    // a divider, then the content row
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp)
             .clickable { setSelectedProduct(yearlyProduct) }
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(15.dp)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.padding(15.dp)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text("Yearly Plan", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "Unlimited data. Just $3.33/mo",
-                    style = MaterialTheme.typography.bodySmall,
+                    "Just $3.33/mo",
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.alpha(0.7f)
                 )
             }
-            PriceCapsule(
-                "${yearlyProduct.formattedPrice}/year",
-                isSelected = selectedProduct?.productId == yearlyProduct.productId,
-                onClick = { setSelectedProduct(yearlyProduct) })
+            HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Unlimited data", style = MaterialTheme.typography.bodyMedium)
+                PriceCapsule(
+                    "${yearlyProduct.formattedPrice}/year",
+                    isSelected = selectedProduct?.productId == yearlyProduct.productId,
+                    onClick = { setSelectedProduct(yearlyProduct) })
+            }
         }
     }
 }

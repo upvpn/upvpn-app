@@ -328,6 +328,8 @@
 		A3AA4B202C256F80001135FD /* WireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = A3AA4B1F2C256F80001135FD /* WireGuardKit */; };
 		A3AA4B232C257CA2001135FD /* UpVPNApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DED82C25141200BA1BA6 /* UpVPNApp.swift */; };
 		A3AA4B242C257CA2001135FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A350DEDA2C25141200BA1BA6 /* ContentView.swift */; };
+		A3AED6FB30A1EC0200B1256C /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A3AED6FA30A1EC0200B1256C /* AppIcon.icon */; };
+		A3AED6FE30A1F18900B1256C /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A3AED6FD30A1F18900B1256C /* AppIcon.icon */; };
 		A3B9629A2F5FFE24004A225D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A3B962992F5FFE24004A225D /* GoogleSignIn */; };
 		A3B9629C2F5FFE24004A225D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A3B9629B2F5FFE24004A225D /* GoogleSignInSwift */; };
 		A3B9629E2F5FFE2B004A225D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A3B9629D2F5FFE2B004A225D /* GoogleSignIn */; };
@@ -558,6 +560,8 @@
 		A3A9F1032C70249700AF1490 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		A3A9F1062C708F6700AF1490 /* InterfaceConfiguration+Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InterfaceConfiguration+Device.swift"; sourceTree = "<group>"; };
 		A3AA4B212C257B5D001135FD /* UpVPN.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = UpVPN.entitlements; sourceTree = "<group>"; };
+		A3AED6FA30A1EC0200B1256C /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		A3AED6FD30A1F18900B1256C /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		A3B962AC2F6004D5004A225D /* GoogleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInManager.swift; sourceTree = "<group>"; };
 		A3B962B12F60050B004A225D /* JWTUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTUtils.swift; sourceTree = "<group>"; };
 		A3CD54532C7447A100B7848E /* TunnelManagerSimulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelManagerSimulator.swift; sourceTree = "<group>"; };
@@ -765,6 +769,7 @@
 				A3A9F0EF2C6E6FAF00AF1490 /* Views */,
 				A33336B32C45B0B3004D8C8E /* Info.plist */,
 				A350DEDC2C25141300BA1BA6 /* Assets.xcassets */,
+				A3AED6FA30A1EC0200B1256C /* AppIcon.icon */,
 				A350DEE12C25141300BA1BA6 /* UpVPN.entitlements */,
 				A350DEDE2C25141300BA1BA6 /* Preview Content */,
 			);
@@ -785,6 +790,7 @@
 				A3A9F0EE2C6E6FA900AF1490 /* Views */,
 				A33336B42C45B0EA004D8C8E /* Info.plist */,
 				A350DEF12C25147D00BA1BA6 /* Assets.xcassets */,
+				A3AED6FD30A1F18900B1256C /* AppIcon.icon */,
 				A3AA4B212C257B5D001135FD /* UpVPN.entitlements */,
 				A350DEF32C25147D00BA1BA6 /* Preview Content */,
 				A36566102C55808D00C2E748 /* LaunchScreen.storyboard */,
@@ -1309,6 +1315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3CD54572C76BA1D00B7848E /* PrivacyInfo.xcprivacy in Resources */,
+				A3AED6FB30A1EC0200B1256C /* AppIcon.icon in Resources */,
 				A350DEE02C25141300BA1BA6 /* Preview Assets.xcassets in Resources */,
 				A350DEDD2C25141300BA1BA6 /* Assets.xcassets in Resources */,
 			);
@@ -1322,6 +1329,7 @@
 				A350DEF52C25147D00BA1BA6 /* Preview Assets.xcassets in Resources */,
 				A3CD54582C76BA1D00B7848E /* PrivacyInfo.xcprivacy in Resources */,
 				A350DEF22C25147D00BA1BA6 /* Assets.xcassets in Resources */,
+				A3AED6FE30A1F18900B1256C /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

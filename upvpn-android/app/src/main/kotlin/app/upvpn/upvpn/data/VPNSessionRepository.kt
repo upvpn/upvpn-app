@@ -44,6 +44,14 @@ interface VPNSessionRepository {
 
     suspend fun runReclaimer(scope: CoroutineScope)
 
+    /**
+     * Marks every stored session to be ended by the next [runReclaimer]. For the VPN
+     * service process when it starts: a tunnel cannot have outlived the process, so any
+     * session it finds is stale. Not for the UI process, which may start while the
+     * service holds a session.
+     */
+    suspend fun markAllForReclaim()
+
 }
 
 
@@ -58,6 +66,10 @@ class DefaultVPNSessionRepository(
     override suspend fun runReclaimer(scope: CoroutineScope) {
         val newReclaimer = VpnSessionReclaimer(vpnDatabase, this)
         newReclaimer.reclaim(scope)
+    }
+
+    override suspend fun markAllForReclaim() {
+        vpnDatabase.vpnSessionDao().markAllForDeletion()
     }
 
     override fun newVpnSession(

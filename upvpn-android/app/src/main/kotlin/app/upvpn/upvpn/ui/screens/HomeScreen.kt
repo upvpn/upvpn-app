@@ -69,6 +69,7 @@ import app.upvpn.upvpn.ui.state.HomeUiState
 import app.upvpn.upvpn.ui.state.LocationUiState
 import app.upvpn.upvpn.ui.state.VpnUiState
 import app.upvpn.upvpn.ui.state.endSessionRemainingMs
+import app.upvpn.upvpn.ui.state.getLocation
 import app.upvpn.upvpn.ui.state.progress
 import app.upvpn.upvpn.ui.state.shieldResourceId
 import app.upvpn.upvpn.ui.state.switchChecked
@@ -674,8 +675,10 @@ fun HomeCard(
                 }
 
                 HomeCardDivider(vpnUiState)
+                // a session in progress is shown from its own (local) location information,
+                // which stays right even when the API no longer lists that location
                 LocationSelector(
-                    selectedLocation = selectedLocation,
+                    selectedLocation = vpnUiState.getLocation() ?: selectedLocation,
                     vpnUiState = vpnUiState,
                     onLocationSelectorClick = onLocationSelectorClick,
                 )

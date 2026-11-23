@@ -69,7 +69,7 @@ struct MainViewContent12: View {
                 }
             }
             .sheet(isPresented: $showPlans) {
-                PlanManagement()
+                PlanManagement(isRefreshable: true)
                     .toolbar {
                         Button {
                             showPlans.toggle()
@@ -85,11 +85,14 @@ struct MainViewContent12: View {
 @available(macOS 26, *)
 struct MainViewContent26: View {
     @State private var showInspector: Bool = false
+    // .detailOnly while the sidebar is collapsed
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var showAccountSheet: Bool = false
+    @State private var showPlanSheet: Bool = false
 
     var body: some View {
-        NavigationSplitView {
-            LocationsView()
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            LocationsView(showTierFilter: columnVisibility != .detailOnly)
                 .frame(maxWidth: .infinity)
                 .navigationSplitViewColumnWidth(
                     min: 310,
@@ -98,7 +101,9 @@ struct MainViewContent26: View {
                 )
         } detail: {
             HomeView(onStatsTap: { showInspector.toggle() })
-                .navigationSplitViewColumnWidth(min: 400, ideal: 400, max: 400)
+                // flexible: so that it fills the width the sidebar or inspector frees when
+                // closed; otherwise the split view is centered with blank bands on the sides
+                .navigationSplitViewColumnWidth(min: 400, ideal: 400, max: .infinity)
                 .toolbar {
                     ToolbarView26(
                         showInspector: $showInspector,
@@ -114,11 +119,24 @@ struct MainViewContent26: View {
         }
         .sheet(isPresented: $showAccountSheet) {
             NavigationStack {
-                SettingsView()
-                    .toolbar {
-                        Button("Close", action: { showAccountSheet.toggle() })
-                    }
+                // the plan opens in its own sheet rather than pushed here: a purchase made
+                // inside this sheet attaches StoreKit's confirmation sheet to this window,
+                // which then keeps a taller title bar on every screen pushed afterwards
+                SettingsView(onPlan: {
+                    showAccountSheet = false
+                    showPlanSheet = true
+                })
+                .toolbar {
+                    Button("Close", action: { showAccountSheet.toggle() })
+                }
             }
+        }
+        .sheet(isPresented: $showPlanSheet) {
+            // refreshable, as it was when pushed from the account view
+            PlanManagement(isRefreshable: true)
+                .toolbar {
+                    Button("Close", action: { showPlanSheet.toggle() })
+                }
         }
     }
 }
@@ -148,12 +166,14 @@ struct ToolbarView26: ToolbarContent {
 @available(macOS 14, *)
 struct MainViewContent14: View {
     @State private var showInspector: Bool = false
+    // .detailOnly while the sidebar is collapsed
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
 
     var body: some View {
         // NavigationStack & NavigationSplitView available from macOS 13+
         NavigationStack {
-            NavigationSplitView {
-                LocationsView()
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                LocationsView(showTierFilter: columnVisibility != .detailOnly)
                     .frame(maxWidth: .infinity)
                     .navigationSplitViewColumnWidth(
                         min: 310,
@@ -186,11 +206,13 @@ struct MainViewContent14: View {
 struct MainViewContent13: View {
 
     @State private var showInspector: Bool = false
+    // .detailOnly while the sidebar is collapsed
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
 
     var body: some View {
         NavigationStack {
-            NavigationSplitView {
-                LocationsView()
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                LocationsView(showTierFilter: columnVisibility != .detailOnly)
                     .frame(maxWidth: .infinity)
                     .navigationSplitViewColumnWidth(
                         min: 310,

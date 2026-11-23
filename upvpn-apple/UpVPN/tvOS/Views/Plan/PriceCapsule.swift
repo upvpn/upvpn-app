@@ -10,13 +10,22 @@ import SwiftUI
 struct PriceCapsule: View {
     let text: String
     let isSelected: Bool
+    /// short promo drawn beside the price, e.g. "$5 FREE"
+    var bonus: String? = nil
 
     @FocusState private var isFocused: Bool
 
     var body: some View {
         HStack(alignment: .center) {
-            Text(text)
-                .font(.headline)
+            // a tvOS grid column is wide enough for price and bonus on one line
+            HStack(spacing: 8) {
+                Text(text)
+                    .font(.headline)
+                if let bonus = bonus {
+                    Text(bonus)
+                        .font(.caption.bold())
+                }
+            }
                 .scaledToFit()
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)

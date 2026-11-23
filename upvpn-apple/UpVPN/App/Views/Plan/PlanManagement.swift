@@ -29,7 +29,8 @@ struct PlanManagement: View {
                     userPlan: userPlan,
                     prepaidProducts: planViewModel.prepaidProducts,
                     yearlyProduct: planViewModel.yearlyProduct,
-                    isPurchasing: planViewModel.isPurchasing)
+                    isPurchasing: planViewModel.isPurchasing,
+                    completedSubscriptionPurchases: planViewModel.completedSubscriptionPurchases)
             case .errored:
                 Button("Couldn't load plan, retry") {
                     planViewModel.reloadUserPlan()
@@ -41,7 +42,18 @@ struct PlanManagement: View {
             planViewModel.reloadUserPlan()
         }
         .navigationTitle("Plan")
+        #if os(macOS)
+        // On macOS this view lives in sheets, which take their size from the content's ideal
+        // size. Fix that size so neither swapping the loading, plan and error views nor the
+        // plan changing after a purchase asks the sheet window to resize: the window cannot
+        // resize while the StoreKit confirmation sheet is attached to it, and the content
+        // then overflowed the sheet, anchored at its bottom left. Inside the account sheet's
+        // navigation stack the stack's fixed size is proposed instead (see MainViewContent26),
+        // so the minimum must stay below it or the content overflows that sheet too.
+        .frame(minWidth: 400, idealWidth: 470, minHeight: 450, idealHeight: 560)
+        #else
         .frame(minWidth: 400, minHeight: 450)
+        #endif
         .onReceive(planViewModel.$purchaseError) { error in
             if let error = error, !error.isEmpty {
                 isPurchaseErrorPresented = true

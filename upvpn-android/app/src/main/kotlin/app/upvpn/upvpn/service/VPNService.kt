@@ -1,6 +1,7 @@
 package app.upvpn.upvpn.service
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
 import android.os.Looper
@@ -90,6 +91,16 @@ class VPNService : android.net.VpnService() {
         builder.setUnderlyingNetworks(null)
         builder.setBlocking(true)
 
+        // This app's own traffic (API calls from the UI process, session calls from this
+        // process) stays on the underlying network instead of depending on the tunnel it
+        // is itself managing: a fresh UI process could otherwise not reach the API while the
+        // tunnel is settling, and ending a session raced the tunnel teardown. The WireGuard
+        // socket is protected below and bypasses the tunnel either way.
+        try {
+            builder.addDisallowedApplication(packageName)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.e(tag, "Cannot exclude own package from the tunnel", e)
+        }
 
         // add interface addresses
         this.`interface`.addresses.forEach {

@@ -8,6 +8,34 @@ fun List<Location>.toCountries(): List<Country> =
         .groupBy { it.country }
         .map { Country(it.key, it.value) }
 
+/**
+ * The location to select when the user has not chosen one yet: any of the locations the
+ * API flags as default, at random when there are several; the first location when the
+ * list has no default.
+ */
+fun List<Location>.defaultLocation(): Location? =
+    this.filter { it.isDefault }.randomOrNull() ?: this.firstOrNull()
+
+val Location.tier: LocationTier?
+    get() = this.price?.tier
+
+/** Premium location indicator, explained on the help screen. */
+const val PREMIUM_INDICATOR = "\uD83D\uDCB0"
+
+fun LocationTier.displayName(): String = when (this) {
+    LocationTier.Free -> "Free"
+    LocationTier.Standard -> "Standard"
+    LocationTier.Premium -> "Premium"
+}
+
+/** The tiers present in this list, in display order, so that a filter offers only those. */
+fun List<Location>.availableTiers(): List<LocationTier> =
+    LocationTier.entries.filter { tier -> this.any { it.tier == tier } }
+
+/** Locations of [tier]; all of them when [tier] is null. */
+fun List<Location>.withTier(tier: LocationTier?): List<Location> =
+    if (tier == null) this else this.filter { it.tier == tier }
+
 fun List<Location>.search(query: String): List<Location> {
     val q = query.lowercase()
     return this.filter {
@@ -38,6 +66,7 @@ fun List<Location>.random(length: Int): List<Location> = (1..length)
             cityCode = randomString(2),
             country = randomString(10),
             countryCode = "US",
+            price = Price(perGb = 100, perHour = 1, tier = LocationTier.entries.random()),
         )
     }
 

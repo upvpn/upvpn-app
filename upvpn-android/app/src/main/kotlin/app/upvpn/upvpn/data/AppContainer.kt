@@ -36,7 +36,7 @@ interface AppContainer {
 }
 
 class DefaultAppContainer(private val context: Context) : AppContainer {
-    private val baseUrl = "${BuildConfig.UPVPN_BASE_URL}/api/v1/"
+    private val baseUrl = "${BuildConfig.UPVPN_BASE_URL}/api/"
 
     override val appScope by lazy { CoroutineScope(SupervisorJob()) }
 
@@ -45,8 +45,9 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
             runBlocking {
                 // init device
                 vpnRepository.initDevice()
-                // mark old vpn sessions to be reclaimed
-                vpnDatabase.vpnSessionDao().markAllForDeletion()
+                // stale VPN sessions are marked for reclaim by the VPN service process when
+                // it starts (VPNOrchestrator), not here: this also runs in the UI process,
+                // which may start while the service holds the session in progress
                 // create VPN session status notification channel
                 vpnNotificationManager.createChannels()
             }
@@ -68,7 +69,11 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
         .build()
 
     private val json = Json {
+        // the API may add keys (e.g. to a location) without breaking this app
         ignoreUnknownKeys = true
+        // an unknown enum value (e.g. a new location tier) or an explicit null for a
+        // property with a default falls back to that default instead of failing to decode
+        coerceInputValues = true
     }
 
     private val retrofit: Retrofit = Retrofit.Builder()

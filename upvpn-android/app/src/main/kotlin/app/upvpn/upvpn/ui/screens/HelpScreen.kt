@@ -26,23 +26,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.LinkInteractionListener
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import app.upvpn.upvpn.BuildConfig
 import app.upvpn.upvpn.model.LOCATION_COLD_COLOR
 import app.upvpn.upvpn.model.LOCATION_WARM_COLOR
+import app.upvpn.upvpn.model.PREMIUM_INDICATOR
+
+// size of the warm / cold dots, which the premium indicator matches
+private val INDICATOR_SIZE = 12.dp
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpScreen(navigateUp: () -> Unit) {
+fun HelpScreen(
+    navigateUp: () -> Unit,
+    // shows a web page (by url, under a title) inside the app
+    openWebPage: (url: String, title: String) -> Unit = { _, _ -> },
+) {
+    val linkStyle = SpanStyle(
+        color = MaterialTheme.colorScheme.tertiary,
+        textDecoration = TextDecoration.Underline,
+        fontWeight = FontWeight.Medium
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -68,88 +87,54 @@ fun HelpScreen(navigateUp: () -> Unit) {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                Text(
-                    text = "What are color indicators?",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                HelpSectionTitle("What do indicators mean?")
+                IndicatorRow(
+                    indicator = { IndicatorDot(LOCATION_WARM_COLOR) },
+                    text = "Connect quickly to available servers",
                 )
-                HorizontalDivider(modifier = Modifier.padding(top = 6.dp, bottom = 12.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(12.dp)
-                            .clip(CircleShape)
-                            .background(LOCATION_WARM_COLOR)
-                    )
-                    Text(
-                        text = "Connect quickly to available servers",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(12.dp)
-                            .clip(CircleShape)
-                            .background(LOCATION_COLD_COLOR)
-                    )
-                    Text(
-                        text = "Create and connect to a new server",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                IndicatorRow(
+                    indicator = { IndicatorDot(LOCATION_COLD_COLOR) },
+                    text = "Create and connect to a new server",
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                IndicatorRow(
+                    indicator = { PremiumIndicator() },
+                    text = "Premium location, costs higher",
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Text(
-                    text = "Questions about product or pricing?",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                HelpSectionTitle("Pricing Calculator")
+                HelpText(
+                    buildAnnotatedString {
+                        link("Estimate cost", linkStyle) {
+                            openWebPage(
+                                "${BuildConfig.UPVPN_BASE_URL}/pricing-calculator/",
+                                "Pricing Calculator"
+                            )
+                        }
+                        append(" of standard locations on pay as you go, or premium locations on any plan")
+                    }
                 )
-                HorizontalDivider(modifier = Modifier.padding(top = 6.dp, bottom = 12.dp))
-                Text(
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                HelpSectionTitle("Questions about product or pricing?")
+                HelpText(
                     buildAnnotatedString {
                         append("Visit ")
-                        withStyle(
-                            style = SpanStyle(
-                                color = MaterialTheme.colorScheme.tertiary,
-                                textDecoration = TextDecoration.Underline,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/faq")) {
-                                append("FAQ")
-                            }
-                        }
+                        link("FAQ", linkStyle) { openWebPage("${BuildConfig.UPVPN_BASE_URL}/faq", "FAQ") }
+                        append(" page")
 
                         append("\n\nOr email us at ")
-
-                        withStyle(
-                            style = SpanStyle(
-                                color = MaterialTheme.colorScheme.tertiary,
-                                textDecoration = TextDecoration.Underline,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
+                        withStyle(style = linkStyle) {
                             withLink(LinkAnnotation.Url(url = "mailto:support@upvpn.app")) {
                                 append("support@upvpn.app")
                             }
                         }
-
                         append(" and we'll be happy to assist!")
-                    },
-                    textAlign = TextAlign.Left,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             }
 
@@ -158,35 +143,100 @@ fun HelpScreen(navigateUp: () -> Unit) {
             Text(
                 buildAnnotatedString {
                     append("To delete your account, visit the ")
-
-                    withStyle(
-                        style = SpanStyle(
-                            color = MaterialTheme.colorScheme.tertiary,
-                            textDecoration = TextDecoration.Underline,
-                            fontWeight = FontWeight.Medium
-                        )
-                    ) {
+                    // the dashboard needs sign in, and its Google and Apple sign-in refuse
+                    // embedded web views, so it opens in the browser (which may already hold
+                    // a dashboard session) rather than in the app
+                    withStyle(style = linkStyle) {
                         withLink(LinkAnnotation.Url(url = "${BuildConfig.UPVPN_BASE_URL}/dashboard/account")) {
                             append("account page on the dashboard")
                         }
                     }
 
                     append("\n\n")
-                    withStyle(
-                        style = SpanStyle(
-                            color = MaterialTheme.colorScheme.tertiary,
-                            textDecoration = TextDecoration.Underline,
-                            fontWeight = FontWeight.Medium
+                    link("Acknowledgements", linkStyle) {
+                        openWebPage(
+                            "${BuildConfig.UPVPN_BASE_URL}/oss/android/latest",
+                            "Acknowledgements"
                         )
-                    ) {
-                        withLink(LinkAnnotation.Url(url = BuildConfig.UPVPN_BASE_URL + "/oss/android/latest")) {
-                            append("Acknowledgements")
-                        }
                     }
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+        }
+    }
+}
+
+@Composable
+private fun HelpSectionTitle(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    HorizontalDivider(modifier = Modifier.padding(top = 6.dp, bottom = 12.dp))
+}
+
+@Composable
+private fun HelpText(text: AnnotatedString) {
+    Text(
+        text = text,
+        textAlign = TextAlign.Left,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+}
+
+@Composable
+private fun IndicatorRow(indicator: @Composable () -> Unit, text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        indicator()
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun IndicatorDot(color: Color) {
+    Box(
+        modifier = Modifier
+            .size(INDICATOR_SIZE)
+            .clip(CircleShape)
+            .background(color)
+    )
+}
+
+/** The premium indicator, drawn at the size of the warm / cold dots. */
+@Composable
+private fun PremiumIndicator() {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.size(INDICATOR_SIZE)) {
+        Text(
+            text = PREMIUM_INDICATOR,
+            fontSize = 10.sp,
+            lineHeight = 10.sp,
+            softWrap = false,
+            overflow = TextOverflow.Visible,
+            maxLines = 1,
+        )
+    }
+}
+
+/** Appends [text] as a link in [style] that runs [onClick], e.g. to open a page inside the app. */
+private fun AnnotatedString.Builder.link(text: String, style: SpanStyle, onClick: () -> Unit) {
+    withStyle(style = style) {
+        withLink(
+            LinkAnnotation.Clickable(
+                tag = text,
+                linkInteractionListener = LinkInteractionListener { onClick() }
+            )
+        ) {
+            append(text)
         }
     }
 }

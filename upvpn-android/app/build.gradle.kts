@@ -6,10 +6,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.21"
     id("com.google.devtools.ksp") version "2.3.6"
     id("kotlin-parcelize")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.4.10"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.4.21"
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -29,8 +29,8 @@ android {
         applicationId = "app.upvpn.upvpn"
         minSdk = 24
         targetSdk = 37
-        versionCode = 21
-        versionName = "u11"
+        versionCode = 22
+        versionName = "u12"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -97,7 +97,8 @@ android {
             }
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -153,30 +154,30 @@ android {
 }
 
 dependencies {
-    val navVersion = "2.9.8"
-    val roomVersion = "2.8.4"
-    val sandwichVersion = "2.3.0"
+    val navVersion = "2.10.2"
+    val roomVersion = "2.8.5"
+    val sandwichVersion = "2.4.0"
     val billingVersion = "9.1.0"
 
-    implementation("androidx.core:core-ktx:1.19.0")
+    implementation("androidx.core:core-ktx:1.19.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
     implementation("androidx.activity:activity-compose:1.13.0")
-    implementation(platform("androidx.compose:compose-bom:2026.06.01"))
-    implementation("androidx.compose.ui:ui:1.11.4")
-    implementation("androidx.compose.ui:ui-graphics:1.11.4")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.11.4")
+    implementation(platform("androidx.compose:compose-bom:2026.09.00"))
+    implementation("androidx.compose.ui:ui:1.12.1")
+    implementation("androidx.compose.ui:ui-graphics:1.12.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.12.1")
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation("androidx.navigation:navigation-compose:$navVersion")
     implementation("com.google.accompanist:accompanist-adaptive:0.37.3")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("com.squareup.okhttp3:okhttp:5.4.0")
+    implementation("com.squareup.okhttp3:okhttp:5.5.1")
 
     implementation("com.michael-bull.kotlin-result:kotlin-result:2.3.1")
 
@@ -210,7 +211,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2026.06.01"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2026.09.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     implementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

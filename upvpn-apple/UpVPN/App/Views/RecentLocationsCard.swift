@@ -24,6 +24,10 @@ struct RecentLocationsCard: View {
                 }
             }
             .id(locationViewModel.locationsLastUpdated)
+            #if os(macOS)
+            // same card as HomeCard above it (on iOS the inset grouped list is the card)
+            .modifier(ListCard())
+            #endif
         }
     }
 }

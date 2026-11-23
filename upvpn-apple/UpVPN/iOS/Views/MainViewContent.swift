@@ -150,13 +150,13 @@ struct MainViewContent18: View {
                         .navigationTitle("Locations")
                     }
                 }
-                .environment(\.horizontalSizeClass, .regular)
+                .modifier(TabContentSizeClass())
             }
 
             Tab("Home", systemImage: "house", value: 2) {
                 ResponsiveHomeView(onStatsTap: { showInspector.toggle() })
                     .modifier(InspectorModifier(showInspector: $showInspector))
-                    .environment(\.horizontalSizeClass, .regular)
+                    .modifier(TabContentSizeClass())
             }
 
             Tab(
@@ -166,7 +166,7 @@ struct MainViewContent18: View {
                         SettingsView()
                             .navigationTitle("Account")
                     }
-                    .environment(\.horizontalSizeClass, .regular)
+                    .modifier(TabContentSizeClass())
                 },
                 label: {
                     Label {
@@ -180,7 +180,22 @@ struct MainViewContent18: View {
 
         }
         .tabViewStyle(.tabBarOnly)
+        // compact: so that on iPad the tabs appear on the bottom bar
         .environment(\.horizontalSizeClass, .compact)
+    }
+}
+
+/// Size class of the content of a tab of ``MainViewContent18``, whose TabView is compact
+/// so that iPad shows the tabs on the bottom bar: iPad content gets its regular size class
+/// back. iPhone content is left compact: a regular size class would widen the insets of
+/// lists and forms past the navigation title's, which stays laid out for a compact width.
+struct TabContentSizeClass: ViewModifier {
+    func body(content: Content) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            content.environment(\.horizontalSizeClass, .regular)
+        } else {
+            content
+        }
     }
 }
 

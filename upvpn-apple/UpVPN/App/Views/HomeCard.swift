@@ -70,8 +70,7 @@ struct HomeCard: View {
             Spacer()
         }
         .padding(.vertical, 10)
-        .background(Color.uSecondarySystemGroupedBackground)
-        .cornerRadius(10)
+        .modifier(CardBackground())
         .frame(maxWidth: .infinity)
     }
 }
